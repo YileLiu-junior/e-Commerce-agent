@@ -1,0 +1,393 @@
+[
+  {
+    "id": "need-extraction",
+    "model": "default",
+    "temperature": 0.1,
+    "maxTokens": 600,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "intent",
+        "taste",
+        "categories",
+        "budget",
+        "quantity",
+        "constraints",
+        "needs_price"
+      ],
+      "properties": {
+        "intent": {
+          "type": "string"
+        },
+        "taste": {
+          "type": "array"
+        },
+        "categories": {
+          "type": "array"
+        },
+        "quantity": {
+          "type": "number"
+        },
+        "constraints": {
+          "type": "array"
+        },
+        "needs_price": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  {
+    "id": "recommendation-decision",
+    "model": "default",
+    "temperature": 0.2,
+    "maxTokens": 700,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "recommended_product_ids",
+        "decision_summary"
+      ],
+      "properties": {
+        "recommended_product_ids": {
+          "type": "array"
+        },
+        "decision_summary": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "id": "recommendation-reason",
+    "model": "default",
+    "temperature": 0.4,
+    "maxTokens": 700,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "reasons"
+      ],
+      "properties": {
+        "reasons": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  {
+    "id": "response-generator",
+    "model": "default",
+    "temperature": 0.5,
+    "maxTokens": 900,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "reply"
+      ],
+      "properties": {
+        "reply": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "id": "risk-check",
+    "model": "default",
+    "temperature": 0,
+    "maxTokens": 900,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "passed",
+        "risk_level",
+        "issues",
+        "safe_reply"
+      ],
+      "properties": {
+        "passed": {
+          "type": "boolean"
+        },
+        "risk_level": {
+          "type": "string"
+        },
+        "issues": {
+          "type": "array"
+        },
+        "safe_reply": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "id": "after-sales-classification",
+    "model": "default",
+    "temperature": 0.1,
+    "maxTokens": 700,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "category",
+        "priority",
+        "known_facts",
+        "missing_evidence",
+        "recommended_action"
+      ],
+      "properties": {
+        "category": {
+          "type": "string"
+        },
+        "priority": {
+          "type": "string"
+        },
+        "known_facts": {
+          "type": "array"
+        },
+        "missing_evidence": {
+          "type": "array"
+        },
+        "recommended_action": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "id": "complaint-triage",
+    "model": "default",
+    "temperature": 0.1,
+    "maxTokens": 700,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "emotion",
+        "severity",
+        "signals",
+        "response_focus",
+        "requires_human"
+      ],
+      "properties": {
+        "emotion": {
+          "type": "string"
+        },
+        "severity": {
+          "type": "string"
+        },
+        "signals": {
+          "type": "array"
+        },
+        "response_focus": {
+          "type": "array"
+        },
+        "requires_human": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  {
+    "id": "allergy-risk-reminder",
+    "model": "default",
+    "temperature": 0.1,
+    "maxTokens": 700,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "constraints",
+        "verified_matches",
+        "uncertainties",
+        "safety_message",
+        "requires_clarification"
+      ],
+      "properties": {
+        "constraints": {
+          "type": "array"
+        },
+        "verified_matches": {
+          "type": "array"
+        },
+        "uncertainties": {
+          "type": "array"
+        },
+        "safety_message": {
+          "type": "string"
+        },
+        "requires_clarification": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  {
+    "id": "clarification-question",
+    "model": "default",
+    "temperature": 0.2,
+    "maxTokens": 600,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "missing_information",
+        "questions",
+        "can_continue_without_answer",
+        "reason"
+      ],
+      "properties": {
+        "missing_information": {
+          "type": "array"
+        },
+        "questions": {
+          "type": "array"
+        },
+        "can_continue_without_answer": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "id": "gift-scenario-advisor",
+    "model": "default",
+    "temperature": 0.2,
+    "maxTokens": 700,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "scenario",
+        "audience",
+        "serving_needs",
+        "selection_criteria",
+        "missing_information"
+      ],
+      "properties": {
+        "scenario": {
+          "type": "string"
+        },
+        "audience": {
+          "type": "string"
+        },
+        "serving_needs": {
+          "type": "object"
+        },
+        "selection_criteria": {
+          "type": "array"
+        },
+        "missing_information": {
+          "type": "array"
+        }
+      }
+    }
+  },
+  {
+    "id": "product-substitution",
+    "model": "default",
+    "temperature": 0.1,
+    "maxTokens": 700,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "substitute_product_ids",
+        "comparison_basis",
+        "tradeoffs",
+        "no_match_reason"
+      ],
+      "properties": {
+        "substitute_product_ids": {
+          "type": "array"
+        },
+        "comparison_basis": {
+          "type": "array"
+        },
+        "tradeoffs": {
+          "type": "array"
+        },
+        "no_match_reason": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "id": "conversation-summary",
+    "model": "default",
+    "temperature": 0.1,
+    "maxTokens": 800,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "customer_facts",
+        "confirmed_needs",
+        "confirmed_actions",
+        "open_questions",
+        "next_step"
+      ],
+      "properties": {
+        "customer_facts": {
+          "type": "array"
+        },
+        "confirmed_needs": {
+          "type": "array"
+        },
+        "confirmed_actions": {
+          "type": "array"
+        },
+        "open_questions": {
+          "type": "array"
+        },
+        "next_step": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  {
+    "id": "human-handoff-decision",
+    "model": "default",
+    "temperature": 0,
+    "maxTokens": 700,
+    "enabled": true,
+    "outputSchema": {
+      "type": "object",
+      "required": [
+        "required",
+        "urgency",
+        "reasons",
+        "handoff_summary",
+        "customer_message"
+      ],
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "urgency": {
+          "type": "string"
+        },
+        "reasons": {
+          "type": "array"
+        },
+        "handoff_summary": {
+          "type": "string"
+        },
+        "customer_message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+]

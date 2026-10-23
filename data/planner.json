@@ -1,0 +1,25 @@
+{
+  "id": "customer-service-planner",
+  "name": "零食客服 Planner",
+  "description": "根据用户问题与当前启用能力设计安全、可执行的客服处理计划。",
+  "prompt": "你是零食电商客服 Planner。根据 userInput、conversation_history、available_skills、available_tools 和 mandatory_capabilities 生成执行计划。只能选择列表中存在且启用的能力；不得遗漏 mandatory_capabilities；根据用户意图选择必要的可选 Skill，不要为了增加步骤而滥用；涉及价格、活动、优惠券时必须使用指定代码 Tool；不要重复步骤；risk-check 必须是最终 Skill。输出 JSON：goal、reasoning、steps，其中 reasoning 只写简短、可审计的决策摘要，不输出隐藏思维链；steps 每项包含 capability、type（skill 或 tool）、purpose。",
+  "model": "default",
+  "temperature": 0.1,
+  "maxTokens": 1200,
+  "enabled": true,
+  "requiredSkills": [
+    "need-extraction",
+    "recommendation-decision",
+    "recommendation-reason",
+    "response-generator",
+    "risk-check"
+  ],
+  "baseTools": [
+    "query_products"
+  ],
+  "priceTools": [
+    "query_activities",
+    "query_coupons",
+    "calculate_price"
+  ]
+}

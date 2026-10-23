@@ -1,0 +1,734 @@
+[
+  {
+    "id": "895e49a6-6aff-4cbd-a110-e0cc6eebc6b1",
+    "requestId": "218d2a3d-527b-4e5e-819c-47aaaaac4170",
+    "createdAt": "2026-08-11T13:46:08.152Z",
+    "success": true,
+    "latencyMs": 14286,
+    "stepCount": 9,
+    "riskLevel": "high",
+    "sessionId": "6c27ff81-7b72-4091-a916-45b919d48279",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "683f85bc-6281-4785-b74f-79b34a74e456",
+    "requestId": "ce27de4c-ffa3-4c65-b238-a1a7f7919265",
+    "createdAt": "2026-08-11T13:00:48.452Z",
+    "success": true,
+    "latencyMs": 17073,
+    "stepCount": 9,
+    "riskLevel": "medium",
+    "sessionId": "ea36f88a-359a-4adf-86d8-a5d68e070cb1",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "60bd0426-f7c4-4e01-a6af-c189e1f2b0ce",
+    "requestId": "b43a902d-caa4-4610-8dea-e170d01e1cbf",
+    "createdAt": "2026-07-13T13:53:32.823Z",
+    "success": true,
+    "latencyMs": 8728,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "f9922f28-62b6-4b73-8697-d7e0cd69dede",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "cfd71788-122b-46ed-87b2-c12ce7210ede",
+    "requestId": "15340723-5a4d-4ca5-bb62-ba5490e99075",
+    "createdAt": "2026-07-13T13:53:13.777Z",
+    "success": true,
+    "latencyMs": 9316,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "f9922f28-62b6-4b73-8697-d7e0cd69dede",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "ec634b7b-0760-446b-8384-fcd16cdd9069",
+    "requestId": "3e0f7202-c90b-4d4f-9120-34080fc48fee",
+    "createdAt": "2026-07-13T13:52:41.853Z",
+    "success": true,
+    "latencyMs": 10675,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "f9922f28-62b6-4b73-8697-d7e0cd69dede",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "081b71c7-e440-40a9-bee5-aeed2dc1b0be",
+    "requestId": "630cdb39-60af-43da-8991-50dae10f168c",
+    "createdAt": "2026-07-13T13:52:22.176Z",
+    "success": true,
+    "latencyMs": 9612,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "f9922f28-62b6-4b73-8697-d7e0cd69dede",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "33ce4425-08fa-4d30-9626-8322eff885b9",
+    "requestId": "a19e993f-8775-4e0b-aa64-9558369d8511",
+    "createdAt": "2026-07-07T07:17:56.743Z",
+    "success": true,
+    "latencyMs": 8616,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "cc0f680d-2a31-4155-abd5-f6a9fab12e1f",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "a8569927-dc7d-441b-80bf-4fd80ef0ecce",
+    "requestId": "a257a58f-05da-4e97-b8a4-adbf88570819",
+    "createdAt": "2026-07-07T03:24:09.314Z",
+    "success": true,
+    "latencyMs": 8442,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "bb001a82-3bda-403c-be52-7048d63365cf",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "a5a2eb11-ca94-4d72-b4fb-5020bdb98db1",
+    "requestId": "664608ed-d78e-4c86-8f69-f5e5cd2496fe",
+    "createdAt": "2026-07-07T03:23:37.972Z",
+    "success": true,
+    "latencyMs": 7643,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "bb001a82-3bda-403c-be52-7048d63365cf",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "78e9dad6-eb69-4f87-b396-5a73818b2ae1",
+    "requestId": "534d695e-5c2a-47d1-a99a-6c105d4763d7",
+    "createdAt": "2026-07-07T03:23:25.888Z",
+    "success": true,
+    "latencyMs": 9093,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "bb001a82-3bda-403c-be52-7048d63365cf",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "f64c3463-81e4-43b3-a9d1-4aff112a353f",
+    "requestId": "e712dd47-4580-4ffa-9e98-63ed8eb4a558",
+    "createdAt": "2026-07-07T03:23:10.568Z",
+    "success": true,
+    "latencyMs": 8792,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "bb001a82-3bda-403c-be52-7048d63365cf",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "f87f673b-9f60-4767-8a76-45b9bf04192d",
+    "requestId": "bc87a780-a45d-46d9-8c08-e56e55ace3da",
+    "createdAt": "2026-07-07T03:22:57.365Z",
+    "success": true,
+    "latencyMs": 8611,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "bb001a82-3bda-403c-be52-7048d63365cf",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "a83bfcd5-63d2-4629-a6b2-75432623b185",
+    "requestId": "3e7d4da4-abf1-44fa-b8fb-f5cd380422f8",
+    "createdAt": "2026-07-07T03:22:43.588Z",
+    "success": true,
+    "latencyMs": 9900,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "bb001a82-3bda-403c-be52-7048d63365cf",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "c9c76d3f-7ed1-43ad-8542-a5e6823b015d",
+    "requestId": "888097f4-513e-4ba2-9bf8-d029e51812bc",
+    "createdAt": "2026-07-07T03:22:28.328Z",
+    "success": true,
+    "latencyMs": 8922,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "bb001a82-3bda-403c-be52-7048d63365cf",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "f60844c0-96ad-427a-b221-5dde6b58e800",
+    "requestId": "39b5d335-ce1e-474e-8cc3-8fe1099d2ed0",
+    "createdAt": "2026-07-07T03:22:09.563Z",
+    "success": true,
+    "latencyMs": 11160,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "bb001a82-3bda-403c-be52-7048d63365cf",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "e9406325-7253-49da-b051-e6368e5e60b0",
+    "requestId": "d86fcce4-b170-43b6-8284-481d3927bcd4",
+    "createdAt": "2026-07-07T03:21:38.802Z",
+    "success": true,
+    "latencyMs": 11298,
+    "stepCount": 8,
+    "riskLevel": "high",
+    "sessionId": "bb001a82-3bda-403c-be52-7048d63365cf",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "fb0accc9-c899-4cfc-a7df-3f180213ff60",
+    "requestId": "86eb7a48-512f-4334-b567-f4d074498aa3",
+    "createdAt": "2026-07-07T03:12:55.039Z",
+    "success": true,
+    "latencyMs": 11070,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "64225066-7c1a-4c59-9166-21a4a0ffe4ad",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "03174dca-2925-4b24-8957-53e4214122d7",
+    "requestId": "696a2f57-aa87-4a4f-b545-95d3472616c8",
+    "createdAt": "2026-07-07T03:09:44.580Z",
+    "success": true,
+    "latencyMs": 8763,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "64225066-7c1a-4c59-9166-21a4a0ffe4ad",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "22334852-16ce-4327-8f49-90c91dd24710",
+    "requestId": "18502e53-6ba3-405c-bfe3-4e1585cff703",
+    "createdAt": "2026-07-07T03:07:35.940Z",
+    "success": true,
+    "latencyMs": 11042,
+    "stepCount": 7,
+    "riskLevel": "low",
+    "sessionId": "64225066-7c1a-4c59-9166-21a4a0ffe4ad",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "fa722bdf-18dc-4b1f-abac-1a481c062399",
+    "requestId": "11605ddd-7cff-4e0f-bd39-64fa45493505",
+    "createdAt": "2026-07-07T03:07:18.310Z",
+    "success": true,
+    "latencyMs": 8420,
+    "stepCount": 7,
+    "riskLevel": "low",
+    "sessionId": "64225066-7c1a-4c59-9166-21a4a0ffe4ad",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "899d7e14-7283-4ed1-944a-906c4a13b70c",
+    "requestId": "b377030a-af8d-4727-890d-5706250ec58e",
+    "createdAt": "2026-07-07T03:07:04.983Z",
+    "success": true,
+    "latencyMs": 9296,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "64225066-7c1a-4c59-9166-21a4a0ffe4ad",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "a9255b9c-5a6e-4372-a72c-b1648f398cd0",
+    "requestId": "cd5c26fb-e3f1-4ea1-84c4-5fdd7b35a2e5",
+    "createdAt": "2026-07-07T03:06:29.961Z",
+    "success": true,
+    "latencyMs": 10060,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "64225066-7c1a-4c59-9166-21a4a0ffe4ad",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "40ab2d00-b7f6-4553-af49-380e6edacc18",
+    "requestId": "bb0b92a8-d782-46e4-9715-46ce302e141f",
+    "createdAt": "2026-07-06T13:35:32.154Z",
+    "success": true,
+    "latencyMs": 15307,
+    "stepCount": 9,
+    "riskLevel": "high",
+    "sessionId": "f943b5c6-8cf9-47b5-80f3-8d2110bfc00f",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "63e90e30-6fb4-433d-bcaf-341641baf9b8",
+    "requestId": "e47d2725-33b6-47f1-bd6d-4c7ad92945a7",
+    "createdAt": "2026-07-06T13:28:50.346Z",
+    "success": true,
+    "latencyMs": 10198,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "7eaca09c-a385-497d-a424-8cf447ef18b5",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "7ad38d99-18c0-4fa5-b6dd-842c52a113c1",
+    "requestId": "caf4fafc-1c60-4463-a927-aa63e4ffefc5",
+    "createdAt": "2026-07-06T13:09:50.845Z",
+    "success": true,
+    "latencyMs": 14235,
+    "stepCount": 9,
+    "riskLevel": "high",
+    "sessionId": "6aef5bb4-18ca-48dc-9e91-d3f3350d0cec",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "5154e4d8-0339-4729-a1cc-6cb54f81c89c",
+    "requestId": "f1d37366-d85c-4a53-9c7e-7181d227df97",
+    "createdAt": "2026-07-03T16:25:50.036Z",
+    "success": true,
+    "latencyMs": 14688,
+    "stepCount": 9,
+    "riskLevel": "high",
+    "sessionId": "eb6ce832-bd38-49cd-aaff-062565bd4a78",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "28d5606f-929a-426d-966a-c60badf08c38",
+    "requestId": "abe2b926-cb8f-4fbb-b325-fbc78c83ba06",
+    "createdAt": "2026-07-03T16:25:13.778Z",
+    "success": true,
+    "latencyMs": 15634,
+    "stepCount": 10,
+    "riskLevel": "high",
+    "sessionId": "1f84f3a9-8c53-498e-bb5e-626f8a93d633",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "d8d51565-6565-4db0-bdc8-6ad4105d0b66",
+    "requestId": "89f7682f-ea8d-46db-aa14-2d99508d500b",
+    "createdAt": "2026-07-03T15:31:22.607Z",
+    "success": true,
+    "latencyMs": 18159,
+    "stepCount": 10,
+    "riskLevel": "high",
+    "sessionId": "3a4871fc-4b64-43db-8566-5e4d93d369a1",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "c7faf273-41d6-47d8-a2df-06145c7777b7",
+    "requestId": "5a29b39d-a154-4dab-959e-2d1c49ec47f5",
+    "createdAt": "2026-07-03T15:29:01.016Z",
+    "success": true,
+    "latencyMs": 15543,
+    "stepCount": 9,
+    "riskLevel": "medium",
+    "sessionId": "d2ac0ccd-6a8f-4aa5-8d7c-7a0e0b302716",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "459c70fd-6611-4cc0-a3b9-60825486c3b1",
+    "requestId": "f81bef04-d82b-43fb-a67a-016f91627453",
+    "createdAt": "2026-07-03T07:49:14.245Z",
+    "success": true,
+    "latencyMs": 15266,
+    "stepCount": 7,
+    "riskLevel": "low",
+    "sessionId": "1106d74b-1a12-4a03-823e-749f9fe5c210",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "868b3799-3fc8-4b12-a24e-cab3795440ce",
+    "requestId": "2beab0b1-e987-4aab-aa31-2ed27d897619",
+    "createdAt": "2026-07-03T07:48:37.204Z",
+    "success": true,
+    "latencyMs": 14715,
+    "stepCount": 7,
+    "riskLevel": "low",
+    "sessionId": "f415ce25-95a9-46d0-9db1-3cbcc324937e",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "75830ed7-f45e-4553-884a-7ce617083a13",
+    "requestId": "576f4d91-e881-4ae5-b7dd-6e952cd4c34f",
+    "createdAt": "2026-07-03T07:45:28.092Z",
+    "success": true,
+    "latencyMs": 16811,
+    "stepCount": 7,
+    "riskLevel": "low",
+    "sessionId": "647b1367-4fa3-4607-99ae-b30e8a4ab962",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "e42b93e5-459e-4818-a4fb-3ebba99b3e94",
+    "requestId": "c2c6baf2-fdc0-4cbc-a792-6d6526255b8b",
+    "createdAt": "2026-07-02T17:43:46.996Z",
+    "success": true,
+    "latencyMs": 13852,
+    "stepCount": 10,
+    "riskLevel": "low",
+    "sessionId": "352eaf89-ef14-4bf8-aab3-3fa2cd39b74c",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "b2b8bb41-3643-435d-9b01-2b292bcdfda4",
+    "requestId": "7ee2144f-5369-4c05-a7d1-390f6475043b",
+    "createdAt": "2026-07-02T17:42:26.350Z",
+    "success": false,
+    "latencyMs": 6803,
+    "stepCount": 4,
+    "failedStep": "gift-scenario-advisor",
+    "sessionId": "f00f1077-e276-47f9-a828-4c1864d3ae62",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "1b5b0da0-6b17-4601-b3c3-f9747fa22f38",
+    "requestId": "44564fa0-f0fa-4482-949f-172020187752",
+    "createdAt": "2026-07-02T17:41:38.240Z",
+    "success": false,
+    "latencyMs": 9569,
+    "stepCount": 3,
+    "failedStep": "gift-scenario-advisor",
+    "sessionId": "c6f9fa84-8bf8-4548-96c6-3105de9bd9eb",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "2ddec12b-af2f-45a9-ae4b-5bb16dc2ce55",
+    "requestId": "9ffcc467-7cda-4a4a-918a-b76dab135c09",
+    "createdAt": "2026-07-02T17:38:39.604Z",
+    "success": true,
+    "latencyMs": 9977,
+    "stepCount": 8,
+    "riskLevel": "low",
+    "sessionId": "9aa21a10-9fd5-46c1-a886-3b5bc31bacfc",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "014012a6-c49b-4704-8516-cd007b66cf61",
+    "requestId": "119d4128-edd6-405e-a47d-f316d278ef90",
+    "createdAt": "2026-07-02T17:37:54.823Z",
+    "success": true,
+    "latencyMs": 7362,
+    "stepCount": 7,
+    "riskLevel": "low",
+    "sessionId": "0e22dcaf-2fb5-4f59-855f-36263bf01a20",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "7245dde0-ffa9-4e89-813f-a638c53c6171",
+    "requestId": "e8d54db3-a14b-4fe1-9e1d-5f5ffa7e93df",
+    "createdAt": "2026-07-02T17:37:17.006Z",
+    "success": true,
+    "latencyMs": 9335,
+    "stepCount": 7,
+    "riskLevel": "low",
+    "sessionId": "cefaac19-dc5a-412c-8de4-653d4ea9de9c",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "a74a13f8-8cca-4b80-907e-003e6efaf5b5",
+    "requestId": "6a261c6e-5263-40af-a6eb-9bb8970a736a",
+    "createdAt": "2026-07-02T17:35:36.146Z",
+    "success": false,
+    "latencyMs": 4400,
+    "stepCount": 1,
+    "failedStep": "need-extraction",
+    "sessionId": "b90ed568-380c-4b45-9eb8-368fc5ff3008",
+    "experiments": []
+  },
+  {
+    "id": "c340a866-51d2-4591-ab03-831ded517ac1",
+    "requestId": "a8712083-8978-4a65-b1f6-16c3f457703d",
+    "createdAt": "2026-07-02T17:34:52.348Z",
+    "success": false,
+    "latencyMs": 4232,
+    "stepCount": 1,
+    "failedStep": "need-extraction",
+    "sessionId": "da6deab1-a774-4de2-94c8-8899005429a5",
+    "experiments": []
+  },
+  {
+    "id": "9bb3e168-5abb-447a-83c2-7774cc951754",
+    "requestId": "ba55104e-cce6-4cbd-9260-6201938387f4",
+    "createdAt": "2026-07-02T17:34:07.052Z",
+    "success": true,
+    "latencyMs": 11503,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "337165c8-84d3-4cbf-a8c1-0feafe2f1d37",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "6634dea2-23ec-4438-b8bd-9a9802b2b8d3",
+    "requestId": "1d432eac-3d40-4002-a89a-0687af228113",
+    "createdAt": "2026-07-02T17:33:29.347Z",
+    "success": true,
+    "latencyMs": 11265,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "337165c8-84d3-4cbf-a8c1-0feafe2f1d37",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "6de22278-8e28-4add-b90f-149b2a09844d",
+    "requestId": "b17ea65c-6a25-4d72-958d-9bac77081213",
+    "createdAt": "2026-07-02T17:33:10.225Z",
+    "success": true,
+    "latencyMs": 9105,
+    "stepCount": 6,
+    "riskLevel": "low",
+    "sessionId": "337165c8-84d3-4cbf-a8c1-0feafe2f1d37",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "3e10680e-8c4a-422a-a34c-ff780b13c8d9",
+    "requestId": "0fc9024d-4ac3-49f4-b845-49aa324ead2c",
+    "createdAt": "2026-07-02T17:29:55.884Z",
+    "success": false,
+    "latencyMs": 5862,
+    "stepCount": 1,
+    "failedStep": "need-extraction",
+    "sessionId": "1eafc9c6-1f61-4057-816e-d2360937ae87",
+    "experiments": []
+  },
+  {
+    "id": "f007dcbe-6c5c-47f7-89c6-cdf69dcb3e8d",
+    "requestId": "ca81aba1-356b-4331-9c75-8c795acac20d",
+    "createdAt": "2026-07-02T17:29:10.412Z",
+    "success": true,
+    "latencyMs": 16165,
+    "stepCount": 9,
+    "riskLevel": "high",
+    "sessionId": "194109cc-a7de-4a70-aab5-3c20e3c54350",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "control"
+      }
+    ]
+  },
+  {
+    "id": "5b03d125-ed74-48ee-9858-5b7f44def8ad",
+    "requestId": "5c2adb48-8d4c-48ce-8cb8-51f0c38e59cb",
+    "createdAt": "2026-07-02T17:24:13.043Z",
+    "success": true,
+    "latencyMs": 15336,
+    "stepCount": 9,
+    "riskLevel": "high",
+    "sessionId": "194109cc-a7de-4a70-aab5-3c20e3c54350",
+    "experiments": [
+      {
+        "skillId": "need-extraction",
+        "variant": "variant"
+      }
+    ]
+  },
+  {
+    "id": "16979a09-448b-49ff-b22c-9605eb3323d9",
+    "requestId": "afe3d0b5-1f36-4d12-9fce-6683b91db3c3",
+    "createdAt": "2026-07-02T16:54:19.792Z",
+    "success": true,
+    "latencyMs": 15898,
+    "stepCount": 9,
+    "riskLevel": "high",
+    "sessionId": "c733b71a-dda4-4200-868a-91b9132545a5",
+    "experiments": []
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {"id":"query_products","name":"查询商品","description":"按照预算、品类和口味筛选本地商品数据。","implementation":"json_query","dataSource":"products.json","enabled":true},
+  {"id":"query_activities","name":"查询活动","description":"读取当前启用的满减和品类营销活动。","implementation":"json_query","dataSource":"activities.json","enabled":true},
+  {"id":"query_coupons","name":"查询优惠券","description":"按订单门槛和商品品类匹配可用优惠券。","implementation":"json_query","dataSource":"coupons.json","enabled":true},
+  {"id":"calculate_price","name":"计算价格","description":"使用确定性代码计算商品合计、活动优惠、优惠券和最终价。","implementation":"code","dataSource":"lib/engine.ts","enabled":true},
+  {"id":"query_order_logistics","name":"查询订单物流","description":"根据客户提供的订单号查询本地订单物流状态和预计送达时间。","implementation":"json_query","dataSource":"orders.json","enabled":true},
+  {"id":"query_return_policy","name":"查询退换货政策","description":"查询已核验的退换货时限、适用条件、例外和申请路径。","implementation":"json_query","dataSource":"return-policies.json","enabled":true}
+]

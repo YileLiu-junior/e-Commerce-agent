@@ -1,0 +1,1066 @@
+<title>客服 Agent 评测方法论</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@600;700;900&display=swap">
+
+<style>
+/* ------------------------------------------------------------
+   设计令牌：仪表盘式技术文档。墨绿纸面 + 铜绿强调 + 琥珀警示。
+   布局：左侧粘性目录 + 760px 正文栏；窄屏折叠为顶部横向目录。
+------------------------------------------------------------ */
+:root{
+  --bg:#f5f7f3;
+  --surface:#ffffff;
+  --surface-2:#edf2ec;
+  --fg:#14201d;
+  --muted:#5a6b65;
+  --faint:#7d8c86;
+  --line:#d7e0d9;
+  --line-strong:#b9c7bd;
+  --accent:#0b6b5b;
+  --accent-2:#148a74;
+  --accent-soft:#dcefe9;
+  --warn:#9a5410;
+  --warn-soft:#f7ead8;
+  --danger:#9c3a32;
+  --danger-soft:#f6e3e0;
+  --code-bg:#eaf0ea;
+  --shadow:0 1px 2px rgba(20,32,29,.05),0 8px 24px rgba(20,32,29,.04);
+  --font-display:"Noto Serif SC",Georgia,"Songti SC",serif;
+  --font-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --font-mono:ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+  --maxw:1180px;
+  --colw:780px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1312;
+    --surface:#121b19;
+    --surface-2:#172420;
+    --fg:#e4ece8;
+    --muted:#9aaea7;
+    --faint:#7e928b;
+    --line:#253530;
+    --line-strong:#3a4f48;
+    --accent:#5ad3b4;
+    --accent-2:#8ae7cd;
+    --accent-soft:#12332c;
+    --warn:#e0a25c;
+    --warn-soft:#332515;
+    --danger:#e07a70;
+    --danger-soft:#341c1a;
+    --code-bg:#0f1816;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1312;
+  --surface:#121b19;
+  --surface-2:#172420;
+  --fg:#e4ece8;
+  --muted:#9aaea7;
+  --faint:#7e928b;
+  --line:#253530;
+  --line-strong:#3a4f48;
+  --accent:#5ad3b4;
+  --accent-2:#8ae7cd;
+  --accent-soft:#12332c;
+  --warn:#e0a25c;
+  --warn-soft:#332515;
+  --danger:#e07a70;
+  --danger-soft:#341c1a;
+  --code-bg:#0f1816;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 32px rgba(0,0,0,.25);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--fg);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+  padding-left:max(0px,env(safe-area-inset-left,0px));
+  padding-right:max(0px,env(safe-area-inset-right,0px));
+}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}
+a:hover{border-bottom-color:var(--accent)}
+p{margin:0 0 1.05em}
+strong{font-weight:700}
+code{font-family:var(--font-mono);font-size:.86em;background:var(--code-bg);padding:.12em .38em;border-radius:4px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.topbar{border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 88%,var(--surface))}
+.topbar .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 20px;padding-block:12px}
+.topbar .brand{font-family:var(--font-mono);font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.topbar .meta{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;color:var(--faint)}
+.hero{padding-block:clamp(42px,7vw,84px) clamp(30px,5vw,54px);border-bottom:1px solid var(--line)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin:0 0 18px}
+h1{font-family:var(--font-display);font-weight:900;font-size:clamp(2.15rem,5.4vw,4rem);line-height:1.18;letter-spacing:-.01em;margin:0 0 20px;text-wrap:balance;max-width:15ch}
+.lede{font-size:clamp(1.02rem,1.6vw,1.2rem);line-height:1.8;color:var(--muted);max-width:60ch;margin:0 0 26px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+.chip{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.04em;color:var(--muted);border:1px solid var(--line-strong);border-radius:999px;padding:4px 11px;background:var(--surface)}
+.layout{display:grid;grid-template-columns:212px minmax(0,1fr);gap:clamp(28px,4vw,64px);max-width:var(--maxw);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.toc{position:sticky;top:22px;align-self:start;padding-block:34px 40px;font-size:.82rem;line-height:1.5}
+.toc-title{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);margin:0 0 12px}
+.toc ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;border-left:1px solid var(--line)}
+.toc a{display:block;color:var(--muted);border:0;padding:5px 0 5px 12px;margin-left:-1px;border-left:2px solid transparent;transition:color .15s,border-color .15s}
+.toc a:hover{color:var(--fg)}
+.toc a[aria-current="true"]{color:var(--accent);border-left-color:var(--accent);font-weight:500}
+.toc .num{font-family:var(--font-mono);font-size:.66rem;color:var(--faint);margin-right:6px}
+.main{min-width:0;max-width:var(--colw);padding-block:34px 80px}
+section{scroll-margin-top:24px;padding-block:6px 30px}
+.section-label{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.section-label::after{content:"";flex:1;height:1px;background:var(--line)}
+h2{font-family:var(--font-display);font-weight:700;font-size:clamp(1.45rem,3vw,1.95rem);line-height:1.4;margin:0 0 16px;text-wrap:balance}
+h3{font-size:1.06rem;font-weight:700;line-height:1.6;margin:30px 0 10px}
+h4{font-size:.92rem;font-weight:700;margin:20px 0 6px;color:var(--fg)}
+ul,ol{margin:0 0 1.1em;padding-left:1.3em}
+li{margin-bottom:.42em}
+li::marker{color:var(--accent)}
+hr{border:0;border-top:1px solid var(--line);margin:36px 0}
+
+/* 速览卡 */
+.quick{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:28px 0 4px}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 13px;box-shadow:var(--shadow)}
+.qcard .n{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.1em;color:var(--accent);display:block;margin-bottom:7px}
+.qcard p{font-size:.82rem;line-height:1.65;margin:0;color:var(--fg)}
+@media(max-width:820px){.quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:460px){.quick{grid-template-columns:1fr}}
+
+.callout{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:15px 18px;margin:20px 0;font-size:.94rem}
+.callout p:last-child{margin-bottom:0}
+.callout.warn{background:var(--warn-soft);border-left-color:var(--warn)}
+.callout.danger{background:var(--danger-soft);border-left-color:var(--danger)}
+.callout .label{display:block;font-family:var(--font-mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.callout.warn .label{color:var(--warn)}
+.callout.danger .label{color:var(--danger)}
+
+/* 卡片 */
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0 8px}
+@media(max-width:700px){.cards{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px;box-shadow:var(--shadow);min-width:0}
+.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+.card h3{font-size:.98rem;margin:0;line-height:1.5}
+.tag{flex:none;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line-strong);border-radius:999px;padding:2px 7px;color:var(--muted);white-space:nowrap}
+.tag.hot{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent);background:var(--warn-soft)}
+.tag.cool{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 40%,transparent);background:var(--accent-soft)}
+.card dl{margin:0;font-size:.83rem;line-height:1.7}
+.card dt{font-family:var(--font-mono);font-size:.63rem;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-top:8px}
+.card dd{margin:1px 0 0;color:var(--muted)}
+.card dd strong{color:var(--fg)}
+
+/* 表格 */
+.table-wrap{overflow-x:auto;margin:18px 0 22px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.82rem;line-height:1.65;min-width:620px}
+th{text-align:left;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);font-weight:500;background:var(--surface-2);padding:10px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:11px 13px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+td strong{color:var(--fg)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+.table-note{font-size:.76rem;color:var(--faint);margin:-12px 0 20px}
+
+/* 图 */
+figure{margin:24px 0 28px;padding:0}
+.figbox{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 14px 10px;box-shadow:var(--shadow);overflow-x:auto}
+figure svg{display:block;width:100%;height:auto;min-width:560px;color:var(--fg)}
+figcaption{font-size:.78rem;line-height:1.65;color:var(--faint);margin-top:10px;padding-left:2px}
+figcaption strong{color:var(--muted)}
+.svg-label{font-family:var(--font-body);font-size:12px;fill:currentColor}
+.svg-small{font-family:var(--font-mono);font-size:9.5px;fill:currentColor;opacity:.62}
+.svg-title{font-family:var(--font-body);font-size:13px;font-weight:700;fill:currentColor}
+.svg-accent{fill:var(--accent)}
+.svg-accent-text{fill:var(--accent);opacity:1}
+.svg-box{fill:var(--surface-2);stroke:var(--line-strong);stroke-width:1}
+.svg-box-accent{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.2}
+
+/* 代码块 */
+pre{background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:15px 16px;overflow-x:auto;margin:16px 0 22px;font-size:.78rem;line-height:1.7}
+pre code{background:none;padding:0;font-size:1em}
+
+/* 清单 */
+.checklist{list-style:none;padding:0;margin:14px 0 20px;display:grid;gap:8px}
+.checklist li{position:relative;padding:10px 13px 10px 40px;background:var(--surface);border:1px solid var(--line);border-radius:9px;font-size:.88rem;margin:0}
+.checklist li::before{content:"";position:absolute;left:14px;top:17px;width:12px;height:7px;border-left:2px solid var(--accent);border-bottom:2px solid var(--accent);transform:rotate(-45deg)}
+
+/* 来源 */
+.sources{columns:2;column-gap:32px;font-size:.79rem;line-height:1.7;margin:16px 0 0;padding:0;list-style:none}
+.sources li{break-inside:avoid;margin:0 0 11px;padding-left:0}
+.sources a{display:inline;border-bottom-color:color-mix(in srgb,var(--accent) 22%,transparent)}
+.sources .src-tag{display:inline-block;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);border:1px solid var(--line);border-radius:3px;padding:0 4px;margin-right:6px;vertical-align:1px}
+.sources .why{display:block;color:var(--faint);font-size:.72rem;line-height:1.55;margin-top:1px}
+@media(max-width:700px){.sources{columns:1}}
+
+.foot{border-top:1px solid var(--line);padding-block:26px 46px;color:var(--faint);font-size:.78rem}
+.foot p{margin:0 0 6px}
+.kbd{font-family:var(--font-mono);font-size:.74rem;border:1px solid var(--line-strong);border-bottom-width:2px;border-radius:4px;padding:1px 5px;background:var(--surface)}
+
+@media(max-width:900px){
+  .layout{grid-template-columns:minmax(0,1fr);gap:0}
+  .toc{position:static;padding:18px 0 4px;border-bottom:1px solid var(--line)}
+  .toc ol{flex-direction:row;overflow-x:auto;gap:6px;border-left:0;padding-bottom:10px;scrollbar-width:thin}
+  .toc a{white-space:nowrap;border:1px solid var(--line);border-left:1px solid var(--line);border-radius:999px;padding:4px 11px;margin:0;font-size:.76rem;background:var(--surface)}
+  .toc a[aria-current="true"]{border-color:var(--accent);background:var(--accent-soft)}
+  .toc .num{display:none}
+  .main{padding-top:22px;max-width:none}
+}
+@media(max-width:520px){
+  body{font-size:15px}
+  .topbar .meta{display:none}
+  h1{max-width:none}
+  .figbox{padding:12px 8px 6px}
+  figure svg{min-width:520px}
+}
+</style>
+
+<header class="topbar">
+  <div class="wrap">
+    <span class="brand">内部评测 / Eval Methodology</span>
+    <span class="meta">2026-10 · 适用于客服、售后、工单与语音 Agent</span>
+  </div>
+</header>
+
+<div class="hero wrap">
+  <p class="eyebrow">上线之前，先把“行不行”说清楚</p>
+  <h1>客服 Agent 的内部评测</h1>
+  <p class="lede">生产级评测不是一套打分脚本，而是一条从代码断言到人工校准、从单轮对话到最终业务状态、从离线黄金集到线上影子的证据链。下面这份笔记把公开可查的一线做法、学术基准和中文社区实践，整理成一套能直接落地的选型与施工手册。</p>
+  <div class="chips">
+    <span class="chip">结果态优先</span>
+    <span class="chip">分层打分器</span>
+    <span class="chip">多轮仿真</span>
+    <span class="chip">Playwright E2E</span>
+    <span class="chip">成本级联</span>
+    <span class="chip">统计门禁</span>
+  </div>
+
+  <div class="quick">
+    <div class="qcard"><span class="n">01</span><p><strong>评结果，不评台词。</strong>先看订单、工单、退款单的最终状态，再看对话说得好不好。</p></div>
+    <div class="qcard"><span class="n">02</span><p><strong>代码能判的，绝不交给模型。</strong>格式、权限、金额、状态机，先写成确定性断言。</p></div>
+    <div class="qcard"><span class="n">03</span><p><strong>一个 judge 只测一件事。</strong>能二分类就不要 1–10 分，rubric 写清边界样例。</p></div>
+    <div class="qcard"><span class="n">04</span><p><strong>评测集是资产。</strong>来自真实失败，按切片版本化，合成数据只做补充。</p></div>
+    <div class="qcard"><span class="n">05</span><p><strong>离线分要能对上线上数。</strong>不做镜像校准，高分只是自嗨。</p></div>
+  </div>
+</div>
+
+<div class="layout">
+  <nav class="toc" aria-label="目录">
+    <p class="toc-title">目录</p>
+    <ol>
+      <li><a href="#s0"><span class="num">00</span>先分清三类评测</a></li>
+      <li><a href="#s1"><span class="num">01</span>评到哪一层</a></li>
+      <li><a href="#s2"><span class="num">02</span>指标树与护栏</a></li>
+      <li><a href="#s3"><span class="num">03</span>方法库</a></li>
+      <li><a href="#s4"><span class="num">04</span>LLM-as-judge</a></li>
+      <li><a href="#s5"><span class="num">05</span>评测集怎么建</a></li>
+      <li><a href="#s6"><span class="num">06</span>用户模拟器</a></li>
+      <li><a href="#s7"><span class="num">07</span>Playwright 专章</a></li>
+      <li><a href="#s8"><span class="num">08</span>场景选型矩阵</a></li>
+      <li><a href="#s9"><span class="num">09</span>成本与统计</a></li>
+      <li><a href="#s10"><span class="num">10</span>门禁与双轨闭环</a></li>
+      <li><a href="#s11"><span class="num">11</span>常见坑</a></li>
+      <li><a href="#s12"><span class="num">12</span>六周落地路线</a></li>
+      <li><a href="#s13"><span class="num">13</span>来源与可信度</a></li>
+    </ol>
+  </nav>
+
+  <main class="main">
+
+<section id="s0">
+  <p class="section-label">00 · 先定问题</p>
+  <h2>先分清三类评测，别用一把尺子量所有事</h2>
+  <p>很多团队一上来就建“评测集”，最后发现分数涨了，线上没变。原因通常不是方法不够多，而是把三种目的完全不同的评测混在了一起。先把决策类型分开，尺子才不会互相打架。</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>类型</th><th>回答的问题</th><th>允许的分数</th><th>用在哪</th><th>典型节奏</th></tr></thead>
+      <tbody>
+        <tr><td><strong>能力评测</strong> Capability</td><td>这个模型 / 方案的上限在哪？</td><td>低分正常，用于比较</td><td>选基座模型、换架构、评估新工具</td><td>季度 / 大版本</td></tr>
+        <tr><td><strong>回归评测</strong> Regression</td><td>这次改动有没有弄坏已知能力？</td><td>必须接近 100%，低于阈值拦截</td><td>Prompt、知识库、工具、模型升级</td><td>每次提交 / 每日</td></tr>
+        <tr><td><strong>线上评测</strong> Monitoring</td><td>真实流量里正在发生什么？</td><td>看趋势、切片、漂移</td><td>发布后、灰度、持续运营</td><td>实时 / 每小时</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>三者的数据集、容错和成本结构都不一样。能力评测可以用“没见过的难题”探上限；回归评测必须用“已经修过的题”守下限；线上评测则要接受没有标准答案，只能用参考无关的 judge、用户信号和业务结果做代理。</p>
+
+  <div class="callout">
+    <span class="label">一个容易犯的错</span>
+    <p>拿回归集去选模型。回归集是你反复优化过的题，模型在上面高分不代表能力强，只代表它“背过答案”。选模型要用独立的 held-out 能力集；回归集只负责防止退化。</p>
+  </div>
+
+  <p>另一个常见混淆是“内部 eval”和“上线后监控”。前者是发布前的证据，后者是发布后的雷达。真正生产级的做法，是让两者共享同一套 rubric 和同一套切片定义，这样离线涨 3 分，线上应该能看到对应的方向性变化；如果长期对不上，先怀疑评测，不要怀疑线上。</p>
+</section>
+
+<section id="s1">
+  <p class="section-label">01 · 评测粒度</p>
+  <h2>客服 Agent 的失败，多数不在最后一句话</h2>
+  <p>一个典型事故：用户说“把收货地址改到公司”，Agent 回复“已经帮您改好了”，语气、格式、礼貌都无可挑剔。但它没有调用改地址工具，或者拿错了订单号，或者改了别人的订单。只看最后一句回复，这个 case 是满分的。</p>
+  <p>所以评测必须落到四个粒度上。越往右，越接近业务真相，也越难自动化、越贵。</p>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 760 300" role="img" aria-label="客服 Agent 的四个评测粒度：单轮、轨迹、会话、结果态，越往后越接近业务真相">
+        <defs>
+          <marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <rect x="24" y="70" width="158" height="92" rx="9" class="svg-box"/>
+        <text x="42" y="96" class="svg-title">单轮 Turn</text>
+        <text x="42" y="118" class="svg-label" opacity=".75">这句话答对了吗</text>
+        <text x="42" y="138" class="svg-small">语气 / 幻觉 / 格式</text>
+
+        <rect x="210" y="58" width="158" height="116" rx="9" class="svg-box-accent"/>
+        <text x="228" y="84" class="svg-title">轨迹 Trace</text>
+        <text x="228" y="106" class="svg-label" opacity=".75">工具、参数、顺序</text>
+        <text x="228" y="126" class="svg-small">有没有确认 / 越权</text>
+        <text x="228" y="146" class="svg-small">是否多调 / 漏调</text>
+
+        <rect x="396" y="46" width="158" height="140" rx="9" class="svg-box"/>
+        <text x="414" y="72" class="svg-title">会话 Thread</text>
+        <text x="414" y="94" class="svg-label" opacity=".75">多轮目标达成了吗</text>
+        <text x="414" y="114" class="svg-small">追问 / 改主意 / 情绪</text>
+        <text x="414" y="134" class="svg-small">该不该转人工</text>
+
+        <rect x="582" y="34" width="158" height="164" rx="9" class="svg-box-accent"/>
+        <text x="600" y="60" class="svg-title">结果态 Outcome</text>
+        <text x="600" y="82" class="svg-label" opacity=".75">订单 / 工单 / 退款单</text>
+        <text x="600" y="102" class="svg-small">最终状态对不对</text>
+        <text x="600" y="122" class="svg-small">金额 / 地址 / 归属</text>
+        <text x="600" y="142" class="svg-small">是否可回滚</text>
+
+        <line x1="182" y1="116" x2="206" y2="116" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar1)"/>
+        <line x1="368" y1="116" x2="392" y2="116" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar1)"/>
+        <line x1="554" y1="116" x2="578" y2="116" stroke="currentColor" stroke-width="1.4" marker-end="url(#ar1)"/>
+
+        <line x1="24" y1="250" x2="736" y2="250" stroke="currentColor" stroke-width="1" opacity=".28"/>
+        <text x="24" y="274" class="svg-small">便宜、快、可全量</text>
+        <text x="736" y="274" text-anchor="end" class="svg-small">贵、慢、但最接近业务真相</text>
+        <text x="380" y="274" text-anchor="middle" class="svg-small svg-accent-text">客服 Agent 最常漏测的区域 →</text>
+      </svg>
+    </div>
+    <figcaption><strong>四个粒度不是四选一。</strong>生产级评测通常是：单轮和轨迹跑全量或高采样，会话靠用户模拟器按版本跑，结果态只在关键交易路径上做硬断言。</figcaption>
+  </figure>
+
+  <h3>为什么结果态优先</h3>
+  <p>τ-bench 的核心设计就是把评分锚定在数据库的最终状态和必须完成的动作上，而不是让 judge 读一段对话然后打分。Anthropic 在评测方法论里也把 <code>outcome</code>（环境最终状态）和 <code>transcript</code>（对话记录）明确分开，并建议优先验证 outcome。对客服来说，这意味着：</p>
+  <ul>
+    <li>退款任务看退款单是否创建、金额、币种、归属订单；</li>
+    <li>改地址看订单表的新地址、生效时间、是否触发风控；</li>
+    <li>转人工看工单是否创建、是否带上下文、是否重复建单；</li>
+    <li>查询类任务看返回字段是否与 mock 数据一致，而不是看它“说得像不像”。</li>
+  </ul>
+  <p>对话文本仍然是重要的，但它更适合回答“体验好不好”，而不是“事情办成没有”。把两者混成一个 1–10 分，是评测失真的常见起点。</p>
+</section>
+
+<section id="s2">
+  <p class="section-label">02 · 指标</p>
+  <h2>指标树：结果、过程、体验、安全，外加护栏</h2>
+  <p>客服 Agent 的指标不能只有一个“解决率”。单指标一定会被优化坏：只追求转人工率下降，Agent 就会该转不转；只追求满意度，Agent 就会过度承诺。下面这棵树把“好不好”拆成四层，并要求每层至少有一个护栏指标。</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>层</th><th>核心指标</th><th>怎么测</th><th>护栏 / 反指标</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>结果</strong></td>
+          <td>任务完成率、自助解决率（SSR）、一次解决率（FCR）、重复联系率、正确转人工率、错误转人工率、客诉率、tNPS / CSAT</td>
+          <td>结果态断言 + 工单/订单数据 + 线上对照</td>
+          <td>不能只看 containment；要拆“真解决”和“被劝退”</td>
+        </tr>
+        <tr>
+          <td><strong>过程</strong></td>
+          <td>工具选择准确率、参数准确率、调用顺序正确率、确认义务履行率、策略遵循率、幻觉率、检索命中率</td>
+          <td>轨迹匹配 + mock 工具 + 规则/judge</td>
+          <td>工具调用次数、无用检索、重复提问次数</td>
+        </tr>
+        <tr>
+          <td><strong>体验</strong></td>
+          <td>语气/共情、澄清质量、简洁度、首响延迟、端到端延迟、打断恢复</td>
+          <td>LLM judge（校准后）+ 人工抽检 + 埋点</td>
+          <td>过度礼貌/冗长、模板化、机械重复</td>
+        </tr>
+        <tr>
+          <td><strong>安全</strong></td>
+          <td>越权写操作、PII 泄露、prompt injection 成功率、越界承诺、过度拒答率</td>
+          <td>红队 + 规则 + 100% 关键路径 judge</td>
+          <td>拒答率本身是双刃剑，必须同时测误拒</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="label">转人工率不是越低越好</span>
+    <p>要拆成两个数：<strong>正确转人工</strong>（该转的转了）和<strong>错误转人工</strong>（能办却推给人）。只看总量，会把“该转不转”伪装成进步。公开实践里常见的健康目标是：正确转人工率上升、错误转人工率下降、重复联系率下降，三者同时看。</p>
+  </div>
+
+  <p>公开分享里有一套可以直接借用的阈值样例（Zepto 与 Databricks 的客服栈分享）：意图识别准确率 ≥ 0.93、政策合规 ≥ 0.98、工具选择准确率 ≥ 0.95、语气/共情 ≥ 4.0（5 分制）、p50 延迟 ≤ 1.2s、单次交互成本 ≤ $0.15，并把这些拆成 4 个支柱、11 道门禁。这不是行业标准，而是一个“把软指标写成硬阈值”的示范：每个阈值都要有对应的评测器和切片，否则只是墙上的数字。</p>
+
+  <p>中文实践里还有一组更贴近业务的五指标（融 PM）：解决率、幻觉率、转人工率、首轮满意度、业务转化率。其中首轮满意度用点赞/点踩比，20:1 算及格、50:1 算优秀；幻觉率要求无限接近零；转人工率长期应稳定下降，如果超过 50%，说明 AI 只是“智能转接按钮”。这些数字来自公开文章，适合做起步参照，不适合直接当验收线。</p>
+</section>
+
+<section id="s3">
+  <p class="section-label">03 · 方法库</p>
+  <h2>八种方法，按“成本从低到高”排</h2>
+  <p>生产级评测不是选一种方法，而是搭一条级联：便宜的、确定性的先跑，只有不确定的样本才升级到更贵的判断。下面每张卡都标了成本档和它真正擅长的事。</p>
+
+  <div class="cards">
+    <div class="card">
+      <div class="card-head"><h3>A. 代码断言与规则</h3><span class="tag cool">成本 极低</span></div>
+      <dl>
+        <dt>测什么</dt><dd>JSON schema、必填字段、格式、权限、状态机、金额、引用来源、PII 正则、工具调用次数上限。</dd>
+        <dt>什么时候用</dt><dd><strong>所有 Agent 的第一层。</strong>能写成代码的绝不交给模型；它免费、确定、不会漂移。</dd>
+        <dt>坑</dt><dd>按措辞写死规则，会把“正确但表达不同”判错；规则本身也要版本化。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>B. 轨迹 / 工具调用断言</h3><span class="tag cool">成本 低</span></div>
+      <dl>
+        <dt>测什么</dt><dd>工具选没选对、参数对不对、顺序对不对、有没有多调/漏调、写操作前有没有确认。</dd>
+        <dt>什么时候用</dt><dd>交易型、工单型 Agent 的必测项。LangChain 的 <code>agentevals</code> 提供 strict / unordered / subset / superset 四种匹配模式，参数还可以按工具自定义比较器。</dd>
+        <dt>坑</dt><dd>不要永远用 strict：合理的变体很多。检索类用 unordered，写操作类用 strict 或 subset，并单独校验参数。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>C. 小模型 / 蒸馏分类器</h3><span class="tag">成本 低</span></div>
+      <dl>
+        <dt>测什么</dt><dd>意图、情绪、是否越权、是否拒答、政策类别。输出是标签，不是小作文。</dd>
+        <dt>什么时候用</dt><dd>高频、低延迟、需要全量跑的信号。公开的蒸馏 judge 与前沿 judge 一致率约 88–92%，成本可降一个数量级（厂商口径）。</dd>
+        <dt>坑</dt><dd>需要标注数据；分布漂移后要重训；不要拿它判它没见过的长尾。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>D. LLM-as-judge</h3><span class="tag hot">成本 中</span></div>
+      <dl>
+        <dt>测什么</dt><dd>语义正确、政策解释、共情、澄清质量、多轮目标是否达成——所有无法代码化的软指标。</dd>
+        <dt>什么时候用</dt><dd>第二层和第三层。先用小样本校准，再放大；关键 rubric 可以 100% 采样。</dd>
+        <dt>坑</dt><dd>位置偏差、长度偏差、自我偏好、rubric 含糊、成本失控。详见下一节。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>E. 用户模拟器 / 多轮仿真</h3><span class="tag hot">成本 中–高</span></div>
+      <dl>
+        <dt>测什么</dt><dd>多轮目标、追问、改主意、不配合、情绪升级、权限受限下的协作。</dd>
+        <dt>什么时候用</dt><dd>上线前压测、版本对比、长尾场景。τ-bench、Snowglobe、DeepEval 的 Conversation Simulator 都是这个路子。</dd>
+        <dt>坑</dt><dd>模拟用户太配合会系统性高估；对话会变得比真人长；仿真失真需要单独监控。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>F. 人工标注 / 专家校准</h3><span class="tag hot">成本 高</span></div>
+      <dl>
+        <dt>测什么</dt><dd>金标准、judge 校准、争议仲裁、高风险切片的最终裁决。</dd>
+        <dt>什么时候用</dt><dd>建 30–300 条 gold set；每周/每月抽检；judge 换模型或换 rubric 时重新校准。</dd>
+        <dt>坑</dt><dd>先算标注者一致性：专家自己都吵不出结果，说明 rubric 坏了，不是 judge 坏了。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>G. 红队 / 对抗评测</h3><span class="tag hot">成本 中–高</span></div>
+      <dl>
+        <dt>测什么</dt><dd>prompt injection、越权、诱导承诺、社会工程、过度拒答。</dd>
+        <dt>什么时候用</dt><dd>发布前必跑；高风险业务持续跑。通用 jailbreak 不够，要用 policy-aware 的多轮施压。</dd>
+        <dt>坑</dt><dd>只测“有没有被攻破”，不测“有没有误伤正常用户”。过度拒答是沉默的成本。</dd>
+      </dl>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><h3>H. Playwright / UI 端到端</h3><span class="tag">成本 中</span></div>
+      <dl>
+        <dt>测什么</dt><dd>真实页面上的聊天窗、富卡片、按钮、转人工、支付/退款页，以及后端副作用。</dd>
+        <dt>什么时候用</dt><dd>少量高价值路径，每次发布跑 smoke；浏览器/GUI Agent 用它做任务环境。</dd>
+        <dt>坑</dt><dd>不稳定、慢、只测 UI 不测语义；必须和 judge/结果态断言组合。详见第 07 节。</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="label">选择顺序</span>
+    <p>先问“这件事能不能用代码判”。能，就写断言；不能，再问“能不能用一个小分类器判”；还不能，才上 LLM judge；judge 也拿不准的，送人工。这个顺序本身就是成本控制策略。</p>
+  </div>
+</section>
+
+<section id="s4">
+  <p class="section-label">04 · 模型裁判</p>
+  <h2>LLM-as-judge：能用的前提是被校准过</h2>
+  <p>LLM judge 是过去两年客服评测里最被滥用的一环。它能很便宜地给出一个“看起来合理”的分数，但未经校准的分数和随机数区别不大。生产级用法有五个硬要求。</p>
+
+  <h3>1. 一个 judge 只测一个维度</h3>
+  <p>不要让一个 prompt 同时打“准确、相关、安全、简洁”四个分。模型会在维度之间做隐式交换：回答更长、更客气，准确分就被抬高。拆成四个独立 judge，每个只回答一个二分类问题，例如“这条回复是否包含对话或检索上下文之外的事实？”、“这次退款操作前是否获得了用户明确确认？”。</p>
+
+  <h3>2. 能二分类就不要 1–10 分</h3>
+  <p>人类对“是否违反政策”的一致性，远高于“打几分”。二分类还能直接算 TPR/TNR，方便和人工标签对齐。必须分档时，用有明确边界的标签，例如 <code>fully_supported / partially_supported / unsupported / not_applicable</code>，而不是裸露的 1–5。</p>
+
+  <h3>3. rubric 要写边界，不是写形容词</h3>
+  <p>“回答要有帮助”不是 rubric。“当用户询问退款政策而知识库中没有该商品类目时，正确行为是说明无法确认并转人工，而不是引用相邻类目的政策”——这才是 rubric。要求 judge 先写理由再给结论（理由在前、结论在后），输出固定 JSON；给 2–4 个包含边界情况的示例。若 judge 的理由比 rubric 还长，通常说明 rubric 没写清。</p>
+
+  <h3>4. 防偏差靠机制，不靠提示词</h3>
+  <p>位置偏差、长度偏差、自我偏好是稳定存在的。有效的做法是：</p>
+  <ul>
+    <li><strong>换位</strong>：A/B 比两次，正反各一次，只有两次一致才算赢；高风险场景跑 3 次取多数。</li>
+    <li><strong>跨家族</strong>：judge 和被测模型不要同厂同系，降低自我偏好。</li>
+    <li><strong>面板</strong>：多个 judge 投票，但注意面板也可能放大长度偏差，需要校准。</li>
+    <li><strong>长度控制</strong>：把长度当协变量，统计时回归掉；或在 rubric 中明确“长度不影响正确性”。</li>
+    <li><strong>参考锚定</strong>：有标准答案时用 reference-based 评分，而不是让 judge 自由发挥。</li>
+  </ul>
+
+  <h3>5. 校准与漂移</h3>
+  <p>标准流程：建 30–300 条覆盖真实分布的 gold set（明确成功、明确失败、边界各占一部分）→ 2–3 名业务专家独立标注 → 先算人际一致性 → 再算 judge 与人的一致性。用 Cohen's κ（>0.6 可接受，>0.8 强）或 Krippendorff's α，不要用原始准确率：一个永远说“通过”的 judge，在大多数样本都通过的数据上也能有 90% 准确率。</p>
+  <p>还要分正负类看：整体一致 92%，但“不可接受”的样本只识别出 13%，这个 judge 不能用来做门禁。每次换 judge 模型、换 rubric、换业务政策，都要重新校准；线上把 judge 与人工的 κ 当成一个独立监控指标，掉下去就告警。</p>
+
+  <div class="callout warn">
+    <span class="label">一致性不等于有效性</span>
+    <p>公开审计里出现过 κ 0.80、但长度偏差 +0.82 的 judge：它和人类很一致，只是因为它和人类一样偏爱长答案。校准要同时看一致性、偏差探针和分切片表现。</p>
+  </div>
+
+  <p>RAG 类客服还要额外拆检索与生成：<strong>faithfulness</strong> 看回答是否被检索内容支持，<strong>context precision / recall</strong> 看检索本身有没有找对。只测 faithfulness 会出现“忠实地总结了错误段落”的高分假象；公开案例里就有 faithfulness 0.91、但 context precision 很差的情况。RAGAS 是常用起点，但它在表格、长文档、金融类内容上误判率不低，生产上要配人工抽检和规则校验。</p>
+</section>
+
+<section id="s5">
+  <p class="section-label">05 · 数据</p>
+  <h2>评测集：从真实失败里来，按切片活下去</h2>
+  <p>评测集的质量决定评测的上限。一个由产品经理拍脑袋写的 50 条 FAQ，永远测不出真实事故。下面是公开实践里反复出现的共识。</p>
+
+  <h3>来源优先级</h3>
+  <ol>
+    <li><strong>真实生产失败</strong>：客诉、转人工、差评、工单回访、人工复核发现的问题。这是金矿。</li>
+    <li><strong>真实生产日志</strong>：随机抽样，保留长尾、方言、错别字、多问题混合、超长输入。</li>
+    <li><strong>PRD / 验收标准</strong>：业务方本来就要验的场景，适合做正向基线。</li>
+    <li><strong>合成数据</strong>：只用来补长尾和对抗，建议占比不超过 20%，且必须人工审校。</li>
+  </ol>
+  <p>顺序不能反。合成数据便宜，但它是从模型/文档里反推出来的，容易自带“模型已经会了”的偏差；用它做主力，评测会系统性偏乐观。</p>
+
+  <h3>配比与规模</h3>
+  <p>中文实践里有两套可直接参考的配比：华为云 AgentArts 建议正向 50% / 边界 20% / 对抗 20% / 安全合规 10%，从 30–50 条起步；腾讯云的一篇实践建议 Basic 40% / Edge 30% / Real 30%。两者共同点是：<strong>边界、对抗、真实长尾合计要占到一半左右</strong>，不能全是“正常问题”。</p>
+  <p>规模上，Anthropic 建议从 20–50 条真实失败任务起步；51Testing 的实战建议先 50 条再扩到 200–500 条；腾讯云的一线复盘用 200 条双人标注的 Golden Set，加边缘/对抗各 30 条，并设置自动回滚阈值（完成率低于 85%，或连续两次回归跌超 5 个点）。规模不是越大越好，能覆盖切片、能稳定跑、能被人读完，比一万条跑不动的数据更有价值。</p>
+
+  <h3>一条 case 应该存什么</h3>
+  <p>只存“用户问题 + 标准答案”是不够的。重放时如果检索结果、Prompt 版本、工具返回变了，分数变化就归因不了。建议至少存这些字段：</p>
+  <pre><code>{
+  "id": "refund-0042",
+  "slice": ["退款", "VIP", "中文", "含订单号"],
+  "input": "我上周买的坚果礼盒还没发货，能退吗？",
+  "context": {
+    "order_id": "MASKED-xxx",
+    "policy_version": "2026-09-01",
+    "retrieved_docs": ["refund-policy#3", "shipping-delay#1"]
+  },
+  "expected": {
+    "outcome": { "refund_created": true, "amount": 129.0 },
+    "must_call": ["get_order", "check_refund_policy", "create_refund"],
+    "must_confirm": true
+  },
+  "graders": ["outcome_db", "trajectory_subset", "policy_judge"],
+  "source": "prod_badcase_2026-09-18",
+  "as_of": "2026-09-01"
+}</code></pre>
+  <p><code>as_of</code> / <code>policy_version</code> 很关键：客服政策会变，半年前的“正确回答”今天可能是错的。冻结政策版本，才能让回归结果可解释。</p>
+
+  <h3>切片比总分重要</h3>
+  <p>整体 92 分，可能是“普通咨询 98 分、退款 61 分、老年用户 44 分”平均出来的。评测报告必须按意图、渠道、语言、用户等级、金额档、是否含附件、是否多问题等维度切片；每个切片单独设阈值。公开实践里反复强调“均分掩盖高代价失败”，高金额、高权限、可回滚性差的切片，权重和阈值都应该更严。</p>
+
+  <h3>防泄漏与防过拟合</h3>
+  <ul>
+    <li>评测集不要进 Prompt、few-shot、微调数据；</li>
+    <li>保留一份不参与日常调优的 held-out 集，只在大版本时打开；</li>
+    <li>定期轮换一部分题，防止团队把公开集“背下来”；</li>
+    <li>记录每条 case 的来源和最后验证时间，过期题要复核。</li>
+  </ul>
+</section>
+
+<section id="s6">
+  <p class="section-label">06 · 多轮仿真</p>
+  <h2>用户模拟器：把“真实用户的不配合”提前演出来</h2>
+  <p>单轮评测最大的盲区是：真实用户不会一次把需求说清，也不会一直配合。他们会改主意、会不耐烦、会隐藏关键信息、会在你说“已处理”之后追问“那什么时候到账”。用户模拟器就是为这个盲区设计的。</p>
+
+  <h3>τ-bench 的范式</h3>
+  <p>Sierra 的 τ-bench 把客服评测拆成四件事：<strong>业务政策</strong>（agent 必须遵守的规则）、<strong>工具集</strong>、<strong>任务</strong>、<strong>用户模拟器</strong>。模拟用户带着隐藏目标和信息来对话，agent 通过工具改变数据库状态；评分不看对话写得好不好，而看最终状态和必须完成的动作是否满足。核心指标是 <code>pass^k</code>：k 次独立尝试全部成功，而不是至少一次成功。</p>
+  <p>这个指标对客服特别重要。单次成功率 90% 听起来不错，但连续 5 次全对的概率只有 0.9⁵ ≈ 59%；如果单次是 80%，五次全对只有 33%。对客场景要的是“稳定地对”，不是“偶尔惊艳”。公开数据里 GPT-4o 在 retail 域 pass^1 约 61%，pass^8 降到约 25%，差距就是稳定性。</p>
+
+  <h3>τ²-bench 与双控环境</h3>
+  <p>τ²-bench 把“用户也能操作”纳入环境：客服让用户重启设备、切换设置，用户真的去做了，状态随之改变。这类任务更接近电信、硬件排障、上门服务预约。公开结果显示，顶级助手在新任务上只有 34–49% 的成功率，而且需要“指导用户操作”时还会再掉约 20 个百分点。如果你的客服要指导用户操作 App/设备，单靠文本评测会高估。</p>
+
+  <h3>生产级仿真：Nubank 的 Snowglobe</h3>
+  <p>Nubank 公开的案例是目前规模最大的生产验证之一：用 Snowglobe 生成合成客户，配合 mock 工具输出，在不碰生产后端的情况下跑完整 agent 工作流；在 Card Delivery / Card Management 两个高频场景上筛了 16,000+ 段模拟对话。结果是自助解决率提升 8.82 个百分点、p95 延迟下降 25%、开发到上线的迭代速度提升 4.8 倍，模拟分数与线上版本分数在 4 个版本上高度相关。</p>
+  <p>但同一篇论文的复盘也给了重要警告：模拟对话的中位用户词数是 111，真实只有 19；70% 的模拟记录能被业务专家识别为“假”；版本相关性只有 n=4。仿真能加速决策，但不能替代真实流量验证。</p>
+
+  <h3>仿真设计清单</h3>
+  <div class="checklist">
+    <li>每个 persona 有明确目标、隐藏信息、情绪基线和“不配合”策略（砍价、拒绝提供订单号、反复改主意）。</li>
+    <li>模拟用户能执行环境动作（τ² 式双控），而不只是说话。</li>
+    <li>模拟器本身也要评测：真实性、前后一致性、多样性、能否持续施压。</li>
+    <li>保留“沉默用户”“答非所问”“一次发多条消息”“中途离开”等真实行为。</li>
+    <li>仿真结果和真实抽样做对照，至少每季度校准一次失真程度。</li>
+    <li>语音场景还要叠加 ASR 错误、口音、噪声、打断、网络抖动；公开分析里语音 agent 的准确率可能只有文本的 30–45%。</li>
+  </div>
+</section>
+
+<section id="s7">
+  <p class="section-label">07 · Playwright</p>
+  <h2>Playwright 能测什么，不能测什么</h2>
+  <p>你之前了解到用 Playwright 做评测，这个方向是对的，但要把边界划清楚：<strong>Playwright 是执行层和观测层，不是语义裁判。</strong>它能非常可靠地回答“用户点了这个按钮之后，页面和后端发生了什么”；它不能回答“这句话说得对不对、合不合规、有没有共情”。</p>
+
+  <h3>它真正擅长的四件事</h3>
+  <ol>
+    <li><strong>真实 UI 路径</strong>：聊天窗、富卡片、按钮、表单、转人工弹窗、支付/退款页。很多 agent 在 API 层表现正常，一到真实前端就因流式渲染、消息顺序、组件状态出错。</li>
+    <li><strong>后端副作用</strong>：不要只断言气泡文本。用 Playwright 触发操作，然后查数据库/API/工单系统，确认订单真的改了、退款单真的建了、没有重复建单。这和 τ-bench 的 outcome 断言是同一个思想。</li>
+    <li><strong>浏览器/GUI Agent 的任务环境</strong>：WebArena 的 812 个任务、BrowserGym 的统一环境，底层都是 Playwright。它们用 accessibility tree 或 HTML 作为观测，用 click/type/navigate 作为动作，评分看最终页面/数据库状态。你要评“后台操作型 agent”，这是现成的骨架。</li>
+    <li><strong>开发期的探索与回归</strong>：Playwright MCP 让编码 agent 通过 accessibility tree 驱动真实浏览器，适合复现 bug、生成用例、验证 UI 改动；Argos 这类视觉回归可以补上“像素级变化”的证据。</li>
+  </ol>
+
+  <h3>它不擅长、也不该独自承担的事</h3>
+  <ul>
+    <li><strong>语义质量</strong>：幻觉、政策解释、语气、共情、澄清是否到位——这些需要 judge 或人工。</li>
+    <li><strong>多轮目标达成</strong>：Playwright 能看到消息发了、按钮点了，但“用户的问题是否真的解决”要靠会话级断言和结果态。</li>
+    <li><strong>稳定性</strong>：实践反馈里，agent 驱动的浏览器测试 10 次可能有 3–4 次跑偏；时序、选择器、流式渲染、网络抖动都会造成假失败。WAREX 的研究还发现，JS 加载延迟超过约 5 秒时，Playwright 系 agent 的退化明显早于 Selenium 系（后者可容忍到约 30 秒）。</li>
+    <li><strong>成本</strong>：每次跑真实浏览器，比纯文本 judge 慢一个数量级，不适合全量回归。</li>
+  </ul>
+
+  <div class="callout">
+    <span class="label">推荐的生产组合</span>
+    <p><strong>硬断言 + 软判断 + 少量 E2E。</strong>用 Playwright 跑 5–10 条最高价值的 smoke（下单、退款、转人工、关键卡片），每次发布必跑；用 API/DB 断言覆盖 50–100 条业务路径，每日跑；用 judge 覆盖语义维度，按采样跑。三层各管一段，不要让 Playwright 去判“回答得好不好”。</p>
+  </div>
+
+  <h3>让 Playwright 评测不 flaky 的工程要点</h3>
+  <ul>
+    <li>固定 <code>data-testid</code>，不要依赖文案和 CSS 层级；文案会变，agent 的输出更会变。</li>
+    <li>隔离环境：独立租户、固定 seed、mock 支付/物流/风控；写操作要么沙箱，要么可回滚。</li>
+    <li>把“基础设施失败”和“agent 行为失败”分开：网络/超时/浏览器崩溃可以重试；agent 的随机性不要用重试掩盖，应该记录 pass^k。</li>
+    <li>每次失败保留 trace、video、截图、网络 HAR、后端状态快照；没有这些，复现成本会吃掉收益。</li>
+    <li>分层次：PR 跑 smoke（5–10 条，< 5 分钟）；每日跑 full（50–100 条）；每周跑长尾/跨浏览器。</li>
+    <li>对客服 UI 做视觉回归有意义；对 LLM 文本做像素比对没有意义，文本要用语义断言。</li>
+  </ul>
+
+  <p>还有一个容易忽略的观测面：页面暴露给 agent 的工具。Playwright 新版本支持读取页面注册的 WebMCP 工具列表，可以断言“agent 能看到的工具面板”有没有变化。对客服这种页面内嵌 agent 的场景，工具清单变化往往比 DOM 变化更致命。</p>
+</section>
+
+<section id="s8">
+  <p class="section-label">08 · 选型</p>
+  <h2>不同业务场景，评测组合不一样</h2>
+  <p>没有一套组合适合所有客服 Agent。下面按七类常见形态给出起点建议；规模是“每个版本的用例数”，不是总资产量。</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>场景</th><th>首要风险</th><th>必测项</th><th>推荐组合</th><th>规模 / 频率</th><th>成本档</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>知识问答 / RAG 客服</strong><br><span style="font-size:.75rem">FAQ、政策解释、产品说明</span></td>
+          <td>幻觉、政策过期、答非所问</td>
+          <td>忠实度、检索召回/精度、拒答与转人工</td>
+          <td>代码断言（引用必须来自 context）+ RAGAS 指标 + 单维度 judge + 人工抽检</td>
+          <td>200–500；知识库更新后全量</td>
+          <td>低–中</td>
+        </tr>
+        <tr>
+          <td><strong>交易执行型</strong><br><span style="font-size:.75rem">查单、改地址、退款、取消</span></td>
+          <td>错单、越权、未确认、金额错</td>
+          <td>工具选择/参数/顺序、最终状态、确认义务、幂等</td>
+          <td>轨迹匹配 + mock 工具 + outcome 断言 + 用户模拟器 + Playwright smoke</td>
+          <td>100–300 任务 × 3–5 trials；每次发布</td>
+          <td>中</td>
+        </tr>
+        <tr>
+          <td><strong>多轮挽留 / 销售</strong><br><span style="font-size:.75rem">议价、优惠、情绪安抚</span></td>
+          <td>过度承诺、政策违反、体验差</td>
+          <td>策略遵循、承诺边界、共情、目标达成</td>
+          <td>persona 仿真（情绪/不配合）+ judge + 人工校准 + policy-aware 红队</td>
+          <td>300–1000 仿真；每周</td>
+          <td>中–高</td>
+        </tr>
+        <tr>
+          <td><strong>语音客服</strong><br><span style="font-size:.75rem">电话、IVR、外呼</span></td>
+          <td>ASR 错、打断、延迟、口音/噪声</td>
+          <td>端到端任务、轮次延迟、打断恢复、转人工</td>
+          <td>语音仿真（TTS/ASR/噪声/口音）+ 双工模拟 + judge + 小规模真人</td>
+          <td>数百–数千；发布前</td>
+          <td>高</td>
+        </tr>
+        <tr>
+          <td><strong>坐席 Copilot / 工单助手</strong><br><span style="font-size:.75rem">人机协作，不直接对客</span></td>
+          <td>建议错误、引用错误、合规</td>
+          <td>建议采纳率、引用准确、PII、延迟</td>
+          <td>离线黄金集 + judge + 人工盲评 + 线上采纳率</td>
+          <td>100–300；每周</td>
+          <td>低–中</td>
+        </tr>
+        <tr>
+          <td><strong>浏览器 / GUI Agent</strong><br><span style="font-size:.75rem">后台操作、跨系统流程</span></td>
+          <td>误点、越权、不可恢复</td>
+          <td>任务成功率、步骤数、异常恢复、最终状态</td>
+          <td>Playwright / BrowserGym + 沙箱 + outcome 断言 + 视觉回归</td>
+          <td>20–100；nightly</td>
+          <td>中–高</td>
+        </tr>
+        <tr>
+          <td><strong>高合规业务</strong><br><span style="font-size:.75rem">金融、医疗、保险</span></td>
+          <td>监管、PII、承诺、审计记录</td>
+          <td>政策遵循、拒答边界、审计轨迹、PII</td>
+          <td>规则引擎 + 关键路径 100% judge + 双人人工 + 红队 + 定期渗透</td>
+          <td>关键切片 100%；全量抽样</td>
+          <td>高</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="table-note">成本档是相对量级：低 ≈ 以代码/规则为主；中 ≈ 引入 judge 与仿真；高 ≈ 大量人工、语音或全量关键路径判断。</p>
+
+  <h3>按 Agent 形态再补一刀</h3>
+  <ul>
+    <li><strong>单轮分类/路由型</strong>：重点在意图准确率、拒识、错路由成本；用小分类器 + 混淆矩阵，不需要复杂仿真。</li>
+    <li><strong>工具调用型</strong>：重点在轨迹和结果态；必须 mock 工具，必须测“该调不调、不该调乱调、参数错、顺序错”。</li>
+    <li><strong>多轮任务型</strong>：重点在会话级目标与用户模拟；必须测改主意、信息缺失、情绪升级。</li>
+    <li><strong>语音双工型</strong>：重点在延迟、打断、ASR 鲁棒性；文本分数不能直接迁移。</li>
+    <li><strong>GUI/浏览器型</strong>：重点在最终状态和可恢复性；Playwright 是环境，不是裁判。</li>
+    <li><strong>Human-in-the-loop Copilot</strong>：重点在建议质量与采纳率；离线 judge 要和线上采纳率做相关性验证。</li>
+  </ul>
+</section>
+
+<section id="s9">
+  <p class="section-label">09 · 成本</p>
+  <h2>成本级联与统计功效：别把预算烧在已经确定的样本上</h2>
+  <p>生产评测的成本通常不是“模型贵”，而是“用最贵的方法跑了全量”。级联的思路是：绝大多数样本在便宜层就能确定，只有不确定的才升级。</p>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 760 270" role="img" aria-label="评测打分器的四级成本级联：规则、分类器、LLM judge、人工，只有不确定样本逐级升级">
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <rect x="18" y="42" width="164" height="120" rx="9" class="svg-box"/>
+        <text x="34" y="68" class="svg-title">规则 / 断言</text>
+        <text x="34" y="90" class="svg-small">覆盖 100%</text>
+        <text x="34" y="108" class="svg-label" opacity=".75">格式、权限、状态机</text>
+        <text x="34" y="128" class="svg-small">成本 ≈ 0 · 微秒级</text>
+
+        <rect x="204" y="42" width="164" height="120" rx="9" class="svg-box"/>
+        <text x="220" y="68" class="svg-title">小模型分类器</text>
+        <text x="220" y="90" class="svg-small">覆盖 20–30%</text>
+        <text x="220" y="108" class="svg-label" opacity=".75">意图、情绪、越权</text>
+        <text x="220" y="128" class="svg-small">成本 低 · 十毫秒级</text>
+
+        <rect x="390" y="42" width="164" height="120" rx="9" class="svg-box-accent"/>
+        <text x="406" y="68" class="svg-title">LLM Judge</text>
+        <text x="406" y="90" class="svg-small">覆盖 5–10%</text>
+        <text x="406" y="108" class="svg-label" opacity=".75">语义、合规、共情</text>
+        <text x="406" y="128" class="svg-small">成本 中 · 秒级</text>
+
+        <rect x="576" y="42" width="164" height="120" rx="9" class="svg-box"/>
+        <text x="592" y="68" class="svg-title">人工</text>
+        <text x="592" y="90" class="svg-small">覆盖 1–2%</text>
+        <text x="592" y="108" class="svg-label" opacity=".75">校准、仲裁、高风险</text>
+        <text x="592" y="128" class="svg-small">成本 高 · 分钟级</text>
+
+        <line x1="182" y1="102" x2="200" y2="102" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <line x1="368" y1="102" x2="386" y2="102" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <line x1="554" y1="102" x2="572" y2="102" stroke="var(--accent)" stroke-width="1.6" marker-end="url(#ar2)"/>
+        <text x="191" y="96" text-anchor="middle" class="svg-small svg-accent-text">不确定</text>
+        <text x="377" y="96" text-anchor="middle" class="svg-small svg-accent-text">不确定</text>
+        <text x="563" y="96" text-anchor="middle" class="svg-small svg-accent-text">分歧</text>
+
+        <rect x="18" y="196" width="722" height="10" rx="5" fill="var(--surface-2)"/>
+        <rect x="18" y="196" width="520" height="10" rx="5" class="svg-accent" opacity=".28"/>
+        <rect x="540" y="196" width="120" height="10" rx="5" class="svg-accent" opacity=".62"/>
+        <rect x="662" y="196" width="78" height="10" rx="5" class="svg-accent"/>
+        <text x="18" y="232" class="svg-small">样本量：多</text>
+        <text x="740" y="232" text-anchor="end" class="svg-small">单位判定成本：高</text>
+        <text x="380" y="252" text-anchor="middle" class="svg-small">关键路径（退款、越权、PII）不做抽样，始终 100% 走硬规则或人工复核</text>
+      </svg>
+    </div>
+    <figcaption><strong>级联的关键不是“便宜”，而是“只在不确定处花钱”。</strong>确定性强的样本在规则层就出结论；把 judge 的预算留给真正模糊的 5–10%。</figcaption>
+  </figure>
+
+  <h3>成本量级</h3>
+  <p>公开的厂商测算给了一个量级参考：按每天 100 万次判定，纯 LLM judge 约 $5,000/天，纯分类器约 $100/天，三级级联约 $260/天；三者覆盖的 rubric 相同，级联的 p50 延迟也更低，因为大多数样本在第一层就结束。另一组蒸馏 judge 的数据是与前沿 judge 一致率 88–92%、成本降约 97%。这些是厂商口径，用来做预算量级判断可以，不要当报价。</p>
+  <p>真正容易被忽略的成本项：<strong>judge 的输入 token</strong>（长对话 + 长检索上下文会放大）、<strong>重复调用</strong>（换位、面板、重试）、<strong>人工标注</strong>、<strong>仿真 token</strong>、<strong>缓存失效后的重跑</strong>。缓存要按 judge 版本 + 语料版本 + rubric 版本做 key，否则会悄悄返回过期结论。</p>
+
+  <h3>采样率怎么定</h3>
+  <ul>
+    <li><strong>100%</strong>：合规、PII、越权写操作、退款/赔付、监管相关。单次失败就不可接受，不能抽样。</li>
+    <li><strong>10–20%</strong>：趋势监控、体验类指标、常规回归。<span class="kbd">κ</span> 保持在 0.6 以上再用于门禁。</li>
+    <li><strong>1–5%</strong>：用前沿 judge 做漂移检测，和线上蒸馏 judge 对照。</li>
+    <li><strong>按切片加权</strong>：高金额、高权限、老年用户、非中文等小切片，样本少但权重要高，必要时全量。</li>
+  </ul>
+
+  <h3>样本量与统计</h3>
+  <p>“跑 50 条，涨了 3 分”通常说明不了任何事。粗略的样本量参照：要检测 50% 附近 ±5% 的比例，需要约 385 个样本；±3% 需要约 1,068 个。零失败也不能证明绝对安全：n 次试验零失败时，95% 置信上界约为 3/n（Rule of Three）。只有 30 条全过，真实失败率上界仍有约 10%。</p>
+  <p>数据点少于几百时，不要依赖中心极限定理的正态置信区间；用 bootstrap、Wilson 区间或贝叶斯方法。比较两个版本时，同一套题要用配对检验（McNemar / Wilcoxon），并报告效应量和置信区间；比较多条切片时做多重比较校正（如 Benjamini–Hochberg）。统计显著也不等于业务重要，最终还要看切片和绝对值。</p>
+
+  <div class="callout">
+    <span class="label">pass^k 的算术</span>
+    <p>客服要的是稳定。单次 95% 的任务，连续 10 次全对只有 0.95¹⁰ ≈ 60%；单次 85%，连续 5 次全对只有 44%。所以回归门禁应该看 <code>pass^k</code>，而不是只看一次通过率。</p>
+  </div>
+</section>
+
+<section id="s10">
+  <p class="section-label">10 · 上线</p>
+  <h2>从离线门禁到线上影子：每一层只补上一层看不到的东西</h2>
+  <p>内部 eval 的终点不是“跑出一个分数”，而是“有资格进入下一层”。生产级路径通常是五段，每段解决不同的盲区。</p>
+
+  <figure>
+    <div class="figbox">
+      <svg viewBox="0 0 760 250" role="img" aria-label="上线前评测路径：离线黄金集、生产回放、影子、金丝雀、A/B，坏案例回流到黄金集">
+        <defs>
+          <marker id="ar3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <line x1="52" y1="94" x2="708" y2="94" stroke="currentColor" stroke-width="1.2" opacity=".35"/>
+        <circle cx="76" cy="94" r="7" class="svg-accent"/>
+        <circle cx="226" cy="94" r="7" fill="var(--surface)" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="376" cy="94" r="7" fill="var(--surface)" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="526" cy="94" r="7" fill="var(--surface)" stroke="currentColor" stroke-width="1.4"/>
+        <circle cx="676" cy="94" r="7" fill="var(--surface)" stroke="currentColor" stroke-width="1.4"/>
+
+        <text x="76" y="66" text-anchor="middle" class="svg-title">离线黄金集</text>
+        <text x="76" y="126" text-anchor="middle" class="svg-small">门禁 · 回归</text>
+        <text x="76" y="144" text-anchor="middle" class="svg-small">每次提交</text>
+
+        <text x="226" y="66" text-anchor="middle" class="svg-title">生产回放</text>
+        <text x="226" y="126" text-anchor="middle" class="svg-small">真实上下文</text>
+        <text x="226" y="144" text-anchor="middle" class="svg-small">每日</text>
+
+        <text x="376" y="66" text-anchor="middle" class="svg-title">影子</text>
+        <text x="376" y="126" text-anchor="middle" class="svg-small">真实流量 · 0 曝光</text>
+        <text x="376" y="144" text-anchor="middle" class="svg-small">写操作需打桩</text>
+
+        <text x="526" y="66" text-anchor="middle" class="svg-title">金丝雀</text>
+        <text x="526" y="126" text-anchor="middle" class="svg-small">1–5% 真实用户</text>
+        <text x="526" y="144" text-anchor="middle" class="svg-small">预设回滚条件</text>
+
+        <text x="676" y="66" text-anchor="middle" class="svg-title">A/B</text>
+        <text x="676" y="126" text-anchor="middle" class="svg-small">因果与业务结果</text>
+        <text x="676" y="144" text-anchor="middle" class="svg-small">预注册分析</text>
+
+        <path d="M676 166 C676 214, 76 214, 76 166" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 4" opacity=".55" marker-end="url(#ar3)"/>
+        <text x="376" y="232" text-anchor="middle" class="svg-small">坏 case 回流：客诉、转人工、差评、人工复核 → 脱敏 → 标注入黄金集</text>
+      </svg>
+    </div>
+    <figcaption><strong>每一层补上一层看不到的东西。</strong>离线补“可重复”，回放补“真实输入分布”，影子补“真实推理”，金丝雀补“真实结果”，A/B 补“因果”。</figcaption>
+  </figure>
+
+  <h3>离线门禁</h3>
+  <p>门禁不要只看总分。建议至少四条：整体完成率、关键切片的完成率、关键安全 rubric 的 100% 通过、以及<code>pass^k</code> 的稳定性。任何一条不达标就拦截。阈值要写进 CI，不要靠人看报告。</p>
+  <p>门禁的阈值来自历史基线，不是拍脑袋。先跑两周建立方差，再定“低于基线多少、连续几次”才回滚。公开实践里有“完成率低于 85% 自动回滚，连续两次回归跌超 5 点自动回滚”的做法，可以作为起点。</p>
+
+  <h3>生产回放</h3>
+  <p>回放不是把用户问题再问一遍。要保存当时的检索结果、Prompt 版本、工具返回、用户上下文，否则你无法区分“模型变了”和“世界变了”。回放的价值在于用真实分布压测，尤其是长输入、多问题混合、错别字、方言、附件、重复询问这些人工造不出来的形态。</p>
+
+  <h3>影子与金丝雀</h3>
+  <ul>
+    <li><strong>影子</strong>：候选版本看 100% 或采样的真实流量，但 0% 用户看到它的输出。它能测真实推理和真实上下文，但没有结果信号；写操作必须打桩/沙箱，否则会变成事故。多轮对话在第一个分叉之后会发散，长会话的影子结果只能当方向性参考。</li>
+    <li><strong>金丝雀</strong>：1–5% 真实用户看到候选输出，能拿到真实结果，但有真实风险。回滚条件必须提前写死：护栏触发、rubric 滚动均值下降、p99 延迟、候选独有错误簇。不要用随机 5% 去覆盖幂律分布，要按标签分层（内部 → beta → 企业）。</li>
+    <li><strong>A/B</strong>：用于因果判断和业务结果（SSR、CSAT、tNPS、成本）。预注册指标、算 MDE、报告置信区间；不要在每次看数后重复做固定样本检验，会抬高假阳性。</li>
+  </ul>
+
+  <h3>双轨闭环</h3>
+  <p>小红书的 QCon 分享把这件事讲得比较完整：离线侧固定数据集、任务回放、版本对比；在线侧生产流量采样、持续评估、问题复核；问题回流、数据集版本管理与持续回归衔接。多粒度上覆盖结果、节点、轨迹和多轮任务；评估器上规则、代码、LLM judge、人工校准分工，并通过共享中间结果和串并行编排适配不同业务标准。</p>
+  <p>最关键的工程习惯是<strong>指标镜像</strong>：每一个用来做发布决策的离线指标，都要记录它对应的线上信号、预期差异、切片覆盖和负责人。离线涨、线上不涨，先查镜像是否成立，而不是直接归因于“线上噪声”。</p>
+
+  <h3>评测饱和</h3>
+  <p>当一套回归集长期 100% 通过，它就不再提供信号，只剩下“没坏”的安慰。Anthropic 把这叫 eval saturation，并举了 SWE-bench Verified 从约 30% 涨到 80% 以上的例子。客服团队应该定期做三件事：加入新的真实失败、提高边界难度、把已经稳定的题降频但不删除。</p>
+</section>
+
+<section id="s11">
+  <p class="section-label">11 · 反模式</p>
+  <h2>十二个最常见的坑</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>坑</th><th>表现</th><th>修法</th></tr></thead>
+      <tbody>
+        <tr><td><strong>只看最后一句话</strong></td><td>回复很漂亮，工具没调/调错，订单没改</td><td>加轨迹断言和结果态断言</td></tr>
+        <tr><td><strong>平均分掩盖切片</strong></td><td>整体 92，退款切片 61</td><td>按意图/金额/渠道切片，单独设阈值</td></tr>
+        <tr><td><strong>judge 没校准</strong></td><td>分数很稳定，但和人工判断不一致</td><td>gold set + κ + TPR/TNR + 定期复核</td></tr>
+        <tr><td><strong>rubric 太模糊</strong></td><td>judge 理由比 rubric 还长，边界 case 摇摆</td><td>写边界样例，二分类，一维一 judge</td></tr>
+        <tr><td><strong>评测集泄漏</strong></td><td>分数高，线上差；一换题就崩</td><td>隔离 held-out，禁止进 Prompt/微调</td></tr>
+        <tr><td><strong>合成数据过量</strong></td><td>仿真里全过，真实用户一用就露馅</td><td>合成 ≤20%，人工审校，定期对真实分布</td></tr>
+        <tr><td><strong>单指标优化</strong></td><td>转人工率降了，但该转不转、客诉升了</td><td>拆正确/错误转人工，加护栏指标</td></tr>
+        <tr><td><strong>忽略过度拒答</strong></td><td>安全分满分，正常用户被反复拒绝</td><td>红队同时测“该拒”和“不该拒”</td></tr>
+        <tr><td><strong>环境不稳定</strong></td><td>同一版本今天 80、明天 65</td><td>隔离环境、固定 seed、记录基础设施失败</td></tr>
+        <tr><td><strong>把 flaky 当退化</strong></td><td>Playwright 超时被记成 agent 失败</td><td>区分 infra failure 与 behavior failure</td></tr>
+        <tr><td><strong>评测饱和</strong></td><td>长期 100%，没人再看</td><td>定期加新失败、提高难度、轮换题</td></tr>
+        <tr><td><strong>离线线上脱节</strong></td><td>离线涨 5 分，线上纹丝不动</td><td>指标镜像、共享 rubric、回放验证</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="s12">
+  <p class="section-label">12 · 落地</p>
+  <h2>六周，从“感觉还行”到有证据链</h2>
+  <p>不需要一开始就建平台。按下面的顺序，每周产出一个可用的东西，六周后基本具备上线前的内部评测能力。</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>周</th><th>产出</th><th>关键动作</th><th>验收</th></tr></thead>
+      <tbody>
+        <tr><td class="num">W1</td><td>失败分类 + 首批 30–50 条 case</td><td>读 100 条真实 trace，做 open coding，聚类成失败桶；从最高频/最高代价的桶里出题</td><td>团队能说出前五大失败模式及占比</td></tr>
+        <tr><td class="num">W2</td><td>确定性断言 + 2–3 个二分类 judge</td><td>先写格式/权限/状态机断言；再写单维度 judge，人工标 50 条算 κ</td><td>judge κ ≥ 0.6；断言能在 CI 跑</td></tr>
+        <tr><td class="num">W3</td><td>轨迹与结果态评测</td><td>mock 工具/后端，断言工具序列、参数、最终状态；接 Playwright smoke 5–10 条</td><td>能复现至少 3 个真实事故</td></tr>
+        <tr><td class="num">W4</td><td>用户模拟器 + 200–500 条切片集</td><td>persona/隐藏目标/不配合策略；按意图、金额、渠道切片</td><td>多轮任务有稳定通过率与 pass^k</td></tr>
+        <tr><td class="num">W5</td><td>CI 门禁 + 回归报告</td><td>整体/切片阈值、关键安全 100%、回滚规则；报告直接给失败 transcript</td><td>一次发布能被自动拦截</td></tr>
+        <tr><td class="num">W6</td><td>回放 + 影子/金丝雀方案</td><td>保存检索/Prompt/工具上下文；定义影子打桩范围、金丝雀分层与回滚条件；建指标镜像表</td><td>离线指标能对上至少一个线上信号</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>团队分工</h3>
+  <ul>
+    <li><strong>业务/领域专家</strong>：定义什么算成功、写 rubric、标注 gold set、仲裁争议。不要让工程师独自决定“业务上对不对”。</li>
+    <li><strong>评测工程师</strong>：搭 harness、写断言和 judge、做校准与统计、维护 CI 门禁。</li>
+    <li><strong>Agent 工程师</strong>：提供可观测的 trace、mock 工具、可回滚的写操作、稳定的测试环境。</li>
+    <li><strong>平台/数据</strong>：数据集版本化、切片管理、线上回流管道、dashboard。</li>
+  </ul>
+
+  <h3>最小可用清单</h3>
+  <div class="checklist">
+    <li>有一套版本化的黄金集，至少覆盖正向、边界、对抗、安全四类。</li>
+    <li>每个用例都有明确的成功判据，优先是结果态，其次才是文本。</li>
+    <li>至少一层确定性断言在 CI 里跑，失败能拦发布。</li>
+    <li>至少一个校准过的二分类 judge，κ ≥ 0.6，知道它的 TPR/TNR。</li>
+    <li>评测报告按切片展示，能看到最差切片，而不是只有总分。</li>
+    <li>每次线上事故都能在 48 小时内变成一条回归用例。</li>
+    <li>关键路径有 Playwright smoke，且能区分 infra failure 与 behavior failure。</li>
+    <li>离线指标和线上指标有一张镜像表，定期核对方向是否一致。</li>
+  </div>
+
+  <div class="callout">
+    <span class="label">一句话总结</span>
+    <p>客服 Agent 的内部评测，本质是用<strong>尽量便宜、尽量确定</strong>的证据，去逼近<strong>真实业务结果</strong>。方法可以很多，但顺序很稳定：先结果态，再轨迹，再语义；先代码，再分类器，再 judge，再人工；先离线门禁，再回放，再影子。把这条链修好，比追一个新 benchmark 更有用。</p>
+  </div>
+</section>
+
+<section id="s13">
+  <p class="section-label">13 · 来源</p>
+  <h2>来源与可信度</h2>
+  <p>下面的资料按“一手程度”分组。标注 <span class="src-tag">vendor</span> 的数字来自厂商公开分享或博客，适合做量级参考，落地前应在自己的数据上复现；标注 <span class="src-tag">paper</span> 的以论文/学术会议为准；标注 <span class="src-tag">community</span> 的是中文社区/会议实践，细节丰富但需要交叉验证。</p>
+
+  <h3>一手工程与论文</h3>
+  <ul class="sources">
+    <li><span class="src-tag">eng</span><a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Anthropic · Demystifying evals for AI agents</a><span class="why">Task/Trial/Grader/Transcript/Outcome；代码优先、模型其次、人工校准；pass@k vs pass^k；能力集 vs 回归集；评测饱和。</span></li>
+    <li><span class="src-tag">paper</span><a href="https://github.com/sierra-research/tau2-bench">Sierra Research · τ²-bench</a><span class="why">政策 + 工具 + 用户模拟器 + 数据库终态；双控环境；任务生成器；pass^k。</span></li>
+    <li><span class="src-tag">paper</span><a href="https://arxiv.org/abs/2506.07982">τ²-bench 论文</a><span class="why">双控、自动任务生成、推理错误与沟通错误分离。</span></li>
+    <li><span class="src-tag">paper</span><a href="https://arxiv.org/abs/2510.22143">OLABENCH · 工业客服评测</a><span class="why">CORE / RISK / HALL 三组；对话质量、政策合规、工具调用、延迟；四类幻觉。</span></li>
+    <li><span class="src-tag">paper</span><a href="https://arxiv.org/abs/2609.30137">Nubank · Screen Before You Serve</a><span class="why">16,000+ 仿真对话；Snowglobe；SSR +8.82pp、p95 −25%、迭代 4.8×；以及仿真失真的诚实复盘。</span></li>
+    <li><span class="src-tag">paper</span><a href="https://aclanthology.org/2025.emnlp-main.114/">Effective Red-Teaming of Policy-Adherent Agents</a><span class="why">CRAFT / Tau-break；policy-aware 多轮施压优于通用 jailbreak。</span></li>
+    <li><span class="src-tag">paper</span><a href="https://arxiv.org/abs/2503.01747">Don't use the CLT in LLM evals with fewer than a few hundred datapoints</a><span class="why">小样本置信区间；bootstrap / 贝叶斯替代。</span></li>
+    <li><span class="src-tag">paper</span><a href="https://arxiv.org/abs/2412.02968">How Many Ratings per Item are Necessary for Reliable Significance Testing?</a><span class="why">题目数 × 每题评分数对显著性的影响。</span></li>
+  </ul>
+
+  <h3>厂商工程实践</h3>
+  <ul class="sources">
+    <li><span class="src-tag">vendor</span><a href="https://sierra.ai/blog/voice-sims-test-agents-in-real-world-conditions-before-they-talk-to-your-customers">Sierra · Voice Sims</a><span class="why">数万级 persona 仿真；STT、语气、延迟、护栏、回归；接入 CI/CD 做发布门禁。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://sierra.ai/uk/blog/agent-monitoring">Sierra · Who monitors the monitors?</a><span class="why">常驻 judge 的自我评测循环；用人工标注校验 monitor；Explorer/Ghostwriter。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://sierra.ai/uk/blog/tau-knowledge">Sierra · τ-knowledge</a><span class="why">知识密集型客服评测；检索与推理分离。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://developers.openai.com/api/docs/guides/agent-evals.md">OpenAI · Evaluate agent workflows</a><span class="why">Trace → Dataset → Eval Run 的递进；trace grading 先回答“工具/交接/安全对不对”。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://developers.openai.com/blog/eval-skills">OpenAI · Testing Agent Skills Systematically with Evals</a><span class="why">10–20 条小样本、正/负控、先确定性 grader。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://docs.langchain.com/langsmith/trajectory-evals">LangChain · Trajectory evals</a><span class="why">strict / unordered / subset / superset；工具参数匹配；thread 级多轮评测。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://github.com/langchain-ai/agentevals">langchain-ai/agentevals</a><span class="why">可复用的轨迹匹配与 LLM judge 评估器。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://langfuse.com/blog/2025-10-21-testing-llm-applications.md">Langfuse · Testing LLM applications</a><span class="why">断言、数据集、judge、CI 的工程化组合。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://deepeval.com/docs/conversation-simulator">DeepEval · Conversation Simulator</a><span class="why">scenario / persona / expected outcome 驱动的多轮仿真。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://deepeval.com/docs/synthetic-data-generation-introduction">DeepEval · Synthetic Data</a><span class="why">合成数据“补充而非替代”；真实数据优先级。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://www.promptfoo.dev/docs/red-team/plugins/bola/">Promptfoo · BOLA red-team plugin</a><span class="why">越权对象访问、VIP 提权类社会工程测试。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://microsites.databricks.com/sites/default/files/dais/2026/D26B2866.pdf">Zepto × Databricks · AI Evals for CS Stack</a><span class="why">意图/合规/工具/语气/延迟/成本阈值；4 支柱 11 门禁。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://www.asapp.com/blog/moving-beyond-containment-how-to-truly-measure-the-performance-of-your-ai-agent">ASAPP · Moving beyond containment</a><span class="why">containment 会被“摩擦式劝退”刷高；用 verified resolution 替代。</span></li>
+  </ul>
+
+  <h3>中文社区与会议实践</h3>
+  <ul class="sources">
+    <li><span class="src-tag">community</span><a href="https://qcon.infoq.cn/2026/shanghai/presentation/7358">QCon 上海 2026 · 小红书 Agent 评估与可扩展编排</a><span class="why">生产 Trace / 反馈 / 用例建集；结果、节点、轨迹、多轮；规则+代码+judge+人工；在线离线双轨。</span></li>
+    <li><span class="src-tag">community</span><a href="https://cloud.tencent.com.cn/developer/article/2728633">腾讯云 · 客服 Agent 评测不能停在回答正确率</a><span class="why">回答质量 → 任务完成率 → 工具调用 → 异常恢复的四层链。</span></li>
+    <li><span class="src-tag">community</span><a href="https://www.rongpm.com/column/evaluate-ai-cs-3817-ai.html">融 PM · 以 AI 客服为例的五个指标</a><span class="why">解决率、幻觉率、转人工率、首轮满意度、业务转化率；20:1 / 50:1 的点赞比参照。</span></li>
+    <li><span class="src-tag">community</span><a href="https://cloud.tencent.cn/developer/article/2689397">腾讯云 · 从零做 Agent 评测集</a><span class="why">Basic 40 / Edge 30 / Real 30；回归流程与报告模板；退化根因。</span></li>
+    <li><span class="src-tag">community</span><a href="https://cloud.tencent.com.cn/developer/article/2743412">腾讯云 · Golden Set / Bad Case / Regression Set</a><span class="why">把一次性脚本升级为版本化资产；P1–P4 分级；多租户事故复盘。</span></li>
+    <li><span class="src-tag">community</span><a href="https://cloud.tencent.com.cn/developer/article/2717739">腾讯云 · Agent 评测体系五环节</a><span class="why">目标定义 → 数据构建 → 打分机制 → 失败分析 → 生产闭环。</span></li>
+    <li><span class="src-tag">community</span><a href="https://www.woshipm.com/evaluating/6436624.html">人人都是产品经理 · Agent 评测指南</a><span class="why">先按 Agent 类型分指标；Trace 校验 vs 最终答案。</span></li>
+    <li><span class="src-tag">community</span><a href="https://niraya666.github.io/posts/agent-eval-guide-02/">Agent Eval 实践指南 02 · 准备评测集</a><span class="why">case schema（trajectory anchors / world state）；数据来源排序；反推合成。</span></li>
+    <li><span class="src-tag">community</span><a href="https://www.cnblogs.com/crabin/articles/21141244">客服 Agent 优秀测评方案</a><span class="why">离线黄金集 → 灰度监控 → Eval-Driven Development 三层闭环。</span></li>
+    <li><span class="src-tag">community</span><a href="https://ntlx.github.io/articles/golden-eval-production-context/">黄金评测集别只存用户提问</a><span class="why">重放需保存检索/Prompt/工具上下文；单列失败切片，避免均分掩盖高代价失败。</span></li>
+    <li><span class="src-tag">community</span><a href="https://top100.msup.com.cn/detail?id=19601">货拉拉 · LLM 模拟器驱动的 Agent 仿真</a><span class="why">真实订单/画像条件化；议价/拒绝/投诉；人工评测降约 60%；真实性/一致性/多样性/持续性。</span></li>
+    <li><span class="src-tag">community</span><a href="https://www.javaguide.cn/ai/llm-basis/llm-evaluation.html">JavaGuide · 从 Golden Set 到线上灰度闭环</a><span class="why">RAG 分段评测（Recall@k、MRR、Faithfulness）与灰度闭环。</span></li>
+  </ul>
+
+  <h3>Playwright 与浏览器 Agent</h3>
+  <ul class="sources">
+    <li><span class="src-tag">repo</span><a href="https://github.com/web-arena-x/webarena">WebArena</a><span class="why">812 个自托管 Web 任务；Playwright；accessibility tree / HTML 观测。</span></li>
+    <li><span class="src-tag">repo</span><a href="https://github.com/ServiceNow/BrowserGym">BrowserGym</a><span class="why">统一 Gym 接口聚合 WebArena、VisualWebArena、MiniWoB、WorkArena。</span></li>
+    <li><span class="src-tag">repo</span><a href="https://github.com/microsoft/playwright-mcp">Microsoft · Playwright MCP</a><span class="why">让编码 agent 通过 accessibility tree 驱动真实浏览器；适合探索与生成，不宜作为唯一 CI 门禁。</span></li>
+    <li><span class="src-tag">eng</span><a href="https://argos-ci.com/blog/playwright-mcp-visual-testing">Argos · Playwright MCP and visual testing</a><span class="why">MCP 做开发期验证，视觉 diff 做 PR 级确定性校验。</span></li>
+    <li><span class="src-tag">community</span><a href="https://testerhome.com/topics/43107">TesterHome · playwright-mcp + 大模型自动化测试实践</a><span class="why">10 次约 3–4 次跑偏；稳定性是生产化的主要障碍。</span></li>
+    <li><span class="src-tag">eng</span><a href="https://www.wenaidev.com/blog/zh-TW/agentic-testing-automation-closed-loop">Agentic Testing 的闭环</a><span class="why">Planner / Generator / Healer；CLI Agent 与 MCP 的 token 成本差异。</span></li>
+  </ul>
+
+  <h3>裁判偏差与成本</h3>
+  <ul class="sources">
+    <li><span class="src-tag">paper</span><a href="https://arxiv.org/abs/2306.05685">MT-Bench / LLM-as-a-judge</a><span class="why">位置、长度、自我偏好偏差的经典来源。</span></li>
+    <li><span class="src-tag">paper</span><a href="https://arxiv.org/abs/2303.16634">G-Eval</a><span class="why"> rubric 化、链式评分的设计源头之一。</span></li>
+    <li><span class="src-tag">eng</span><a href="https://hamel.dev/blog/posts/evals/">Hamel Husain · Your AI Product Needs Evals</a><span class="why">三级评测；先断言后 judge；错误分析先于写测试；4–7 个 judge 的经验值。</span></li>
+    <li><span class="src-tag">eng</span><a href="https://hamel.dev/blog/posts/evals-faq/what-model-or-llm-should-i-use-to-build-automated-evals.html">Hamel · Evals FAQ</a><span class="why">judge 选型、成本/速度/准确率取舍。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://futureagi.com/blog/llm-as-a-judge/">Future AGI · LLM-as-a-Judge in 2026</a><span class="why">偏差机制与缓解；顺序交换、长度回归、跨家族；厂商视角，数字需复现。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://futureagi.com/blog/llm-eval-cost-optimization-2026/">Future AGI · LLM Eval Cost Optimization</a><span class="why">采样/级联/缓存；100 万次/天的成本量级；κ 门禁；100% 关键路径。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://futureagi.com/blog/deterministic-vs-llm-judge-evals-2026/">Future AGI · Deterministic vs LLM-Judge Evals</a><span class="why">分层而非二选一；级联的成本与延迟。</span></li>
+    <li><span class="src-tag">eng</span><a href="https://mlflow.org/articles/when-can-an-llm-judge-another-llms-output/">MLflow · When Can an LLM Judge Another LLM's Output?</a><span class="why">校准、一致性、可验证性。</span></li>
+    <li><span class="src-tag">eng</span><a href="https://www.datacamp.com/tutorial/rag-evaluation-with-ragas">DataCamp · RAG evaluation with RAGAS</a><span class="why">faithfulness / answer relevance / context precision / recall；每次调用的 judge 成本。</span></li>
+  </ul>
+
+  <h3>线上验证</h3>
+  <ul class="sources">
+    <li><span class="src-tag">eng</span><a href="https://arize.com/glossary/shadow-deployment/">Arize · Shadow deployment</a><span class="why">影子/金丝雀/A-B 的定义与适用边界。</span></li>
+    <li><span class="src-tag">vendor</span><a href="https://futureagi.com/blog/llm-eval-shadow-traffic-canary-2026/">Future AGI · Shadow traffic & canary</a><span class="why">写操作打桩、分层金丝雀、回滚条件、三个反模式。</span></li>
+    <li><span class="src-tag">community</span><a href="https://agentmarketcap.ai/blog/2026/04/24/tau-bench-voice-expansion-cx-agent-accuracy-gap">τ-bench 语音扩展分析</a><span class="why">语音相对文本的准确率差距；第三方分析，数字需对照原论文。</span></li>
+  </ul>
+
+  <div class="callout warn">
+    <span class="label">关于数字</span>
+    <p>本笔记里的具体百分比、金额阈值和成本量级，均来自公开分享或厂商博客，且部分为 2026 年的二手整理。它们的用途是建立量级感和设计参照，不是验收标准。真正落地时，请在自己的业务分布上重新测一遍基线，再定阈值。</p>
+  </div>
+</section>
+
+  </main>
+</div>
+
+<footer class="foot">
+  <div class="wrap">
+    <p>资料截至 2026-10-20。方法论文档，不构成任何厂商选型建议。</p>
+    <p>建议的下一步：先读 100 条真实 trace，再决定第一版评测集长什么样。</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+  var sections = links.map(function(a){
+    var id = a.getAttribute('href');
+    return id ? document.querySelector(id) : null;
+  });
+  if (!('IntersectionObserver' in window)) return;
+  var visible = new Set();
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) visible.add(e.target.id);
+      else visible.delete(e.target.id);
+    });
+    var current = null;
+    for (var i = 0; i < sections.length; i++){
+      if (sections[i] && visible.has(sections[i].id)) { current = sections[i].id; break; }
+    }
+    links.forEach(function(a){
+      var on = current && a.getAttribute('href') === '#' + current;
+      if (on) a.setAttribute('aria-current','true');
+      else a.removeAttribute('aria-current');
+    });
+  }, { rootMargin: '-12% 0px -72% 0px', threshold: [0, 0.01] });
+  sections.forEach(function(s){ if (s) io.observe(s); });
+})();
+</script>
