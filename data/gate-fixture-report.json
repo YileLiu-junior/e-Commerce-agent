@@ -1,0 +1,599 @@
+{
+  "capturedAt": "2026-10-25T13:56:12.421Z",
+  "gateMode": "off",
+  "confusion": {
+    "no_fabrication": {
+      "threshold": 0.9,
+      "n": 86,
+      "tp": 38,
+      "fp": 0,
+      "tn": 27,
+      "fn": 21,
+      "precision": 1,
+      "recall": 0.644
+    },
+    "no_forbidden_claims": {
+      "threshold": 0.8,
+      "n": 86,
+      "tp": 57,
+      "fp": 0,
+      "tn": 10,
+      "fn": 19,
+      "precision": 1,
+      "recall": 0.75
+    },
+    "is_fraud_suspected": {
+      "threshold": 0.5,
+      "n": 86,
+      "tp": 12,
+      "fp": 1,
+      "tn": 73,
+      "fn": 0,
+      "precision": 0.923,
+      "recall": 1
+    },
+    "reply_has_fraud_guidance": {
+      "threshold": 0.9,
+      "n": 12,
+      "tp": 3,
+      "fp": 0,
+      "tn": 9,
+      "fn": 0,
+      "precision": 1,
+      "recall": 1
+    }
+  },
+  "actionCorrect": 84,
+  "actionTotal": 86,
+  "overall": {
+    "safeTotal": 41,
+    "safeBlocked": 8,
+    "badTotal": 45,
+    "badReleased": 0,
+    "fpr": 0.195,
+    "fnr": 0
+  },
+  "sweep": [
+    {
+      "release": 0.5,
+      "actionConfidence": 0.5,
+      "fpr": 0.098,
+      "fnr": 0
+    },
+    {
+      "release": 0.55,
+      "actionConfidence": 0.5,
+      "fpr": 0.098,
+      "fnr": 0
+    },
+    {
+      "release": 0.5,
+      "actionConfidence": 0.55,
+      "fpr": 0.122,
+      "fnr": 0
+    },
+    {
+      "release": 0.5,
+      "actionConfidence": 0.6,
+      "fpr": 0.122,
+      "fnr": 0
+    },
+    {
+      "release": 0.55,
+      "actionConfidence": 0.55,
+      "fpr": 0.122,
+      "fnr": 0
+    },
+    {
+      "release": 0.55,
+      "actionConfidence": 0.6,
+      "fpr": 0.122,
+      "fnr": 0
+    },
+    {
+      "release": 0.6,
+      "actionConfidence": 0.5,
+      "fpr": 0.122,
+      "fnr": 0
+    },
+    {
+      "release": 0.65,
+      "actionConfidence": 0.5,
+      "fpr": 0.122,
+      "fnr": 0
+    },
+    {
+      "release": 0.7,
+      "actionConfidence": 0.5,
+      "fpr": 0.122,
+      "fnr": 0
+    },
+    {
+      "release": 0.6,
+      "actionConfidence": 0.55,
+      "fpr": 0.146,
+      "fnr": 0
+    },
+    {
+      "release": 0.6,
+      "actionConfidence": 0.6,
+      "fpr": 0.146,
+      "fnr": 0
+    },
+    {
+      "release": 0.65,
+      "actionConfidence": 0.55,
+      "fpr": 0.146,
+      "fnr": 0
+    },
+    {
+      "release": 0.65,
+      "actionConfidence": 0.6,
+      "fpr": 0.146,
+      "fnr": 0
+    },
+    {
+      "release": 0.7,
+      "actionConfidence": 0.55,
+      "fpr": 0.146,
+      "fnr": 0
+    },
+    {
+      "release": 0.7,
+      "actionConfidence": 0.6,
+      "fpr": 0.146,
+      "fnr": 0
+    },
+    {
+      "release": 0.5,
+      "actionConfidence": 0.65,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.5,
+      "actionConfidence": 0.7,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.5,
+      "actionConfidence": 0.75,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.55,
+      "actionConfidence": 0.65,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.55,
+      "actionConfidence": 0.7,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.55,
+      "actionConfidence": 0.75,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.6,
+      "actionConfidence": 0.65,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.6,
+      "actionConfidence": 0.7,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.6,
+      "actionConfidence": 0.75,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.65,
+      "actionConfidence": 0.65,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.65,
+      "actionConfidence": 0.7,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.65,
+      "actionConfidence": 0.75,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.7,
+      "actionConfidence": 0.65,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.7,
+      "actionConfidence": 0.7,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.7,
+      "actionConfidence": 0.75,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.75,
+      "actionConfidence": 0.5,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.75,
+      "actionConfidence": 0.55,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.75,
+      "actionConfidence": 0.6,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.8,
+      "actionConfidence": 0.5,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.8,
+      "actionConfidence": 0.55,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.8,
+      "actionConfidence": 0.6,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.85,
+      "actionConfidence": 0.5,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.85,
+      "actionConfidence": 0.55,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.85,
+      "actionConfidence": 0.6,
+      "fpr": 0.171,
+      "fnr": 0
+    },
+    {
+      "release": 0.75,
+      "actionConfidence": 0.65,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.75,
+      "actionConfidence": 0.7,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.75,
+      "actionConfidence": 0.75,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.8,
+      "actionConfidence": 0.65,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.8,
+      "actionConfidence": 0.7,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.8,
+      "actionConfidence": 0.75,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.85,
+      "actionConfidence": 0.65,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.85,
+      "actionConfidence": 0.7,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.85,
+      "actionConfidence": 0.75,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.9,
+      "actionConfidence": 0.5,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.9,
+      "actionConfidence": 0.55,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.9,
+      "actionConfidence": 0.6,
+      "fpr": 0.195,
+      "fnr": 0
+    },
+    {
+      "release": 0.9,
+      "actionConfidence": 0.65,
+      "fpr": 0.22,
+      "fnr": 0
+    },
+    {
+      "release": 0.9,
+      "actionConfidence": 0.7,
+      "fpr": 0.22,
+      "fnr": 0
+    },
+    {
+      "release": 0.9,
+      "actionConfidence": 0.75,
+      "fpr": 0.22,
+      "fnr": 0
+    },
+    {
+      "release": 0.95,
+      "actionConfidence": 0.5,
+      "fpr": 0.22,
+      "fnr": 0
+    },
+    {
+      "release": 0.95,
+      "actionConfidence": 0.55,
+      "fpr": 0.22,
+      "fnr": 0
+    },
+    {
+      "release": 0.95,
+      "actionConfidence": 0.6,
+      "fpr": 0.22,
+      "fnr": 0
+    },
+    {
+      "release": 0.5,
+      "actionConfidence": 0.8,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.55,
+      "actionConfidence": 0.8,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.6,
+      "actionConfidence": 0.8,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.65,
+      "actionConfidence": 0.8,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.7,
+      "actionConfidence": 0.8,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.75,
+      "actionConfidence": 0.8,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.8,
+      "actionConfidence": 0.8,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.85,
+      "actionConfidence": 0.8,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.9,
+      "actionConfidence": 0.8,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.95,
+      "actionConfidence": 0.65,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.95,
+      "actionConfidence": 0.7,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.95,
+      "actionConfidence": 0.75,
+      "fpr": 0.244,
+      "fnr": 0
+    },
+    {
+      "release": 0.95,
+      "actionConfidence": 0.8,
+      "fpr": 0.268,
+      "fnr": 0
+    },
+    {
+      "release": 0.5,
+      "actionConfidence": 0.85,
+      "fpr": 0.293,
+      "fnr": 0
+    },
+    {
+      "release": 0.55,
+      "actionConfidence": 0.85,
+      "fpr": 0.293,
+      "fnr": 0
+    },
+    {
+      "release": 0.6,
+      "actionConfidence": 0.85,
+      "fpr": 0.293,
+      "fnr": 0
+    },
+    {
+      "release": 0.65,
+      "actionConfidence": 0.85,
+      "fpr": 0.293,
+      "fnr": 0
+    },
+    {
+      "release": 0.7,
+      "actionConfidence": 0.85,
+      "fpr": 0.293,
+      "fnr": 0
+    },
+    {
+      "release": 0.75,
+      "actionConfidence": 0.85,
+      "fpr": 0.293,
+      "fnr": 0
+    },
+    {
+      "release": 0.8,
+      "actionConfidence": 0.85,
+      "fpr": 0.293,
+      "fnr": 0
+    },
+    {
+      "release": 0.85,
+      "actionConfidence": 0.85,
+      "fpr": 0.293,
+      "fnr": 0
+    },
+    {
+      "release": 0.9,
+      "actionConfidence": 0.85,
+      "fpr": 0.293,
+      "fnr": 0
+    },
+    {
+      "release": 0.95,
+      "actionConfidence": 0.85,
+      "fpr": 0.317,
+      "fnr": 0
+    },
+    {
+      "release": 0.5,
+      "actionConfidence": 0.9,
+      "fpr": 0.439,
+      "fnr": 0
+    },
+    {
+      "release": 0.55,
+      "actionConfidence": 0.9,
+      "fpr": 0.439,
+      "fnr": 0
+    },
+    {
+      "release": 0.6,
+      "actionConfidence": 0.9,
+      "fpr": 0.439,
+      "fnr": 0
+    },
+    {
+      "release": 0.65,
+      "actionConfidence": 0.9,
+      "fpr": 0.439,
+      "fnr": 0
+    },
+    {
+      "release": 0.7,
+      "actionConfidence": 0.9,
+      "fpr": 0.439,
+      "fnr": 0
+    },
+    {
+      "release": 0.75,
+      "actionConfidence": 0.9,
+      "fpr": 0.439,
+      "fnr": 0
+    },
+    {
+      "release": 0.8,
+      "actionConfidence": 0.9,
+      "fpr": 0.439,
+      "fnr": 0
+    },
+    {
+      "release": 0.85,
+      "actionConfidence": 0.9,
+      "fpr": 0.439,
+      "fnr": 0
+    },
+    {
+      "release": 0.9,
+      "actionConfidence": 0.9,
+      "fpr": 0.439,
+      "fnr": 0
+    },
+    {
+      "release": 0.95,
+      "actionConfidence": 0.9,
+      "fpr": 0.463,
+      "fnr": 0
+    }
+  ],
+  "note": "pilot 样本量，指标仅用于阈值校准起点"
+}

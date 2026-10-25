@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
 import { judgeEvaluation, runAgent } from "@/lib/engine";
 import { mergeEvaluationSeeds } from "@/lib/eval-seeds";
-import { appendEvaluationResult, getEvaluationCases, getEvaluationResults, saveEvaluationCases } from "@/lib/store";
+import { isPriceIntent } from "@/lib/intent";
+import { gateMode } from "@/lib/decision";
+import { appendEvaluationResult, getEvaluationCases, getEvaluationResults, readData, saveEvaluationCases } from "@/lib/store";
 import type { EvaluationCase, EvaluationLayerScores, EvaluationResult, EvaluationScoringMethod, RunResult, TraceItem } from "@/lib/types";
 
 export const runtime = "nodejs";
 
 const defaultAssertions = () => ({
   expectedCapabilities: [], forbiddenCapabilities: [], expectedFacts: [], forbiddenPhrases: [],
-  riskMustPass: true, maxLatencyMs: 30000
+  riskMustPass: true, maxLatencyMs: 30000, expectGate: "any" as const
 });
 const defaultQualityDimensions = () => ({
   correctness: { score: 3, note: "" },
@@ -36,11 +38,21 @@ function normalizeResult(item: Partial<EvaluationResult>): EvaluationResult {
     score: Number(item.score) || 0, latencyMs: Number(item.latencyMs) || 0, issues: item.issues || [],
     createdAt: item.createdAt || new Date(0).toISOString(), layerScores: item.layerScores || { planner: 0, skills: 0, tools: 0, response: 0, risk: 0, performance: 0 },
     capabilityPath: item.capabilityPath || [], requestId: item.requestId, judge: item.judge, finalReply: item.finalReply,
-    scoringMethods: item.scoringMethods || [], plannerReasoning: item.plannerReasoning, trace: item.trace, risk: item.risk
+    scoringMethods: item.scoringMethods || [], plannerReasoning: item.plannerReasoning, trace: item.trace, risk: item.risk,
+    gateMode: item.gateMode, gateStatus: item.gateStatus, gateAction: item.gateAction, gateLatencyMs: item.gateLatencyMs, gateSkipReason: item.gateSkipReason, gateBlockedBy: item.gateBlockedBy
   };
 }
 
 function includesText(haystack: string, needle: string) { return haystack.toLowerCase().replace(/\s+/g, "").includes(needle.trim().toLowerCase().replace(/\s+/g, "")); }
+
+// 闸门预期：优先用用例自带 assertions.expectGate，其次 data/gate-expectations.json 按 caseId 映射（不改 79 条种子）。
+async function gateExpectationFor(caseId: string, assertionValue?: string): Promise<string> {
+  if (assertionValue && assertionValue !== "any") return assertionValue;
+  try {
+    const map = await readData<Record<string, string>>("gate-expectations.json");
+    return map[caseId] || assertionValue || "any";
+  } catch { return assertionValue || "any"; }
+}
 function clamp(value: number) { return Math.max(0, Math.min(100, Math.round(value))); }
 function tokenize(value: string) {
   const normalized = value.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ").trim();
@@ -107,7 +119,7 @@ async function evaluateCase(item: EvaluationCase): Promise<{ result: EvaluationR
 
     const missingFacts = item.assertions.expectedFacts.filter(value => !includesText(evidence, value));
     missingFacts.forEach(value => issues.push(`Tool 事实未命中：${value}`));
-    const priceIntent = /价格|多少钱|优惠|券|满减|预算|便宜|划算|别太贵|实惠|性价比/.test(item.input);
+    const priceIntent = isPriceIntent(item.input);
     const requiredPriceTools = ["query_activities", "query_coupons", "calculate_price"];
     const missingPriceTools = priceIntent ? requiredPriceTools.filter(value => !capabilities.includes(value)) : [];
     missingPriceTools.forEach(value => issues.push(`价格意图缺少 Tool：${value}`));
@@ -132,6 +144,16 @@ async function evaluateCase(item: EvaluationCase): Promise<{ result: EvaluationR
 
     if (item.assertions.riskMustPass && !run.risk.passed) issues.push(...run.risk.issues.map(value => `风控：${value}`));
     const risk = item.assertions.riskMustPass ? (run.risk.passed ? 100 : 0) : (riskLast ? 100 : 0);
+
+    // 闸门断言（spec §4.2）：expectGate !== "any" 时校验实际 verdict；上游原因的 skipped 不算预期不符。
+    const gate = run.decisionGate;
+    const expectation = await gateExpectationFor(item.id, item.assertions.expectGate);
+    const upstreamSkip = gate?.status === "skipped" && gate.skipReason && gate.skipReason !== "risk_failed" && gate.skipReason !== "circuit_open";
+    let gateMismatch = false;
+    if (expectation !== "any" && gate && gate.status !== "off") {
+      const actual = gate.status === "skipped" && gate.skipReason === "risk_failed" ? "skipped" : gate.status;
+      if (actual !== expectation) { issues.push(`闸门预期不符：期望 ${expectation}，实际 ${gate.status}${gate.blockedBy ? `（${gate.blockedBy}）` : ""}`); gateMismatch = true; }
+    }
     if (latencyMs > item.assertions.maxLatencyMs) issues.push(`超过延迟上限：${latencyMs}ms > ${item.assertions.maxLatencyMs}ms`);
     const performance = clamp(item.assertions.maxLatencyMs > 0 ? 100 - Math.max(0, latencyMs - item.assertions.maxLatencyMs) / item.assertions.maxLatencyMs * 100 : 100);
 
@@ -164,11 +186,12 @@ async function evaluateCase(item: EvaluationCase): Promise<{ result: EvaluationR
         details: humanReview?.details || ["若评测失败或用户低分，可进入数据标注补充六维质量标注，再发布为 Eval 回归用例。"]
       }
     ];
-    const hardFailure = missingCapabilities.length > 0 || forbiddenCapabilities.length > 0 || missingFacts.length > 0 || missingPriceTools.length > 0 || !calculationOrderValid || !riskLast || (item.assertions.riskMustPass && !run.risk.passed) || Boolean(humanReview && humanReview.score < 60);
+    const hardFailure = missingCapabilities.length > 0 || forbiddenCapabilities.length > 0 || missingFacts.length > 0 || missingPriceTools.length > 0 || !calculationOrderValid || !riskLast || (item.assertions.riskMustPass && !run.risk.passed) || gateMismatch || Boolean(humanReview && humanReview.score < 60);
     const result: EvaluationResult = {
       id: crypto.randomUUID(), caseId: item.id, passed: score >= 80 && !hardFailure, score, latencyMs, issues,
       createdAt: new Date().toISOString(), requestId: run.requestId, layerScores, capabilityPath: capabilities, judge, scoringMethods,
-      finalReply: run.finalReply, plannerReasoning: run.plan.reasoning, trace: run.executionTrace, risk: run.risk
+      finalReply: run.finalReply, plannerReasoning: run.plan.reasoning, trace: run.executionTrace, risk: run.risk,
+      gateMode: gateMode(), gateStatus: gate?.status, gateAction: gate?.action, gateLatencyMs: gate?.latencyMs, gateSkipReason: upstreamSkip ? gate?.skipReason : undefined, gateBlockedBy: gate?.blockedBy
     };
     await appendEvaluationResult(result);
     return { result, run };

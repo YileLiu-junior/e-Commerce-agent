@@ -1,5 +1,4087 @@
 [
   {
+    "id": "6236bf6c-4088-4318-80a9-8251b572f57f",
+    "sessionId": "4798b32e-cfec-421c-9899-694edb759837",
+    "input": "预算100元，推荐办公室分享零食并算一下优惠",
+    "reason": "闸门拦截：price_mismatch:总额语境金额 100 与 finalPrice 96.8 不一致（上下文：3元，最终价96.8元，在您100元）",
+    "gateVerdict": {
+      "status": "blocked",
+      "thresholds": {
+        "release": 0.9,
+        "forbidden": 0.8,
+        "actionConfidence": 0.8,
+        "fraudSuspect": 0.5,
+        "fraudGuidance": 0.9,
+        "noneProbability": 0.5
+      },
+      "latencyMs": 0,
+      "blockedBy": "price_mismatch:总额语境金额 100 与 finalPrice 96.8 不一致（上下文：3元，最终价96.8元，在您100元）"
+    },
+    "trace": [
+      {
+        "id": "step_1",
+        "capability": "need-extraction",
+        "type": "skill",
+        "purpose": "必经 Skill · $need-extraction",
+        "status": "success",
+        "input": {
+          "userInput": "预算100元，推荐办公室分享零食并算一下优惠",
+          "conversation_history": []
+        },
+        "output": {
+          "intent": "推荐办公室分享零食并计算优惠",
+          "taste": [],
+          "categories": [
+            "零食"
+          ],
+          "budget": 100,
+          "quantity": 1,
+          "scenario": "办公室分享",
+          "constraints": [],
+          "needs_price": true
+        },
+        "startedAt": "2026-10-24T09:19:28.424Z",
+        "durationMs": 1063,
+        "attempts": 1
+      },
+      {
+        "id": "step_2",
+        "capability": "query_products",
+        "type": "tool",
+        "purpose": "规则要求 · query_products",
+        "status": "success",
+        "input": {
+          "userInput": "预算100元，推荐办公室分享零食并算一下优惠",
+          "need": {
+            "intent": "推荐办公室分享零食并计算优惠",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 1,
+            "scenario": "办公室分享",
+            "constraints": [],
+            "needs_price": true
+          }
+        },
+        "output": {
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "filterFallback": false
+        },
+        "startedAt": "2026-10-24T09:19:29.487Z",
+        "durationMs": 1,
+        "attempts": 1
+      },
+      {
+        "id": "step_3",
+        "capability": "query_activities",
+        "type": "tool",
+        "purpose": "规则要求 · query_activities",
+        "status": "success",
+        "input": {
+          "userInput": "预算100元，推荐办公室分享零食并算一下优惠",
+          "need": {
+            "intent": "推荐办公室分享零食并计算优惠",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 1,
+            "scenario": "办公室分享",
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ]
+        },
+        "output": {
+          "activities": [
+            {
+              "id": "A001",
+              "name": "零食满减季",
+              "type": "threshold_reduction",
+              "threshold": 99,
+              "discount": 15,
+              "enabled": true,
+              "description": "实付商品金额满99元减15元"
+            },
+            {
+              "id": "A002",
+              "name": "坚果组合优惠",
+              "type": "category_discount",
+              "category": "坚果",
+              "rate": 0.9,
+              "enabled": true,
+              "description": "坚果类商品9折"
+            }
+          ]
+        },
+        "startedAt": "2026-10-24T09:19:29.488Z",
+        "durationMs": 0,
+        "attempts": 1
+      },
+      {
+        "id": "step_4",
+        "capability": "query_coupons",
+        "type": "tool",
+        "purpose": "规则要求 · query_coupons",
+        "status": "success",
+        "input": {
+          "userInput": "预算100元，推荐办公室分享零食并算一下优惠",
+          "need": {
+            "intent": "推荐办公室分享零食并计算优惠",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 1,
+            "scenario": "办公室分享",
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "activities": [
+            {
+              "id": "A001",
+              "name": "零食满减季",
+              "type": "threshold_reduction",
+              "threshold": 99,
+              "discount": 15,
+              "enabled": true,
+              "description": "实付商品金额满99元减15元"
+            },
+            {
+              "id": "A002",
+              "name": "坚果组合优惠",
+              "type": "category_discount",
+              "category": "坚果",
+              "rate": 0.9,
+              "enabled": true,
+              "description": "坚果类商品9折"
+            }
+          ]
+        },
+        "output": {
+          "coupons": [
+            {
+              "id": "C001",
+              "name": "新人券",
+              "threshold": 59,
+              "discount": 8,
+              "enabled": true,
+              "stackable": true
+            },
+            {
+              "id": "C002",
+              "name": "满129减20券",
+              "threshold": 129,
+              "discount": 20,
+              "enabled": true,
+              "stackable": true
+            },
+            {
+              "id": "C003",
+              "name": "品类券",
+              "threshold": 49,
+              "discount": 6,
+              "category": "坚果",
+              "enabled": true,
+              "stackable": false
+            }
+          ]
+        },
+        "startedAt": "2026-10-24T09:19:29.489Z",
+        "durationMs": 0,
+        "attempts": 1
+      },
+      {
+        "id": "step_5",
+        "capability": "gift-scenario-advisor",
+        "type": "skill",
+        "purpose": "分析办公室分享场景的人数、分享方式与选品侧重点",
+        "status": "success",
+        "input": {
+          "userInput": "预算100元，推荐办公室分享零食并算一下优惠",
+          "context": {
+            "userInput": "预算100元，推荐办公室分享零食并算一下优惠",
+            "toolResults": [
+              {
+                "toolId": "query_products",
+                "output": {
+                  "products": [
+                    {
+                      "id": "P003",
+                      "name": "麻辣牛肉脯",
+                      "category": "肉类零食",
+                      "tags": [
+                        "辣味",
+                        "高蛋白",
+                        "耐嚼"
+                      ],
+                      "price": 39.9,
+                      "stock": 62,
+                      "rating": 4.7,
+                      "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                    },
+                    {
+                      "id": "P015",
+                      "name": "手撕肉脯大份装",
+                      "category": "肉类零食",
+                      "tags": [
+                        "辣味",
+                        "大份",
+                        "耐嚼"
+                      ],
+                      "price": 79.9,
+                      "stock": 45,
+                      "rating": 4.7,
+                      "description": "500g 大份装,香辣耐嚼。"
+                    }
+                  ],
+                  "filterFallback": false
+                }
+              },
+              {
+                "toolId": "query_activities",
+                "output": {
+                  "activities": [
+                    {
+                      "id": "A001",
+                      "name": "零食满减季",
+                      "type": "threshold_reduction",
+                      "threshold": 99,
+                      "discount": 15,
+                      "enabled": true,
+                      "description": "实付商品金额满99元减15元"
+                    },
+                    {
+                      "id": "A002",
+                      "name": "坚果组合优惠",
+                      "type": "category_discount",
+                      "category": "坚果",
+                      "rate": 0.9,
+                      "enabled": true,
+                      "description": "坚果类商品9折"
+                    }
+                  ]
+                }
+              },
+              {
+                "toolId": "query_coupons",
+                "output": {
+                  "coupons": [
+                    {
+                      "id": "C001",
+                      "name": "新人券",
+                      "threshold": 59,
+                      "discount": 8,
+                      "enabled": true,
+                      "stackable": true
+                    },
+                    {
+                      "id": "C002",
+                      "name": "满129减20券",
+                      "threshold": 129,
+                      "discount": 20,
+                      "enabled": true,
+                      "stackable": true
+                    },
+                    {
+                      "id": "C003",
+                      "name": "品类券",
+                      "threshold": 49,
+                      "discount": 6,
+                      "category": "坚果",
+                      "enabled": true,
+                      "stackable": false
+                    }
+                  ]
+                }
+              },
+              {
+                "toolId": "calculate_price",
+                "output": {
+                  "subtotal": 119.8,
+                  "activityApplied": {
+                    "id": "A001",
+                    "name": "零食满减季"
+                  },
+                  "couponApplied": {
+                    "id": "C001",
+                    "name": "新人券",
+                    "discount": 8
+                  },
+                  "savings": 23,
+                  "finalPrice": 96.8,
+                  "note": "按推荐商品各 1 件试算，不含运费",
+                  "activityDiscount": 15,
+                  "afterActivity": 104.8,
+                  "couponDiscount": 8,
+                  "allowedAmounts": {
+                    "unitPrices": [
+                      39.9,
+                      79.9
+                    ],
+                    "thresholds": [
+                      99,
+                      59,
+                      129,
+                      49
+                    ],
+                    "discounts": [
+                      15,
+                      8
+                    ]
+                  }
+                }
+              }
+            ],
+            "mcpResults": [],
+            "skillResults": [
+              {
+                "skillId": "gift-scenario-advisor",
+                "output": {
+                  "scenario": "办公室分享零食，预算100元，需要计算优惠",
+                  "audience": "办公室同事",
+                  "serving_needs": {
+                    "人数": "未明确",
+                    "分享方式": "办公室多人分享",
+                    "包装偏好": "未明确",
+                    "分装需求": "未明确",
+                    "预算": 100
+                  },
+                  "selection_criteria": [
+                    "口味丰富度：优先覆盖不同口味，避免全部为辣味",
+                    "单份数量：优先大份装或可拆分小包装，便于多人分享",
+                    "便携性：独立小包装或易分装形态更适合办公室传递",
+                    "分享便利性：开袋即食、不脏手、不易碎",
+                    "包装：适合多人取用的分享装或独立分装",
+                    "价格与优惠：以 Tool 返回的价格和活动为准，实付尽量不超过100元"
+                  ],
+                  "missing_information": [
+                    "办公室分享人数未明确",
+                    "是否需要独立小包装或分装",
+                    "口味偏好（是否全员吃辣、是否需要甜咸搭配）",
+                    "是否有坚果过敏等忌口",
+                    "包装偏好（礼盒、分享袋、独立小包）"
+                  ]
+                }
+              }
+            ],
+            "history": [],
+            "experiments": [],
+            "need": {
+              "intent": "推荐办公室分享零食并计算优惠",
+              "taste": [],
+              "categories": [
+                "零食"
+              ],
+              "budget": 100,
+              "quantity": 1,
+              "scenario": "办公室分享",
+              "constraints": [],
+              "needs_price": true
+            },
+            "products": [
+              {
+                "id": "P003",
+                "name": "麻辣牛肉脯",
+                "category": "肉类零食",
+                "tags": [
+                  "辣味",
+                  "高蛋白",
+                  "耐嚼"
+                ],
+                "price": 39.9,
+                "stock": 62,
+                "rating": 4.7,
+                "description": "川香麻辣，肉香浓郁，越嚼越香。"
+              },
+              {
+                "id": "P015",
+                "name": "手撕肉脯大份装",
+                "category": "肉类零食",
+                "tags": [
+                  "辣味",
+                  "大份",
+                  "耐嚼"
+                ],
+                "price": 79.9,
+                "stock": 45,
+                "rating": 4.7,
+                "description": "500g 大份装,香辣耐嚼。"
+              }
+            ],
+            "activities": [
+              {
+                "id": "A001",
+                "name": "零食满减季",
+                "type": "threshold_reduction",
+                "threshold": 99,
+                "discount": 15,
+                "enabled": true,
+                "description": "实付商品金额满99元减15元"
+              },
+              {
+                "id": "A002",
+                "name": "坚果组合优惠",
+                "type": "category_discount",
+                "category": "坚果",
+                "rate": 0.9,
+                "enabled": true,
+                "description": "坚果类商品9折"
+              }
+            ],
+            "coupons": [
+              {
+                "id": "C001",
+                "name": "新人券",
+                "threshold": 59,
+                "discount": 8,
+                "enabled": true,
+                "stackable": true
+              },
+              {
+                "id": "C002",
+                "name": "满129减20券",
+                "threshold": 129,
+                "discount": 20,
+                "enabled": true,
+                "stackable": true
+              },
+              {
+                "id": "C003",
+                "name": "品类券",
+                "threshold": 49,
+                "discount": 6,
+                "category": "坚果",
+                "enabled": true,
+                "stackable": false
+              }
+            ],
+            "decision": {
+              "recommended_product_ids": [
+                "P015",
+                "P003"
+              ],
+              "decision_summary": "办公室分享优先大份装，P015为500g大份装更适合多人分食，P003可作为补充口味。预算100元内，若购买P015+P003合计119.8元，可享满99减15活动，实付104.8元，略超预算；若只买P015，79.9元未达满99门槛，但可用新人券满59减8，实付71.9元，更稳妥。综合分享场景与预算，推荐顺序为P015、P003。"
+            },
+            "selectedProducts": [
+              {
+                "id": "P003",
+                "name": "麻辣牛肉脯",
+                "category": "肉类零食",
+                "tags": [
+                  "辣味",
+                  "高蛋白",
+                  "耐嚼"
+                ],
+                "price": 39.9,
+                "stock": 62,
+                "rating": 4.7,
+                "description": "川香麻辣，肉香浓郁，越嚼越香。"
+              },
+              {
+                "id": "P015",
+                "name": "手撕肉脯大份装",
+                "category": "肉类零食",
+                "tags": [
+                  "辣味",
+                  "大份",
+                  "耐嚼"
+                ],
+                "price": 79.9,
+                "stock": 45,
+                "rating": 4.7,
+                "description": "500g 大份装,香辣耐嚼。"
+              }
+            ],
+            "price": {
+              "subtotal": 119.8,
+              "activityApplied": {
+                "id": "A001",
+                "name": "零食满减季"
+              },
+              "couponApplied": {
+                "id": "C001",
+                "name": "新人券",
+                "discount": 8
+              },
+              "savings": 23,
+              "finalPrice": 96.8,
+              "note": "按推荐商品各 1 件试算，不含运费",
+              "activityDiscount": 15,
+              "afterActivity": 104.8,
+              "couponDiscount": 8,
+              "allowedAmounts": {
+                "unitPrices": [
+                  39.9,
+                  79.9
+                ],
+                "thresholds": [
+                  99,
+                  59,
+                  129,
+                  49
+                ],
+                "discounts": [
+                  15,
+                  8
+                ]
+              }
+            },
+            "reasons": {
+              "P015": "500g大份装，适合办公室多人分享；香辣耐嚼，开袋即食，便于同事取用；价格79.9元，在100元预算内。",
+              "P003": "川香麻辣、耐嚼，适合办公室分享；39.9元单价较低，可与大份装搭配，便于控制总花费在100元内。"
+            },
+            "reply": "您好～按您100元预算做办公室分享，我帮您选了这两款：\n\n1. 手撕肉脯大份装（500g）79.9元：大份装适合多人分着吃，香辣耐嚼、开袋即食，同事取用方便。\n2. 麻辣牛肉脯 39.9元：川香麻辣、耐嚼，单价低，可以和大份装搭配，把总花费控制在预算内。\n\n优惠试算（按两款各1件、不含运费）：\n- 商品小计：119.8元\n- 零食满减季：满99减15元，减后104.8元\n- 新人券：满59减8元\n- 合计优惠23元，最终价96.8元，在您100元预算内。\n\n不过这两款都是辣味，如果办公室有同事不吃辣，建议再搭配一点甜口或咸香口味会更稳妥。请问大概多少人分享、需不需要独立小包装或分装呢？我可以再帮您调整得更合适。",
+            "risk": {
+              "passed": true,
+              "risk_level": "low",
+              "issues": [],
+              "safe_reply": "您好～按您100元预算做办公室分享，我帮您选了这两款：\n\n1. 手撕肉脯大份装（500g）79.9元：大份装适合多人分着吃，香辣耐嚼、开袋即食，同事取用方便。\n2. 麻辣牛肉脯 39.9元：川香麻辣、耐嚼，单价低，可以和大份装搭配，把总花费控制在预算内。\n\n优惠试算（按两款各1件、不含运费）：\n- 商品小计：119.8元\n- 零食满减季：满99减15元，减后104.8元\n- 新人券：满59减8元\n- 合计优惠23元，最终价96.8元，在您100元预算内。\n\n不过这两款都是辣味，如果办公室有同事不吃辣，建议再搭配一点甜口或咸香口味会更稳妥。请问大概多少人分享、需不需要独立小包装或分装呢？我可以再帮您调整得更合适。"
+            }
+          }
+        },
+        "output": {
+          "scenario": "办公室分享零食，预算100元，需要计算优惠",
+          "audience": "办公室同事",
+          "serving_needs": {
+            "人数": "未明确",
+            "分享方式": "办公室多人分享",
+            "包装偏好": "未明确",
+            "分装需求": "未明确",
+            "预算": 100
+          },
+          "selection_criteria": [
+            "口味丰富度：优先覆盖不同口味，避免全部为辣味",
+            "单份数量：优先大份装或可拆分小包装，便于多人分享",
+            "便携性：独立小包装或易分装形态更适合办公室传递",
+            "分享便利性：开袋即食、不脏手、不易碎",
+            "包装：适合多人取用的分享装或独立分装",
+            "价格与优惠：以 Tool 返回的价格和活动为准，实付尽量不超过100元"
+          ],
+          "missing_information": [
+            "办公室分享人数未明确",
+            "是否需要独立小包装或分装",
+            "口味偏好（是否全员吃辣、是否需要甜咸搭配）",
+            "是否有坚果过敏等忌口",
+            "包装偏好（礼盒、分享袋、独立小包）"
+          ]
+        },
+        "startedAt": "2026-10-24T09:19:29.489Z",
+        "durationMs": 2371,
+        "attempts": 1
+      },
+      {
+        "id": "step_6",
+        "capability": "recommendation-decision",
+        "type": "skill",
+        "purpose": "必经 Skill · $recommendation-decision",
+        "status": "success",
+        "input": {
+          "userInput": "预算100元，推荐办公室分享零食并算一下优惠",
+          "conversation_history": [],
+          "need": {
+            "intent": "推荐办公室分享零食并计算优惠",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 1,
+            "scenario": "办公室分享",
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "toolResults": [
+            {
+              "toolId": "query_products",
+              "output": {
+                "products": [
+                  {
+                    "id": "P003",
+                    "name": "麻辣牛肉脯",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "高蛋白",
+                      "耐嚼"
+                    ],
+                    "price": 39.9,
+                    "stock": 62,
+                    "rating": 4.7,
+                    "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                  },
+                  {
+                    "id": "P015",
+                    "name": "手撕肉脯大份装",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "大份",
+                      "耐嚼"
+                    ],
+                    "price": 79.9,
+                    "stock": 45,
+                    "rating": 4.7,
+                    "description": "500g 大份装,香辣耐嚼。"
+                  }
+                ],
+                "filterFallback": false
+              }
+            },
+            {
+              "toolId": "query_activities",
+              "output": {
+                "activities": [
+                  {
+                    "id": "A001",
+                    "name": "零食满减季",
+                    "type": "threshold_reduction",
+                    "threshold": 99,
+                    "discount": 15,
+                    "enabled": true,
+                    "description": "实付商品金额满99元减15元"
+                  },
+                  {
+                    "id": "A002",
+                    "name": "坚果组合优惠",
+                    "type": "category_discount",
+                    "category": "坚果",
+                    "rate": 0.9,
+                    "enabled": true,
+                    "description": "坚果类商品9折"
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "query_coupons",
+              "output": {
+                "coupons": [
+                  {
+                    "id": "C001",
+                    "name": "新人券",
+                    "threshold": 59,
+                    "discount": 8,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C002",
+                    "name": "满129减20券",
+                    "threshold": 129,
+                    "discount": 20,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C003",
+                    "name": "品类券",
+                    "threshold": 49,
+                    "discount": 6,
+                    "category": "坚果",
+                    "enabled": true,
+                    "stackable": false
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "calculate_price",
+              "output": {
+                "subtotal": 119.8,
+                "activityApplied": {
+                  "id": "A001",
+                  "name": "零食满减季"
+                },
+                "couponApplied": {
+                  "id": "C001",
+                  "name": "新人券",
+                  "discount": 8
+                },
+                "savings": 23,
+                "finalPrice": 96.8,
+                "note": "按推荐商品各 1 件试算，不含运费",
+                "activityDiscount": 15,
+                "afterActivity": 104.8,
+                "couponDiscount": 8,
+                "allowedAmounts": {
+                  "unitPrices": [
+                    39.9,
+                    79.9
+                  ],
+                  "thresholds": [
+                    99,
+                    59,
+                    129,
+                    49
+                  ],
+                  "discounts": [
+                    15,
+                    8
+                  ]
+                }
+              }
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": [
+            {
+              "skillId": "gift-scenario-advisor",
+              "output": {
+                "scenario": "办公室分享零食，预算100元，需要计算优惠",
+                "audience": "办公室同事",
+                "serving_needs": {
+                  "人数": "未明确",
+                  "分享方式": "办公室多人分享",
+                  "包装偏好": "未明确",
+                  "分装需求": "未明确",
+                  "预算": 100
+                },
+                "selection_criteria": [
+                  "口味丰富度：优先覆盖不同口味，避免全部为辣味",
+                  "单份数量：优先大份装或可拆分小包装，便于多人分享",
+                  "便携性：独立小包装或易分装形态更适合办公室传递",
+                  "分享便利性：开袋即食、不脏手、不易碎",
+                  "包装：适合多人取用的分享装或独立分装",
+                  "价格与优惠：以 Tool 返回的价格和活动为准，实付尽量不超过100元"
+                ],
+                "missing_information": [
+                  "办公室分享人数未明确",
+                  "是否需要独立小包装或分装",
+                  "口味偏好（是否全员吃辣、是否需要甜咸搭配）",
+                  "是否有坚果过敏等忌口",
+                  "包装偏好（礼盒、分享袋、独立小包）"
+                ]
+              }
+            }
+          ]
+        },
+        "output": {
+          "recommended_product_ids": [
+            "P015",
+            "P003"
+          ],
+          "decision_summary": "办公室分享优先大份装，P015为500g大份装更适合多人分食，P003可作为补充口味。预算100元内，若购买P015+P003合计119.8元，可享满99减15活动，实付104.8元，略超预算；若只买P015，79.9元未达满99门槛，但可用新人券满59减8，实付71.9元，更稳妥。综合分享场景与预算，推荐顺序为P015、P003。"
+        },
+        "startedAt": "2026-10-24T09:19:31.860Z",
+        "durationMs": 1530,
+        "attempts": 1
+      },
+      {
+        "id": "step_7",
+        "capability": "calculate_price",
+        "type": "tool",
+        "purpose": "推荐完成后确定性计价 · calculate_price",
+        "status": "success",
+        "input": {
+          "userInput": "预算100元，推荐办公室分享零食并算一下优惠",
+          "need": {
+            "intent": "推荐办公室分享零食并计算优惠",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 1,
+            "scenario": "办公室分享",
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "activities": [
+            {
+              "id": "A001",
+              "name": "零食满减季",
+              "type": "threshold_reduction",
+              "threshold": 99,
+              "discount": 15,
+              "enabled": true,
+              "description": "实付商品金额满99元减15元"
+            },
+            {
+              "id": "A002",
+              "name": "坚果组合优惠",
+              "type": "category_discount",
+              "category": "坚果",
+              "rate": 0.9,
+              "enabled": true,
+              "description": "坚果类商品9折"
+            }
+          ],
+          "coupons": [
+            {
+              "id": "C001",
+              "name": "新人券",
+              "threshold": 59,
+              "discount": 8,
+              "enabled": true,
+              "stackable": true
+            },
+            {
+              "id": "C002",
+              "name": "满129减20券",
+              "threshold": 129,
+              "discount": 20,
+              "enabled": true,
+              "stackable": true
+            },
+            {
+              "id": "C003",
+              "name": "品类券",
+              "threshold": 49,
+              "discount": 6,
+              "category": "坚果",
+              "enabled": true,
+              "stackable": false
+            }
+          ]
+        },
+        "output": {
+          "subtotal": 119.8,
+          "activityApplied": {
+            "id": "A001",
+            "name": "零食满减季"
+          },
+          "couponApplied": {
+            "id": "C001",
+            "name": "新人券",
+            "discount": 8
+          },
+          "savings": 23,
+          "finalPrice": 96.8,
+          "note": "按推荐商品各 1 件试算，不含运费",
+          "activityDiscount": 15,
+          "afterActivity": 104.8,
+          "couponDiscount": 8,
+          "allowedAmounts": {
+            "unitPrices": [
+              39.9,
+              79.9
+            ],
+            "thresholds": [
+              99,
+              59,
+              129,
+              49
+            ],
+            "discounts": [
+              15,
+              8
+            ]
+          }
+        },
+        "startedAt": "2026-10-24T09:19:33.390Z",
+        "durationMs": 0,
+        "attempts": 1
+      },
+      {
+        "id": "step_8",
+        "capability": "recommendation-reason",
+        "type": "skill",
+        "purpose": "必经 Skill · $recommendation-reason",
+        "status": "success",
+        "input": {
+          "conversation_history": [],
+          "need": {
+            "intent": "推荐办公室分享零食并计算优惠",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 1,
+            "scenario": "办公室分享",
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": [
+            {
+              "skillId": "gift-scenario-advisor",
+              "output": {
+                "scenario": "办公室分享零食，预算100元，需要计算优惠",
+                "audience": "办公室同事",
+                "serving_needs": {
+                  "人数": "未明确",
+                  "分享方式": "办公室多人分享",
+                  "包装偏好": "未明确",
+                  "分装需求": "未明确",
+                  "预算": 100
+                },
+                "selection_criteria": [
+                  "口味丰富度：优先覆盖不同口味，避免全部为辣味",
+                  "单份数量：优先大份装或可拆分小包装，便于多人分享",
+                  "便携性：独立小包装或易分装形态更适合办公室传递",
+                  "分享便利性：开袋即食、不脏手、不易碎",
+                  "包装：适合多人取用的分享装或独立分装",
+                  "价格与优惠：以 Tool 返回的价格和活动为准，实付尽量不超过100元"
+                ],
+                "missing_information": [
+                  "办公室分享人数未明确",
+                  "是否需要独立小包装或分装",
+                  "口味偏好（是否全员吃辣、是否需要甜咸搭配）",
+                  "是否有坚果过敏等忌口",
+                  "包装偏好（礼盒、分享袋、独立小包）"
+                ]
+              }
+            }
+          ]
+        },
+        "output": {
+          "reasons": {
+            "P015": "500g大份装，适合办公室多人分享；香辣耐嚼，开袋即食，便于同事取用；价格79.9元，在100元预算内。",
+            "P003": "川香麻辣、耐嚼，适合办公室分享；39.9元单价较低，可与大份装搭配，便于控制总花费在100元内。"
+          }
+        },
+        "startedAt": "2026-10-24T09:19:33.390Z",
+        "durationMs": 1015,
+        "attempts": 1
+      },
+      {
+        "id": "step_9",
+        "capability": "response-generator",
+        "type": "skill",
+        "purpose": "必经 Skill · $response-generator",
+        "status": "success",
+        "input": {
+          "userInput": "预算100元，推荐办公室分享零食并算一下优惠",
+          "conversation_history": [],
+          "need": {
+            "intent": "推荐办公室分享零食并计算优惠",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 1,
+            "scenario": "办公室分享",
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "reasons": {
+            "P015": "500g大份装，适合办公室多人分享；香辣耐嚼，开袋即食，便于同事取用；价格79.9元，在100元预算内。",
+            "P003": "川香麻辣、耐嚼，适合办公室分享；39.9元单价较低，可与大份装搭配，便于控制总花费在100元内。"
+          },
+          "price": {
+            "subtotal": 119.8,
+            "activityApplied": {
+              "id": "A001",
+              "name": "零食满减季"
+            },
+            "couponApplied": {
+              "id": "C001",
+              "name": "新人券",
+              "discount": 8
+            },
+            "savings": 23,
+            "finalPrice": 96.8,
+            "note": "按推荐商品各 1 件试算，不含运费",
+            "activityDiscount": 15,
+            "afterActivity": 104.8,
+            "couponDiscount": 8,
+            "allowedAmounts": {
+              "unitPrices": [
+                39.9,
+                79.9
+              ],
+              "thresholds": [
+                99,
+                59,
+                129,
+                49
+              ],
+              "discounts": [
+                15,
+                8
+              ]
+            }
+          },
+          "toolResults": [
+            {
+              "toolId": "query_products",
+              "output": {
+                "products": [
+                  {
+                    "id": "P003",
+                    "name": "麻辣牛肉脯",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "高蛋白",
+                      "耐嚼"
+                    ],
+                    "price": 39.9,
+                    "stock": 62,
+                    "rating": 4.7,
+                    "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                  },
+                  {
+                    "id": "P015",
+                    "name": "手撕肉脯大份装",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "大份",
+                      "耐嚼"
+                    ],
+                    "price": 79.9,
+                    "stock": 45,
+                    "rating": 4.7,
+                    "description": "500g 大份装,香辣耐嚼。"
+                  }
+                ],
+                "filterFallback": false
+              }
+            },
+            {
+              "toolId": "query_activities",
+              "output": {
+                "activities": [
+                  {
+                    "id": "A001",
+                    "name": "零食满减季",
+                    "type": "threshold_reduction",
+                    "threshold": 99,
+                    "discount": 15,
+                    "enabled": true,
+                    "description": "实付商品金额满99元减15元"
+                  },
+                  {
+                    "id": "A002",
+                    "name": "坚果组合优惠",
+                    "type": "category_discount",
+                    "category": "坚果",
+                    "rate": 0.9,
+                    "enabled": true,
+                    "description": "坚果类商品9折"
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "query_coupons",
+              "output": {
+                "coupons": [
+                  {
+                    "id": "C001",
+                    "name": "新人券",
+                    "threshold": 59,
+                    "discount": 8,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C002",
+                    "name": "满129减20券",
+                    "threshold": 129,
+                    "discount": 20,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C003",
+                    "name": "品类券",
+                    "threshold": 49,
+                    "discount": 6,
+                    "category": "坚果",
+                    "enabled": true,
+                    "stackable": false
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "calculate_price",
+              "output": {
+                "subtotal": 119.8,
+                "activityApplied": {
+                  "id": "A001",
+                  "name": "零食满减季"
+                },
+                "couponApplied": {
+                  "id": "C001",
+                  "name": "新人券",
+                  "discount": 8
+                },
+                "savings": 23,
+                "finalPrice": 96.8,
+                "note": "按推荐商品各 1 件试算，不含运费",
+                "activityDiscount": 15,
+                "afterActivity": 104.8,
+                "couponDiscount": 8,
+                "allowedAmounts": {
+                  "unitPrices": [
+                    39.9,
+                    79.9
+                  ],
+                  "thresholds": [
+                    99,
+                    59,
+                    129,
+                    49
+                  ],
+                  "discounts": [
+                    15,
+                    8
+                  ]
+                }
+              }
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": [
+            {
+              "skillId": "gift-scenario-advisor",
+              "output": {
+                "scenario": "办公室分享零食，预算100元，需要计算优惠",
+                "audience": "办公室同事",
+                "serving_needs": {
+                  "人数": "未明确",
+                  "分享方式": "办公室多人分享",
+                  "包装偏好": "未明确",
+                  "分装需求": "未明确",
+                  "预算": 100
+                },
+                "selection_criteria": [
+                  "口味丰富度：优先覆盖不同口味，避免全部为辣味",
+                  "单份数量：优先大份装或可拆分小包装，便于多人分享",
+                  "便携性：独立小包装或易分装形态更适合办公室传递",
+                  "分享便利性：开袋即食、不脏手、不易碎",
+                  "包装：适合多人取用的分享装或独立分装",
+                  "价格与优惠：以 Tool 返回的价格和活动为准，实付尽量不超过100元"
+                ],
+                "missing_information": [
+                  "办公室分享人数未明确",
+                  "是否需要独立小包装或分装",
+                  "口味偏好（是否全员吃辣、是否需要甜咸搭配）",
+                  "是否有坚果过敏等忌口",
+                  "包装偏好（礼盒、分享袋、独立小包）"
+                ]
+              }
+            }
+          ]
+        },
+        "output": {
+          "reply": "您好～按您100元预算做办公室分享，我帮您选了这两款：\n\n1. 手撕肉脯大份装（500g）79.9元：大份装适合多人分着吃，香辣耐嚼、开袋即食，同事取用方便。\n2. 麻辣牛肉脯 39.9元：川香麻辣、耐嚼，单价低，可以和大份装搭配，把总花费控制在预算内。\n\n优惠试算（按两款各1件、不含运费）：\n- 商品小计：119.8元\n- 零食满减季：满99减15元，减后104.8元\n- 新人券：满59减8元\n- 合计优惠23元，最终价96.8元，在您100元预算内。\n\n不过这两款都是辣味，如果办公室有同事不吃辣，建议再搭配一点甜口或咸香口味会更稳妥。请问大概多少人分享、需不需要独立小包装或分装呢？我可以再帮您调整得更合适。",
+          "type": "json_object"
+        },
+        "startedAt": "2026-10-24T09:19:34.405Z",
+        "durationMs": 1945,
+        "attempts": 1
+      },
+      {
+        "id": "step_10",
+        "capability": "risk-check",
+        "type": "skill",
+        "purpose": "强制最终风控审核",
+        "status": "success",
+        "input": {
+          "userInput": "预算100元，推荐办公室分享零食并算一下优惠",
+          "conversation_history": [],
+          "reply": "您好～按您100元预算做办公室分享，我帮您选了这两款：\n\n1. 手撕肉脯大份装（500g）79.9元：大份装适合多人分着吃，香辣耐嚼、开袋即食，同事取用方便。\n2. 麻辣牛肉脯 39.9元：川香麻辣、耐嚼，单价低，可以和大份装搭配，把总花费控制在预算内。\n\n优惠试算（按两款各1件、不含运费）：\n- 商品小计：119.8元\n- 零食满减季：满99减15元，减后104.8元\n- 新人券：满59减8元\n- 合计优惠23元，最终价96.8元，在您100元预算内。\n\n不过这两款都是辣味，如果办公室有同事不吃辣，建议再搭配一点甜口或咸香口味会更稳妥。请问大概多少人分享、需不需要独立小包装或分装呢？我可以再帮您调整得更合适。",
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "price": {
+            "subtotal": 119.8,
+            "activityApplied": {
+              "id": "A001",
+              "name": "零食满减季"
+            },
+            "couponApplied": {
+              "id": "C001",
+              "name": "新人券",
+              "discount": 8
+            },
+            "savings": 23,
+            "finalPrice": 96.8,
+            "note": "按推荐商品各 1 件试算，不含运费",
+            "activityDiscount": 15,
+            "afterActivity": 104.8,
+            "couponDiscount": 8,
+            "allowedAmounts": {
+              "unitPrices": [
+                39.9,
+                79.9
+              ],
+              "thresholds": [
+                99,
+                59,
+                129,
+                49
+              ],
+              "discounts": [
+                15,
+                8
+              ]
+            }
+          },
+          "toolResults": [
+            {
+              "toolId": "query_products",
+              "output": {
+                "products": [
+                  {
+                    "id": "P003",
+                    "name": "麻辣牛肉脯",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "高蛋白",
+                      "耐嚼"
+                    ],
+                    "price": 39.9,
+                    "stock": 62,
+                    "rating": 4.7,
+                    "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                  },
+                  {
+                    "id": "P015",
+                    "name": "手撕肉脯大份装",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "大份",
+                      "耐嚼"
+                    ],
+                    "price": 79.9,
+                    "stock": 45,
+                    "rating": 4.7,
+                    "description": "500g 大份装,香辣耐嚼。"
+                  }
+                ],
+                "filterFallback": false
+              }
+            },
+            {
+              "toolId": "query_activities",
+              "output": {
+                "activities": [
+                  {
+                    "id": "A001",
+                    "name": "零食满减季",
+                    "type": "threshold_reduction",
+                    "threshold": 99,
+                    "discount": 15,
+                    "enabled": true,
+                    "description": "实付商品金额满99元减15元"
+                  },
+                  {
+                    "id": "A002",
+                    "name": "坚果组合优惠",
+                    "type": "category_discount",
+                    "category": "坚果",
+                    "rate": 0.9,
+                    "enabled": true,
+                    "description": "坚果类商品9折"
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "query_coupons",
+              "output": {
+                "coupons": [
+                  {
+                    "id": "C001",
+                    "name": "新人券",
+                    "threshold": 59,
+                    "discount": 8,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C002",
+                    "name": "满129减20券",
+                    "threshold": 129,
+                    "discount": 20,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C003",
+                    "name": "品类券",
+                    "threshold": 49,
+                    "discount": 6,
+                    "category": "坚果",
+                    "enabled": true,
+                    "stackable": false
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "calculate_price",
+              "output": {
+                "subtotal": 119.8,
+                "activityApplied": {
+                  "id": "A001",
+                  "name": "零食满减季"
+                },
+                "couponApplied": {
+                  "id": "C001",
+                  "name": "新人券",
+                  "discount": 8
+                },
+                "savings": 23,
+                "finalPrice": 96.8,
+                "note": "按推荐商品各 1 件试算，不含运费",
+                "activityDiscount": 15,
+                "afterActivity": 104.8,
+                "couponDiscount": 8,
+                "allowedAmounts": {
+                  "unitPrices": [
+                    39.9,
+                    79.9
+                  ],
+                  "thresholds": [
+                    99,
+                    59,
+                    129,
+                    49
+                  ],
+                  "discounts": [
+                    15,
+                    8
+                  ]
+                }
+              }
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": [
+            {
+              "skillId": "gift-scenario-advisor",
+              "output": {
+                "scenario": "办公室分享零食，预算100元，需要计算优惠",
+                "audience": "办公室同事",
+                "serving_needs": {
+                  "人数": "未明确",
+                  "分享方式": "办公室多人分享",
+                  "包装偏好": "未明确",
+                  "分装需求": "未明确",
+                  "预算": 100
+                },
+                "selection_criteria": [
+                  "口味丰富度：优先覆盖不同口味，避免全部为辣味",
+                  "单份数量：优先大份装或可拆分小包装，便于多人分享",
+                  "便携性：独立小包装或易分装形态更适合办公室传递",
+                  "分享便利性：开袋即食、不脏手、不易碎",
+                  "包装：适合多人取用的分享装或独立分装",
+                  "价格与优惠：以 Tool 返回的价格和活动为准，实付尽量不超过100元"
+                ],
+                "missing_information": [
+                  "办公室分享人数未明确",
+                  "是否需要独立小包装或分装",
+                  "口味偏好（是否全员吃辣、是否需要甜咸搭配）",
+                  "是否有坚果过敏等忌口",
+                  "包装偏好（礼盒、分享袋、独立小包）"
+                ]
+              }
+            }
+          ]
+        },
+        "output": {
+          "passed": true,
+          "risk_level": "low",
+          "issues": [],
+          "safe_reply": "您好～按您100元预算做办公室分享，我帮您选了这两款：\n\n1. 手撕肉脯大份装（500g）79.9元：大份装适合多人分着吃，香辣耐嚼、开袋即食，同事取用方便。\n2. 麻辣牛肉脯 39.9元：川香麻辣、耐嚼，单价低，可以和大份装搭配，把总花费控制在预算内。\n\n优惠试算（按两款各1件、不含运费）：\n- 商品小计：119.8元\n- 零食满减季：满99减15元，减后104.8元\n- 新人券：满59减8元\n- 合计优惠23元，最终价96.8元，在您100元预算内。\n\n不过这两款都是辣味，如果办公室有同事不吃辣，建议再搭配一点甜口或咸香口味会更稳妥。请问大概多少人分享、需不需要独立小包装或分装呢？我可以再帮您调整得更合适。"
+        },
+        "startedAt": "2026-10-24T09:19:36.350Z",
+        "durationMs": 1426,
+        "attempts": 1
+      }
+    ],
+    "status": "pending",
+    "createdAt": "2026-10-24T09:19:37.778Z"
+  },
+  {
+    "id": "c8982766-7daa-4856-a9f2-b039a5e5714b",
+    "sessionId": "smoke-price-01",
+    "input": "预算 100 元，推荐三款零食并算最后要付多少",
+    "reason": "闸门拦截：price_mismatch:总额语境金额 8 与 finalPrice 96.8 不一致（上下文：4.8元，再使用“新人券”减8元，最终应付96.8元（不含运）",
+    "gateVerdict": {
+      "status": "blocked",
+      "thresholds": {
+        "release": 0.9,
+        "forbidden": 0.8,
+        "actionConfidence": 0.8,
+        "fraudSuspect": 0.5,
+        "fraudGuidance": 0.9,
+        "noneProbability": 0.5
+      },
+      "latencyMs": 0,
+      "blockedBy": "price_mismatch:总额语境金额 8 与 finalPrice 96.8 不一致（上下文：4.8元，再使用“新人券”减8元，最终应付96.8元（不含运）",
+      "answers": {
+        "no_fabrication": {
+          "type": "noul",
+          "noul": 0.97
+        },
+        "no_forbidden_claims": {
+          "type": "noul",
+          "noul": 0.96
+        },
+        "is_fraud_suspected": {
+          "type": "noul",
+          "noul": 0.02
+        },
+        "reply_has_fraud_guidance": {
+          "type": "noul",
+          "noul": 0.9
+        },
+        "action": {
+          "type": "choice",
+          "choice": "release",
+          "confidence": 0.94,
+          "probabilities": {
+            "release": 0.94,
+            "revise": 0.04,
+            "escalate": 0.02
+          },
+          "none_probability": 0
+        }
+      }
+    },
+    "trace": [
+      {
+        "id": "step_1",
+        "capability": "need-extraction",
+        "type": "skill",
+        "purpose": "必经 Skill · $need-extraction",
+        "status": "success",
+        "input": {
+          "userInput": "预算 100 元，推荐三款零食并算最后要付多少",
+          "conversation_history": []
+        },
+        "output": {
+          "intent": "推荐三款零食并计算最终应付金额",
+          "taste": [],
+          "categories": [
+            "零食"
+          ],
+          "budget": 100,
+          "quantity": 3,
+          "scenario": null,
+          "constraints": [],
+          "needs_price": true
+        },
+        "startedAt": "2026-10-24T09:12:07.603Z",
+        "durationMs": 772,
+        "attempts": 1
+      },
+      {
+        "id": "step_2",
+        "capability": "query_products",
+        "type": "tool",
+        "purpose": "规则要求 · query_products",
+        "status": "success",
+        "input": {
+          "userInput": "预算 100 元，推荐三款零食并算最后要付多少",
+          "need": {
+            "intent": "推荐三款零食并计算最终应付金额",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 3,
+            "scenario": null,
+            "constraints": [],
+            "needs_price": true
+          }
+        },
+        "output": {
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "filterFallback": false
+        },
+        "startedAt": "2026-10-24T09:12:08.375Z",
+        "durationMs": 4,
+        "attempts": 1
+      },
+      {
+        "id": "step_3",
+        "capability": "query_activities",
+        "type": "tool",
+        "purpose": "规则要求 · query_activities",
+        "status": "success",
+        "input": {
+          "userInput": "预算 100 元，推荐三款零食并算最后要付多少",
+          "need": {
+            "intent": "推荐三款零食并计算最终应付金额",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 3,
+            "scenario": null,
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ]
+        },
+        "output": {
+          "activities": [
+            {
+              "id": "A001",
+              "name": "零食满减季",
+              "type": "threshold_reduction",
+              "threshold": 99,
+              "discount": 15,
+              "enabled": true,
+              "description": "实付商品金额满99元减15元"
+            },
+            {
+              "id": "A002",
+              "name": "坚果组合优惠",
+              "type": "category_discount",
+              "category": "坚果",
+              "rate": 0.9,
+              "enabled": true,
+              "description": "坚果类商品9折"
+            }
+          ]
+        },
+        "startedAt": "2026-10-24T09:12:08.379Z",
+        "durationMs": 1,
+        "attempts": 1
+      },
+      {
+        "id": "step_4",
+        "capability": "query_coupons",
+        "type": "tool",
+        "purpose": "规则要求 · query_coupons",
+        "status": "success",
+        "input": {
+          "userInput": "预算 100 元，推荐三款零食并算最后要付多少",
+          "need": {
+            "intent": "推荐三款零食并计算最终应付金额",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 3,
+            "scenario": null,
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "activities": [
+            {
+              "id": "A001",
+              "name": "零食满减季",
+              "type": "threshold_reduction",
+              "threshold": 99,
+              "discount": 15,
+              "enabled": true,
+              "description": "实付商品金额满99元减15元"
+            },
+            {
+              "id": "A002",
+              "name": "坚果组合优惠",
+              "type": "category_discount",
+              "category": "坚果",
+              "rate": 0.9,
+              "enabled": true,
+              "description": "坚果类商品9折"
+            }
+          ]
+        },
+        "output": {
+          "coupons": [
+            {
+              "id": "C001",
+              "name": "新人券",
+              "threshold": 59,
+              "discount": 8,
+              "enabled": true,
+              "stackable": true
+            },
+            {
+              "id": "C002",
+              "name": "满129减20券",
+              "threshold": 129,
+              "discount": 20,
+              "enabled": true,
+              "stackable": true
+            },
+            {
+              "id": "C003",
+              "name": "品类券",
+              "threshold": 49,
+              "discount": 6,
+              "category": "坚果",
+              "enabled": true,
+              "stackable": false
+            }
+          ]
+        },
+        "startedAt": "2026-10-24T09:12:08.380Z",
+        "durationMs": 0,
+        "attempts": 1
+      },
+      {
+        "id": "step_5",
+        "capability": "recommendation-decision",
+        "type": "skill",
+        "purpose": "必经 Skill · $recommendation-decision",
+        "status": "success",
+        "input": {
+          "userInput": "预算 100 元，推荐三款零食并算最后要付多少",
+          "conversation_history": [],
+          "need": {
+            "intent": "推荐三款零食并计算最终应付金额",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 3,
+            "scenario": null,
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "toolResults": [
+            {
+              "toolId": "query_products",
+              "output": {
+                "products": [
+                  {
+                    "id": "P003",
+                    "name": "麻辣牛肉脯",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "高蛋白",
+                      "耐嚼"
+                    ],
+                    "price": 39.9,
+                    "stock": 62,
+                    "rating": 4.7,
+                    "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                  },
+                  {
+                    "id": "P015",
+                    "name": "手撕肉脯大份装",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "大份",
+                      "耐嚼"
+                    ],
+                    "price": 79.9,
+                    "stock": 45,
+                    "rating": 4.7,
+                    "description": "500g 大份装,香辣耐嚼。"
+                  }
+                ],
+                "filterFallback": false
+              }
+            },
+            {
+              "toolId": "query_activities",
+              "output": {
+                "activities": [
+                  {
+                    "id": "A001",
+                    "name": "零食满减季",
+                    "type": "threshold_reduction",
+                    "threshold": 99,
+                    "discount": 15,
+                    "enabled": true,
+                    "description": "实付商品金额满99元减15元"
+                  },
+                  {
+                    "id": "A002",
+                    "name": "坚果组合优惠",
+                    "type": "category_discount",
+                    "category": "坚果",
+                    "rate": 0.9,
+                    "enabled": true,
+                    "description": "坚果类商品9折"
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "query_coupons",
+              "output": {
+                "coupons": [
+                  {
+                    "id": "C001",
+                    "name": "新人券",
+                    "threshold": 59,
+                    "discount": 8,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C002",
+                    "name": "满129减20券",
+                    "threshold": 129,
+                    "discount": 20,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C003",
+                    "name": "品类券",
+                    "threshold": 49,
+                    "discount": 6,
+                    "category": "坚果",
+                    "enabled": true,
+                    "stackable": false
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "calculate_price",
+              "output": {
+                "subtotal": 119.8,
+                "activityApplied": {
+                  "id": "A001",
+                  "name": "零食满减季"
+                },
+                "couponApplied": {
+                  "id": "C001",
+                  "name": "新人券",
+                  "discount": 8
+                },
+                "savings": 23,
+                "finalPrice": 96.8,
+                "note": "按推荐商品各 1 件试算，不含运费",
+                "activityDiscount": 15,
+                "afterActivity": 104.8,
+                "couponDiscount": 8,
+                "allowedAmounts": {
+                  "unitPrices": [
+                    39.9,
+                    79.9
+                  ],
+                  "thresholds": [
+                    99,
+                    59,
+                    129,
+                    49
+                  ],
+                  "discounts": [
+                    15,
+                    8
+                  ]
+                }
+              }
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": []
+        },
+        "output": {
+          "recommended_product_ids": [
+            "P003",
+            "P015"
+          ],
+          "decision_summary": "候选零食仅两款，均符合零食类目且在100元预算内；按评分相同、价格更易组合满减排序，P003单价低更适合凑单，P015大份装满足量需求。仅能推荐这两款，无法凑满三款。若各买1件，商品金额119.8元，满足满99减15活动，并可用新人券满59减8（可叠加），最终应付96.8元。"
+        },
+        "startedAt": "2026-10-24T09:12:08.380Z",
+        "durationMs": 1263,
+        "attempts": 1
+      },
+      {
+        "id": "step_6",
+        "capability": "calculate_price",
+        "type": "tool",
+        "purpose": "推荐完成后确定性计价 · calculate_price",
+        "status": "success",
+        "input": {
+          "userInput": "预算 100 元，推荐三款零食并算最后要付多少",
+          "need": {
+            "intent": "推荐三款零食并计算最终应付金额",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 3,
+            "scenario": null,
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "activities": [
+            {
+              "id": "A001",
+              "name": "零食满减季",
+              "type": "threshold_reduction",
+              "threshold": 99,
+              "discount": 15,
+              "enabled": true,
+              "description": "实付商品金额满99元减15元"
+            },
+            {
+              "id": "A002",
+              "name": "坚果组合优惠",
+              "type": "category_discount",
+              "category": "坚果",
+              "rate": 0.9,
+              "enabled": true,
+              "description": "坚果类商品9折"
+            }
+          ],
+          "coupons": [
+            {
+              "id": "C001",
+              "name": "新人券",
+              "threshold": 59,
+              "discount": 8,
+              "enabled": true,
+              "stackable": true
+            },
+            {
+              "id": "C002",
+              "name": "满129减20券",
+              "threshold": 129,
+              "discount": 20,
+              "enabled": true,
+              "stackable": true
+            },
+            {
+              "id": "C003",
+              "name": "品类券",
+              "threshold": 49,
+              "discount": 6,
+              "category": "坚果",
+              "enabled": true,
+              "stackable": false
+            }
+          ]
+        },
+        "output": {
+          "subtotal": 119.8,
+          "activityApplied": {
+            "id": "A001",
+            "name": "零食满减季"
+          },
+          "couponApplied": {
+            "id": "C001",
+            "name": "新人券",
+            "discount": 8
+          },
+          "savings": 23,
+          "finalPrice": 96.8,
+          "note": "按推荐商品各 1 件试算，不含运费",
+          "activityDiscount": 15,
+          "afterActivity": 104.8,
+          "couponDiscount": 8,
+          "allowedAmounts": {
+            "unitPrices": [
+              39.9,
+              79.9
+            ],
+            "thresholds": [
+              99,
+              59,
+              129,
+              49
+            ],
+            "discounts": [
+              15,
+              8
+            ]
+          }
+        },
+        "startedAt": "2026-10-24T09:12:09.643Z",
+        "durationMs": 1,
+        "attempts": 1
+      },
+      {
+        "id": "step_7",
+        "capability": "recommendation-reason",
+        "type": "skill",
+        "purpose": "必经 Skill · $recommendation-reason",
+        "status": "success",
+        "input": {
+          "conversation_history": [],
+          "need": {
+            "intent": "推荐三款零食并计算最终应付金额",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 3,
+            "scenario": null,
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": []
+        },
+        "output": {
+          "reasons": {
+            "P003": "麻辣牛肉脯为辣味、耐嚼的肉类零食，单价39.9元，适合作为三款零食中的一款；与预算100元搭配时便于控制总价。",
+            "P015": "手撕肉脯大份装为500g大份装、香辣耐嚼的肉类零食，单价79.9元；若作为三款之一，需注意与其他商品合计可能超出100元预算。"
+          }
+        },
+        "startedAt": "2026-10-24T09:12:09.644Z",
+        "durationMs": 1317,
+        "attempts": 1
+      },
+      {
+        "id": "step_8",
+        "capability": "response-generator",
+        "type": "skill",
+        "purpose": "必经 Skill · $response-generator",
+        "status": "success",
+        "input": {
+          "userInput": "预算 100 元，推荐三款零食并算最后要付多少",
+          "conversation_history": [],
+          "need": {
+            "intent": "推荐三款零食并计算最终应付金额",
+            "taste": [],
+            "categories": [
+              "零食"
+            ],
+            "budget": 100,
+            "quantity": 3,
+            "scenario": null,
+            "constraints": [],
+            "needs_price": true
+          },
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "reasons": {
+            "P003": "麻辣牛肉脯为辣味、耐嚼的肉类零食，单价39.9元，适合作为三款零食中的一款；与预算100元搭配时便于控制总价。",
+            "P015": "手撕肉脯大份装为500g大份装、香辣耐嚼的肉类零食，单价79.9元；若作为三款之一，需注意与其他商品合计可能超出100元预算。"
+          },
+          "price": {
+            "subtotal": 119.8,
+            "activityApplied": {
+              "id": "A001",
+              "name": "零食满减季"
+            },
+            "couponApplied": {
+              "id": "C001",
+              "name": "新人券",
+              "discount": 8
+            },
+            "savings": 23,
+            "finalPrice": 96.8,
+            "note": "按推荐商品各 1 件试算，不含运费",
+            "activityDiscount": 15,
+            "afterActivity": 104.8,
+            "couponDiscount": 8,
+            "allowedAmounts": {
+              "unitPrices": [
+                39.9,
+                79.9
+              ],
+              "thresholds": [
+                99,
+                59,
+                129,
+                49
+              ],
+              "discounts": [
+                15,
+                8
+              ]
+            }
+          },
+          "toolResults": [
+            {
+              "toolId": "query_products",
+              "output": {
+                "products": [
+                  {
+                    "id": "P003",
+                    "name": "麻辣牛肉脯",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "高蛋白",
+                      "耐嚼"
+                    ],
+                    "price": 39.9,
+                    "stock": 62,
+                    "rating": 4.7,
+                    "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                  },
+                  {
+                    "id": "P015",
+                    "name": "手撕肉脯大份装",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "大份",
+                      "耐嚼"
+                    ],
+                    "price": 79.9,
+                    "stock": 45,
+                    "rating": 4.7,
+                    "description": "500g 大份装,香辣耐嚼。"
+                  }
+                ],
+                "filterFallback": false
+              }
+            },
+            {
+              "toolId": "query_activities",
+              "output": {
+                "activities": [
+                  {
+                    "id": "A001",
+                    "name": "零食满减季",
+                    "type": "threshold_reduction",
+                    "threshold": 99,
+                    "discount": 15,
+                    "enabled": true,
+                    "description": "实付商品金额满99元减15元"
+                  },
+                  {
+                    "id": "A002",
+                    "name": "坚果组合优惠",
+                    "type": "category_discount",
+                    "category": "坚果",
+                    "rate": 0.9,
+                    "enabled": true,
+                    "description": "坚果类商品9折"
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "query_coupons",
+              "output": {
+                "coupons": [
+                  {
+                    "id": "C001",
+                    "name": "新人券",
+                    "threshold": 59,
+                    "discount": 8,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C002",
+                    "name": "满129减20券",
+                    "threshold": 129,
+                    "discount": 20,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C003",
+                    "name": "品类券",
+                    "threshold": 49,
+                    "discount": 6,
+                    "category": "坚果",
+                    "enabled": true,
+                    "stackable": false
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "calculate_price",
+              "output": {
+                "subtotal": 119.8,
+                "activityApplied": {
+                  "id": "A001",
+                  "name": "零食满减季"
+                },
+                "couponApplied": {
+                  "id": "C001",
+                  "name": "新人券",
+                  "discount": 8
+                },
+                "savings": 23,
+                "finalPrice": 96.8,
+                "note": "按推荐商品各 1 件试算，不含运费",
+                "activityDiscount": 15,
+                "afterActivity": 104.8,
+                "couponDiscount": 8,
+                "allowedAmounts": {
+                  "unitPrices": [
+                    39.9,
+                    79.9
+                  ],
+                  "thresholds": [
+                    99,
+                    59,
+                    129,
+                    49
+                  ],
+                  "discounts": [
+                    15,
+                    8
+                  ]
+                }
+              }
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": []
+        },
+        "output": {
+          "reply": "您好，按您100元预算，目前可推荐的零食有：麻辣牛肉脯（39.9元）和手撕肉脯大份装（79.9元）。按这两款各1件试算，商品小计119.8元；参加“零食满减季”满99减15后为104.8元，再使用“新人券”减8元，最终应付96.8元（不含运费）。需要说明的是，目前可推荐的商品只有这两款，暂时凑不齐三款；如果您愿意，我可以继续帮您看看同价位其他零食。"
+        },
+        "startedAt": "2026-10-24T09:12:10.961Z",
+        "durationMs": 1581,
+        "attempts": 1
+      },
+      {
+        "id": "step_9",
+        "capability": "risk-check",
+        "type": "skill",
+        "purpose": "强制最终风控审核",
+        "status": "success",
+        "input": {
+          "userInput": "预算 100 元，推荐三款零食并算最后要付多少",
+          "conversation_history": [],
+          "reply": "您好，按您100元预算，目前可推荐的零食有：麻辣牛肉脯（39.9元）和手撕肉脯大份装（79.9元）。按这两款各1件试算，商品小计119.8元；参加“零食满减季”满99减15后为104.8元，再使用“新人券”减8元，最终应付96.8元（不含运费）。需要说明的是，目前可推荐的商品只有这两款，暂时凑不齐三款；如果您愿意，我可以继续帮您看看同价位其他零食。",
+          "products": [
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            },
+            {
+              "id": "P015",
+              "name": "手撕肉脯大份装",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "大份",
+                "耐嚼"
+              ],
+              "price": 79.9,
+              "stock": 45,
+              "rating": 4.7,
+              "description": "500g 大份装,香辣耐嚼。"
+            }
+          ],
+          "price": {
+            "subtotal": 119.8,
+            "activityApplied": {
+              "id": "A001",
+              "name": "零食满减季"
+            },
+            "couponApplied": {
+              "id": "C001",
+              "name": "新人券",
+              "discount": 8
+            },
+            "savings": 23,
+            "finalPrice": 96.8,
+            "note": "按推荐商品各 1 件试算，不含运费",
+            "activityDiscount": 15,
+            "afterActivity": 104.8,
+            "couponDiscount": 8,
+            "allowedAmounts": {
+              "unitPrices": [
+                39.9,
+                79.9
+              ],
+              "thresholds": [
+                99,
+                59,
+                129,
+                49
+              ],
+              "discounts": [
+                15,
+                8
+              ]
+            }
+          },
+          "toolResults": [
+            {
+              "toolId": "query_products",
+              "output": {
+                "products": [
+                  {
+                    "id": "P003",
+                    "name": "麻辣牛肉脯",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "高蛋白",
+                      "耐嚼"
+                    ],
+                    "price": 39.9,
+                    "stock": 62,
+                    "rating": 4.7,
+                    "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                  },
+                  {
+                    "id": "P015",
+                    "name": "手撕肉脯大份装",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "大份",
+                      "耐嚼"
+                    ],
+                    "price": 79.9,
+                    "stock": 45,
+                    "rating": 4.7,
+                    "description": "500g 大份装,香辣耐嚼。"
+                  }
+                ],
+                "filterFallback": false
+              }
+            },
+            {
+              "toolId": "query_activities",
+              "output": {
+                "activities": [
+                  {
+                    "id": "A001",
+                    "name": "零食满减季",
+                    "type": "threshold_reduction",
+                    "threshold": 99,
+                    "discount": 15,
+                    "enabled": true,
+                    "description": "实付商品金额满99元减15元"
+                  },
+                  {
+                    "id": "A002",
+                    "name": "坚果组合优惠",
+                    "type": "category_discount",
+                    "category": "坚果",
+                    "rate": 0.9,
+                    "enabled": true,
+                    "description": "坚果类商品9折"
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "query_coupons",
+              "output": {
+                "coupons": [
+                  {
+                    "id": "C001",
+                    "name": "新人券",
+                    "threshold": 59,
+                    "discount": 8,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C002",
+                    "name": "满129减20券",
+                    "threshold": 129,
+                    "discount": 20,
+                    "enabled": true,
+                    "stackable": true
+                  },
+                  {
+                    "id": "C003",
+                    "name": "品类券",
+                    "threshold": 49,
+                    "discount": 6,
+                    "category": "坚果",
+                    "enabled": true,
+                    "stackable": false
+                  }
+                ]
+              }
+            },
+            {
+              "toolId": "calculate_price",
+              "output": {
+                "subtotal": 119.8,
+                "activityApplied": {
+                  "id": "A001",
+                  "name": "零食满减季"
+                },
+                "couponApplied": {
+                  "id": "C001",
+                  "name": "新人券",
+                  "discount": 8
+                },
+                "savings": 23,
+                "finalPrice": 96.8,
+                "note": "按推荐商品各 1 件试算，不含运费",
+                "activityDiscount": 15,
+                "afterActivity": 104.8,
+                "couponDiscount": 8,
+                "allowedAmounts": {
+                  "unitPrices": [
+                    39.9,
+                    79.9
+                  ],
+                  "thresholds": [
+                    99,
+                    59,
+                    129,
+                    49
+                  ],
+                  "discounts": [
+                    15,
+                    8
+                  ]
+                }
+              }
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": []
+        },
+        "output": {
+          "passed": true,
+          "risk_level": "low",
+          "issues": [],
+          "safe_reply": "您好，按您100元预算，目前可推荐的零食有：麻辣牛肉脯（39.9元）和手撕肉脯大份装（79.9元）。按这两款各1件试算，商品小计119.8元；参加“零食满减季”满99减15后为104.8元，再使用“新人券”减8元，最终应付96.8元（不含运费）。需要说明的是，目前可推荐的商品只有这两款，暂时凑不齐三款；如果您愿意，我可以继续帮您看看同价位其他零食。"
+        },
+        "startedAt": "2026-10-24T09:12:12.542Z",
+        "durationMs": 965,
+        "attempts": 1
+      }
+    ],
+    "status": "pending",
+    "createdAt": "2026-10-24T09:12:13.509Z"
+  },
+  {
+    "id": "ebb56f07-5843-426c-ad8a-d3edc2555131",
+    "sessionId": "smoke-fraud-01",
+    "input": "�ͷ�˵���н��ˣ����Ұ��յ��Ķ�����֤�뷢�����Ǽǣ�������",
+    "reason": "闸门拦截：action_missing_confidence_0",
+    "gateVerdict": {
+      "status": "blocked",
+      "thresholds": {
+        "release": 0.9,
+        "forbidden": 0.8,
+        "actionConfidence": 0.8,
+        "fraudSuspect": 0.5,
+        "fraudGuidance": 0.9,
+        "noneProbability": 0.5
+      },
+      "latencyMs": 1,
+      "action": "",
+      "confidence": 0,
+      "noneProbability": 0,
+      "blockedBy": "action_missing_confidence_0",
+      "answers": {
+        "answers": {
+          "no_fabrication": {
+            "type": "noul",
+            "noul": 0.97
+          },
+          "no_forbidden_claims": {
+            "type": "noul",
+            "noul": 0.96
+          },
+          "is_fraud_suspected": {
+            "type": "noul",
+            "noul": 0.02
+          },
+          "reply_has_fraud_guidance": {
+            "type": "noul",
+            "noul": 0.9
+          },
+          "action": {
+            "type": "choice",
+            "choice": "release",
+            "confidence": 0.94,
+            "probabilities": {
+              "release": 0.94,
+              "revise": 0.04,
+              "escalate": 0.02
+            },
+            "none_probability": 0
+          }
+        },
+        "usage": {
+          "input_tokens": 0,
+          "output_tokens": 0
+        },
+        "model": "mock"
+      }
+    },
+    "trace": [
+      {
+        "id": "step_1",
+        "capability": "need-extraction",
+        "type": "skill",
+        "purpose": "必经 Skill · $need-extraction",
+        "status": "success",
+        "input": {
+          "userInput": "�ͷ�˵���н��ˣ����Ұ��յ��Ķ�����֤�뷢�����Ǽǣ�������",
+          "conversation_history": []
+        },
+        "output": {
+          "intent": "客户要求客服将订单验证码发送到登记手机号",
+          "taste": [],
+          "categories": [],
+          "budget": null,
+          "quantity": 1,
+          "scenario": null,
+          "constraints": [
+            "发送到登记手机号"
+          ],
+          "needs_price": false
+        },
+        "startedAt": "2026-10-24T09:08:28.593Z",
+        "durationMs": 767,
+        "attempts": 1
+      },
+      {
+        "id": "step_2",
+        "capability": "query_products",
+        "type": "tool",
+        "purpose": "规则要求 · query_products",
+        "status": "success",
+        "input": {
+          "userInput": "�ͷ�˵���н��ˣ����Ұ��յ��Ķ�����֤�뷢�����Ǽǣ�������",
+          "need": {
+            "intent": "客户要求客服将订单验证码发送到登记手机号",
+            "taste": [],
+            "categories": [],
+            "budget": null,
+            "quantity": 1,
+            "scenario": null,
+            "constraints": [
+              "发送到登记手机号"
+            ],
+            "needs_price": false
+          }
+        },
+        "output": {
+          "products": [
+            {
+              "id": "P002",
+              "name": "低糖每日坚果",
+              "category": "坚果",
+              "tags": [
+                "低糖",
+                "健康",
+                "独立包装"
+              ],
+              "price": 45.9,
+              "stock": 83,
+              "rating": 4.9,
+              "description": "6种坚果果干搭配，无额外蔗糖。"
+            },
+            {
+              "id": "P001",
+              "name": "海盐芝士小饼干",
+              "category": "饼干",
+              "tags": [
+                "咸口",
+                "芝士",
+                "独立包装"
+              ],
+              "price": 29.9,
+              "stock": 126,
+              "rating": 4.8,
+              "description": "酥脆咸香，独立小包，适合办公室分享。"
+            },
+            {
+              "id": "P004",
+              "name": "冻干草莓脆",
+              "category": "果干",
+              "tags": [
+                "酸甜",
+                "低脂",
+                "儿童"
+              ],
+              "price": 25.9,
+              "stock": 155,
+              "rating": 4.8,
+              "description": "整颗草莓冻干，配料简单，酥脆酸甜。"
+            },
+            {
+              "id": "P009",
+              "name": "混合坚果大礼包",
+              "category": "坚果",
+              "tags": [
+                "坚果",
+                "礼盒",
+                "分享"
+              ],
+              "price": 129.9,
+              "stock": 55,
+              "rating": 4.8,
+              "description": "腰果、扁桃仁、核桃、榛子混合装。"
+            },
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            }
+          ],
+          "filterFallback": false
+        },
+        "startedAt": "2026-10-24T09:08:29.360Z",
+        "durationMs": 2,
+        "attempts": 1
+      },
+      {
+        "id": "step_3",
+        "capability": "query_order_logistics",
+        "type": "tool",
+        "purpose": "根据客户订单号查询物流状态和预计送达时间",
+        "status": "success",
+        "input": {
+          "userInput": "�ͷ�˵���н��ˣ����Ұ��յ��Ķ�����֤�뷢�����Ǽǣ�������",
+          "need": {
+            "intent": "客户要求客服将订单验证码发送到登记手机号",
+            "taste": [],
+            "categories": [],
+            "budget": null,
+            "quantity": 1,
+            "scenario": null,
+            "constraints": [
+              "发送到登记手机号"
+            ],
+            "needs_price": false
+          },
+          "products": [
+            {
+              "id": "P002",
+              "name": "低糖每日坚果",
+              "category": "坚果",
+              "tags": [
+                "低糖",
+                "健康",
+                "独立包装"
+              ],
+              "price": 45.9,
+              "stock": 83,
+              "rating": 4.9,
+              "description": "6种坚果果干搭配，无额外蔗糖。"
+            },
+            {
+              "id": "P001",
+              "name": "海盐芝士小饼干",
+              "category": "饼干",
+              "tags": [
+                "咸口",
+                "芝士",
+                "独立包装"
+              ],
+              "price": 29.9,
+              "stock": 126,
+              "rating": 4.8,
+              "description": "酥脆咸香，独立小包，适合办公室分享。"
+            },
+            {
+              "id": "P004",
+              "name": "冻干草莓脆",
+              "category": "果干",
+              "tags": [
+                "酸甜",
+                "低脂",
+                "儿童"
+              ],
+              "price": 25.9,
+              "stock": 155,
+              "rating": 4.8,
+              "description": "整颗草莓冻干，配料简单，酥脆酸甜。"
+            },
+            {
+              "id": "P009",
+              "name": "混合坚果大礼包",
+              "category": "坚果",
+              "tags": [
+                "坚果",
+                "礼盒",
+                "分享"
+              ],
+              "price": 129.9,
+              "stock": 55,
+              "rating": 4.8,
+              "description": "腰果、扁桃仁、核桃、榛子混合装。"
+            },
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            }
+          ]
+        },
+        "output": {
+          "found": false,
+          "reason": "未在客户消息中识别到订单号",
+          "requiredField": "orderId"
+        },
+        "startedAt": "2026-10-24T09:08:29.362Z",
+        "durationMs": 1,
+        "attempts": 1
+      },
+      {
+        "id": "step_4",
+        "capability": "query_return_policy",
+        "type": "tool",
+        "purpose": "查询退换货政策以确认验证码登记相关处理路径",
+        "status": "success",
+        "input": {
+          "userInput": "�ͷ�˵���н��ˣ����Ұ��յ��Ķ�����֤�뷢�����Ǽǣ�������",
+          "need": {
+            "intent": "客户要求客服将订单验证码发送到登记手机号",
+            "taste": [],
+            "categories": [],
+            "budget": null,
+            "quantity": 1,
+            "scenario": null,
+            "constraints": [
+              "发送到登记手机号"
+            ],
+            "needs_price": false
+          },
+          "products": [
+            {
+              "id": "P002",
+              "name": "低糖每日坚果",
+              "category": "坚果",
+              "tags": [
+                "低糖",
+                "健康",
+                "独立包装"
+              ],
+              "price": 45.9,
+              "stock": 83,
+              "rating": 4.9,
+              "description": "6种坚果果干搭配，无额外蔗糖。"
+            },
+            {
+              "id": "P001",
+              "name": "海盐芝士小饼干",
+              "category": "饼干",
+              "tags": [
+                "咸口",
+                "芝士",
+                "独立包装"
+              ],
+              "price": 29.9,
+              "stock": 126,
+              "rating": 4.8,
+              "description": "酥脆咸香，独立小包，适合办公室分享。"
+            },
+            {
+              "id": "P004",
+              "name": "冻干草莓脆",
+              "category": "果干",
+              "tags": [
+                "酸甜",
+                "低脂",
+                "儿童"
+              ],
+              "price": 25.9,
+              "stock": 155,
+              "rating": 4.8,
+              "description": "整颗草莓冻干，配料简单，酥脆酸甜。"
+            },
+            {
+              "id": "P009",
+              "name": "混合坚果大礼包",
+              "category": "坚果",
+              "tags": [
+                "坚果",
+                "礼盒",
+                "分享"
+              ],
+              "price": 129.9,
+              "stock": 55,
+              "rating": 4.8,
+              "description": "腰果、扁桃仁、核桃、榛子混合装。"
+            },
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            }
+          ]
+        },
+        "output": {
+          "policy": {
+            "policyName": "7 天无理由退货",
+            "supported": true,
+            "windowDays": 7,
+            "conditions": [
+              "商品自签收之日起 7 天内提交申请",
+              "商品、内外包装及附件保持完好",
+              "退回商品不影响二次销售"
+            ],
+            "exceptions": [
+              "已拆封或已食用的食品不支持无理由退货",
+              "临近保质期等页面已明示的特价商品以购买页说明为准",
+              "质量问题不受无理由条件限制，需人工核验"
+            ],
+            "requiredEvidence": [
+              "订单号",
+              "商品及包装照片",
+              "问题说明"
+            ],
+            "applicationPath": "订单详情 → 申请售后 → 选择退货原因"
+          }
+        },
+        "startedAt": "2026-10-24T09:08:29.363Z",
+        "durationMs": 1,
+        "attempts": 1
+      },
+      {
+        "id": "step_5",
+        "capability": "after-sales-classification",
+        "type": "skill",
+        "purpose": "识别该请求的售后类型、证据需求和处理优先级",
+        "status": "success",
+        "input": {
+          "userInput": "�ͷ�˵���н��ˣ����Ұ��յ��Ķ�����֤�뷢�����Ǽǣ�������",
+          "context": {
+            "userInput": "�ͷ�˵���н��ˣ����Ұ��յ��Ķ�����֤�뷢�����Ǽǣ�������",
+            "toolResults": [
+              {
+                "toolId": "query_products",
+                "output": {
+                  "products": [
+                    {
+                      "id": "P002",
+                      "name": "低糖每日坚果",
+                      "category": "坚果",
+                      "tags": [
+                        "低糖",
+                        "健康",
+                        "独立包装"
+                      ],
+                      "price": 45.9,
+                      "stock": 83,
+                      "rating": 4.9,
+                      "description": "6种坚果果干搭配，无额外蔗糖。"
+                    },
+                    {
+                      "id": "P001",
+                      "name": "海盐芝士小饼干",
+                      "category": "饼干",
+                      "tags": [
+                        "咸口",
+                        "芝士",
+                        "独立包装"
+                      ],
+                      "price": 29.9,
+                      "stock": 126,
+                      "rating": 4.8,
+                      "description": "酥脆咸香，独立小包，适合办公室分享。"
+                    },
+                    {
+                      "id": "P004",
+                      "name": "冻干草莓脆",
+                      "category": "果干",
+                      "tags": [
+                        "酸甜",
+                        "低脂",
+                        "儿童"
+                      ],
+                      "price": 25.9,
+                      "stock": 155,
+                      "rating": 4.8,
+                      "description": "整颗草莓冻干，配料简单，酥脆酸甜。"
+                    },
+                    {
+                      "id": "P009",
+                      "name": "混合坚果大礼包",
+                      "category": "坚果",
+                      "tags": [
+                        "坚果",
+                        "礼盒",
+                        "分享"
+                      ],
+                      "price": 129.9,
+                      "stock": 55,
+                      "rating": 4.8,
+                      "description": "腰果、扁桃仁、核桃、榛子混合装。"
+                    },
+                    {
+                      "id": "P003",
+                      "name": "麻辣牛肉脯",
+                      "category": "肉类零食",
+                      "tags": [
+                        "辣味",
+                        "高蛋白",
+                        "耐嚼"
+                      ],
+                      "price": 39.9,
+                      "stock": 62,
+                      "rating": 4.7,
+                      "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                    }
+                  ],
+                  "filterFallback": false
+                }
+              },
+              {
+                "toolId": "query_order_logistics",
+                "output": {
+                  "found": false,
+                  "reason": "未在客户消息中识别到订单号",
+                  "requiredField": "orderId"
+                }
+              },
+              {
+                "toolId": "query_return_policy",
+                "output": {
+                  "policy": {
+                    "policyName": "7 天无理由退货",
+                    "supported": true,
+                    "windowDays": 7,
+                    "conditions": [
+                      "商品自签收之日起 7 天内提交申请",
+                      "商品、内外包装及附件保持完好",
+                      "退回商品不影响二次销售"
+                    ],
+                    "exceptions": [
+                      "已拆封或已食用的食品不支持无理由退货",
+                      "临近保质期等页面已明示的特价商品以购买页说明为准",
+                      "质量问题不受无理由条件限制，需人工核验"
+                    ],
+                    "requiredEvidence": [
+                      "订单号",
+                      "商品及包装照片",
+                      "问题说明"
+                    ],
+                    "applicationPath": "订单详情 → 申请售后 → 选择退货原因"
+                  }
+                }
+              }
+            ],
+            "mcpResults": [],
+            "skillResults": [
+              {
+                "skillId": "after-sales-classification",
+                "output": {
+                  "category": "other",
+                  "priority": "medium",
+                  "known_facts": [
+                    "客户表示客服说会发送验证码",
+                    "客户要求将收到的订单验证码发送到登记手机号",
+                    "客户提到需要登记"
+                  ],
+                  "missing_evidence": [
+                    "订单号",
+                    "登记手机号后四位或完整号码（用于核验身份）",
+                    "客户所指的具体订单或售后申请"
+                  ],
+                  "recommended_action": "先核验客户身份与订单信息，确认登记手机号；按平台流程通过官方渠道向登记手机号发送验证码，不在会话中直接回传验证码；如无法核验，引导客户通过订单详情页自助获取或联系人工客服。"
+                }
+              }
+            ],
+            "history": [],
+            "experiments": [],
+            "need": {
+              "intent": "客户要求客服将订单验证码发送到登记手机号",
+              "taste": [],
+              "categories": [],
+              "budget": null,
+              "quantity": 1,
+              "scenario": null,
+              "constraints": [
+                "发送到登记手机号"
+              ],
+              "needs_price": false
+            },
+            "products": [
+              {
+                "id": "P002",
+                "name": "低糖每日坚果",
+                "category": "坚果",
+                "tags": [
+                  "低糖",
+                  "健康",
+                  "独立包装"
+                ],
+                "price": 45.9,
+                "stock": 83,
+                "rating": 4.9,
+                "description": "6种坚果果干搭配，无额外蔗糖。"
+              },
+              {
+                "id": "P001",
+                "name": "海盐芝士小饼干",
+                "category": "饼干",
+                "tags": [
+                  "咸口",
+                  "芝士",
+                  "独立包装"
+                ],
+                "price": 29.9,
+                "stock": 126,
+                "rating": 4.8,
+                "description": "酥脆咸香，独立小包，适合办公室分享。"
+              },
+              {
+                "id": "P004",
+                "name": "冻干草莓脆",
+                "category": "果干",
+                "tags": [
+                  "酸甜",
+                  "低脂",
+                  "儿童"
+                ],
+                "price": 25.9,
+                "stock": 155,
+                "rating": 4.8,
+                "description": "整颗草莓冻干，配料简单，酥脆酸甜。"
+              },
+              {
+                "id": "P009",
+                "name": "混合坚果大礼包",
+                "category": "坚果",
+                "tags": [
+                  "坚果",
+                  "礼盒",
+                  "分享"
+                ],
+                "price": 129.9,
+                "stock": 55,
+                "rating": 4.8,
+                "description": "腰果、扁桃仁、核桃、榛子混合装。"
+              },
+              {
+                "id": "P003",
+                "name": "麻辣牛肉脯",
+                "category": "肉类零食",
+                "tags": [
+                  "辣味",
+                  "高蛋白",
+                  "耐嚼"
+                ],
+                "price": 39.9,
+                "stock": 62,
+                "rating": 4.7,
+                "description": "川香麻辣，肉香浓郁，越嚼越香。"
+              }
+            ],
+            "decision": {
+              "recommended_product_ids": [],
+              "decision_summary": "客户需求是客服将订单验证码发送到登记手机号，属于售后身份核验与流程处理，并非商品选购需求；候选商品均与验证码发送无关，因此不推荐任何商品。"
+            },
+            "selectedProducts": [],
+            "reasons": {},
+            "reply": "您好，理解您想完成订单验证。为保护您的账户安全，验证码不会在聊天中直接发送或回传，请通过官方渠道核实身份后获取。您可以登录官方App，在订单详情页按提示向登记手机号接收验证码；也可联系官方人工客服核验后处理。切勿透露短信验证码、银行卡密码等敏感信息。为帮您确认，请提供订单号及登记手机号后四位，我这边先帮您核对订单信息。",
+            "risk": {
+              "passed": true,
+              "risk_level": "low",
+              "issues": [],
+              "safe_reply": "您好，理解您想完成订单验证。为保护您的账户安全，验证码不会在聊天中直接发送或回传，请通过官方渠道核实身份后获取。您可以登录官方App，在订单详情页按提示向登记手机号接收验证码；也可联系官方人工客服核验后处理。切勿透露短信验证码、银行卡密码等敏感信息。为帮您确认，请提供订单号及登记手机号后四位，我这边先帮您核对订单信息。"
+            }
+          }
+        },
+        "output": {
+          "category": "other",
+          "priority": "medium",
+          "known_facts": [
+            "客户表示客服说会发送验证码",
+            "客户要求将收到的订单验证码发送到登记手机号",
+            "客户提到需要登记"
+          ],
+          "missing_evidence": [
+            "订单号",
+            "登记手机号后四位或完整号码（用于核验身份）",
+            "客户所指的具体订单或售后申请"
+          ],
+          "recommended_action": "先核验客户身份与订单信息，确认登记手机号；按平台流程通过官方渠道向登记手机号发送验证码，不在会话中直接回传验证码；如无法核验，引导客户通过订单详情页自助获取或联系人工客服。"
+        },
+        "startedAt": "2026-10-24T09:08:29.364Z",
+        "durationMs": 1766,
+        "attempts": 1
+      },
+      {
+        "id": "step_6",
+        "capability": "recommendation-decision",
+        "type": "skill",
+        "purpose": "必经 Skill · $recommendation-decision",
+        "status": "success",
+        "input": {
+          "userInput": "�ͷ�˵���н��ˣ����Ұ��յ��Ķ�����֤�뷢�����Ǽǣ�������",
+          "conversation_history": [],
+          "need": {
+            "intent": "客户要求客服将订单验证码发送到登记手机号",
+            "taste": [],
+            "categories": [],
+            "budget": null,
+            "quantity": 1,
+            "scenario": null,
+            "constraints": [
+              "发送到登记手机号"
+            ],
+            "needs_price": false
+          },
+          "products": [
+            {
+              "id": "P002",
+              "name": "低糖每日坚果",
+              "category": "坚果",
+              "tags": [
+                "低糖",
+                "健康",
+                "独立包装"
+              ],
+              "price": 45.9,
+              "stock": 83,
+              "rating": 4.9,
+              "description": "6种坚果果干搭配，无额外蔗糖。"
+            },
+            {
+              "id": "P001",
+              "name": "海盐芝士小饼干",
+              "category": "饼干",
+              "tags": [
+                "咸口",
+                "芝士",
+                "独立包装"
+              ],
+              "price": 29.9,
+              "stock": 126,
+              "rating": 4.8,
+              "description": "酥脆咸香，独立小包，适合办公室分享。"
+            },
+            {
+              "id": "P004",
+              "name": "冻干草莓脆",
+              "category": "果干",
+              "tags": [
+                "酸甜",
+                "低脂",
+                "儿童"
+              ],
+              "price": 25.9,
+              "stock": 155,
+              "rating": 4.8,
+              "description": "整颗草莓冻干，配料简单，酥脆酸甜。"
+            },
+            {
+              "id": "P009",
+              "name": "混合坚果大礼包",
+              "category": "坚果",
+              "tags": [
+                "坚果",
+                "礼盒",
+                "分享"
+              ],
+              "price": 129.9,
+              "stock": 55,
+              "rating": 4.8,
+              "description": "腰果、扁桃仁、核桃、榛子混合装。"
+            },
+            {
+              "id": "P003",
+              "name": "麻辣牛肉脯",
+              "category": "肉类零食",
+              "tags": [
+                "辣味",
+                "高蛋白",
+                "耐嚼"
+              ],
+              "price": 39.9,
+              "stock": 62,
+              "rating": 4.7,
+              "description": "川香麻辣，肉香浓郁，越嚼越香。"
+            }
+          ],
+          "toolResults": [
+            {
+              "toolId": "query_products",
+              "output": {
+                "products": [
+                  {
+                    "id": "P002",
+                    "name": "低糖每日坚果",
+                    "category": "坚果",
+                    "tags": [
+                      "低糖",
+                      "健康",
+                      "独立包装"
+                    ],
+                    "price": 45.9,
+                    "stock": 83,
+                    "rating": 4.9,
+                    "description": "6种坚果果干搭配，无额外蔗糖。"
+                  },
+                  {
+                    "id": "P001",
+                    "name": "海盐芝士小饼干",
+                    "category": "饼干",
+                    "tags": [
+                      "咸口",
+                      "芝士",
+                      "独立包装"
+                    ],
+                    "price": 29.9,
+                    "stock": 126,
+                    "rating": 4.8,
+                    "description": "酥脆咸香，独立小包，适合办公室分享。"
+                  },
+                  {
+                    "id": "P004",
+                    "name": "冻干草莓脆",
+                    "category": "果干",
+                    "tags": [
+                      "酸甜",
+                      "低脂",
+                      "儿童"
+                    ],
+                    "price": 25.9,
+                    "stock": 155,
+                    "rating": 4.8,
+                    "description": "整颗草莓冻干，配料简单，酥脆酸甜。"
+                  },
+                  {
+                    "id": "P009",
+                    "name": "混合坚果大礼包",
+                    "category": "坚果",
+                    "tags": [
+                      "坚果",
+                      "礼盒",
+                      "分享"
+                    ],
+                    "price": 129.9,
+                    "stock": 55,
+                    "rating": 4.8,
+                    "description": "腰果、扁桃仁、核桃、榛子混合装。"
+                  },
+                  {
+                    "id": "P003",
+                    "name": "麻辣牛肉脯",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "高蛋白",
+                      "耐嚼"
+                    ],
+                    "price": 39.9,
+                    "stock": 62,
+                    "rating": 4.7,
+                    "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                  }
+                ],
+                "filterFallback": false
+              }
+            },
+            {
+              "toolId": "query_order_logistics",
+              "output": {
+                "found": false,
+                "reason": "未在客户消息中识别到订单号",
+                "requiredField": "orderId"
+              }
+            },
+            {
+              "toolId": "query_return_policy",
+              "output": {
+                "policy": {
+                  "policyName": "7 天无理由退货",
+                  "supported": true,
+                  "windowDays": 7,
+                  "conditions": [
+                    "商品自签收之日起 7 天内提交申请",
+                    "商品、内外包装及附件保持完好",
+                    "退回商品不影响二次销售"
+                  ],
+                  "exceptions": [
+                    "已拆封或已食用的食品不支持无理由退货",
+                    "临近保质期等页面已明示的特价商品以购买页说明为准",
+                    "质量问题不受无理由条件限制，需人工核验"
+                  ],
+                  "requiredEvidence": [
+                    "订单号",
+                    "商品及包装照片",
+                    "问题说明"
+                  ],
+                  "applicationPath": "订单详情 → 申请售后 → 选择退货原因"
+                }
+              }
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": [
+            {
+              "skillId": "after-sales-classification",
+              "output": {
+                "category": "other",
+                "priority": "medium",
+                "known_facts": [
+                  "客户表示客服说会发送验证码",
+                  "客户要求将收到的订单验证码发送到登记手机号",
+                  "客户提到需要登记"
+                ],
+                "missing_evidence": [
+                  "订单号",
+                  "登记手机号后四位或完整号码（用于核验身份）",
+                  "客户所指的具体订单或售后申请"
+                ],
+                "recommended_action": "先核验客户身份与订单信息，确认登记手机号；按平台流程通过官方渠道向登记手机号发送验证码，不在会话中直接回传验证码；如无法核验，引导客户通过订单详情页自助获取或联系人工客服。"
+              }
+            }
+          ]
+        },
+        "output": {
+          "recommended_product_ids": [],
+          "decision_summary": "客户需求是客服将订单验证码发送到登记手机号，属于售后身份核验与流程处理，并非商品选购需求；候选商品均与验证码发送无关，因此不推荐任何商品。"
+        },
+        "startedAt": "2026-10-24T09:08:31.130Z",
+        "durationMs": 1065,
+        "attempts": 1
+      },
+      {
+        "id": "step_7",
+        "capability": "recommendation-reason",
+        "type": "skill",
+        "purpose": "必经 Skill · $recommendation-reason",
+        "status": "success",
+        "input": {
+          "conversation_history": [],
+          "need": {
+            "intent": "客户要求客服将订单验证码发送到登记手机号",
+            "taste": [],
+            "categories": [],
+            "budget": null,
+            "quantity": 1,
+            "scenario": null,
+            "constraints": [
+              "发送到登记手机号"
+            ],
+            "needs_price": false
+          },
+          "products": [],
+          "mcpResults": [],
+          "skillResults": [
+            {
+              "skillId": "after-sales-classification",
+              "output": {
+                "category": "other",
+                "priority": "medium",
+                "known_facts": [
+                  "客户表示客服说会发送验证码",
+                  "客户要求将收到的订单验证码发送到登记手机号",
+                  "客户提到需要登记"
+                ],
+                "missing_evidence": [
+                  "订单号",
+                  "登记手机号后四位或完整号码（用于核验身份）",
+                  "客户所指的具体订单或售后申请"
+                ],
+                "recommended_action": "先核验客户身份与订单信息，确认登记手机号；按平台流程通过官方渠道向登记手机号发送验证码，不在会话中直接回传验证码；如无法核验，引导客户通过订单详情页自助获取或联系人工客服。"
+              }
+            }
+          ]
+        },
+        "output": {
+          "reasons": {}
+        },
+        "startedAt": "2026-10-24T09:08:32.195Z",
+        "durationMs": 812,
+        "attempts": 1
+      },
+      {
+        "id": "step_8",
+        "capability": "response-generator",
+        "type": "skill",
+        "purpose": "必经 Skill · $response-generator",
+        "status": "success",
+        "input": {
+          "userInput": "�ͷ�˵���н��ˣ����Ұ��յ��Ķ�����֤�뷢�����Ǽǣ�������",
+          "conversation_history": [],
+          "need": {
+            "intent": "客户要求客服将订单验证码发送到登记手机号",
+            "taste": [],
+            "categories": [],
+            "budget": null,
+            "quantity": 1,
+            "scenario": null,
+            "constraints": [
+              "发送到登记手机号"
+            ],
+            "needs_price": false
+          },
+          "products": [],
+          "reasons": {},
+          "toolResults": [
+            {
+              "toolId": "query_products",
+              "output": {
+                "products": [
+                  {
+                    "id": "P002",
+                    "name": "低糖每日坚果",
+                    "category": "坚果",
+                    "tags": [
+                      "低糖",
+                      "健康",
+                      "独立包装"
+                    ],
+                    "price": 45.9,
+                    "stock": 83,
+                    "rating": 4.9,
+                    "description": "6种坚果果干搭配，无额外蔗糖。"
+                  },
+                  {
+                    "id": "P001",
+                    "name": "海盐芝士小饼干",
+                    "category": "饼干",
+                    "tags": [
+                      "咸口",
+                      "芝士",
+                      "独立包装"
+                    ],
+                    "price": 29.9,
+                    "stock": 126,
+                    "rating": 4.8,
+                    "description": "酥脆咸香，独立小包，适合办公室分享。"
+                  },
+                  {
+                    "id": "P004",
+                    "name": "冻干草莓脆",
+                    "category": "果干",
+                    "tags": [
+                      "酸甜",
+                      "低脂",
+                      "儿童"
+                    ],
+                    "price": 25.9,
+                    "stock": 155,
+                    "rating": 4.8,
+                    "description": "整颗草莓冻干，配料简单，酥脆酸甜。"
+                  },
+                  {
+                    "id": "P009",
+                    "name": "混合坚果大礼包",
+                    "category": "坚果",
+                    "tags": [
+                      "坚果",
+                      "礼盒",
+                      "分享"
+                    ],
+                    "price": 129.9,
+                    "stock": 55,
+                    "rating": 4.8,
+                    "description": "腰果、扁桃仁、核桃、榛子混合装。"
+                  },
+                  {
+                    "id": "P003",
+                    "name": "麻辣牛肉脯",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "高蛋白",
+                      "耐嚼"
+                    ],
+                    "price": 39.9,
+                    "stock": 62,
+                    "rating": 4.7,
+                    "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                  }
+                ],
+                "filterFallback": false
+              }
+            },
+            {
+              "toolId": "query_order_logistics",
+              "output": {
+                "found": false,
+                "reason": "未在客户消息中识别到订单号",
+                "requiredField": "orderId"
+              }
+            },
+            {
+              "toolId": "query_return_policy",
+              "output": {
+                "policy": {
+                  "policyName": "7 天无理由退货",
+                  "supported": true,
+                  "windowDays": 7,
+                  "conditions": [
+                    "商品自签收之日起 7 天内提交申请",
+                    "商品、内外包装及附件保持完好",
+                    "退回商品不影响二次销售"
+                  ],
+                  "exceptions": [
+                    "已拆封或已食用的食品不支持无理由退货",
+                    "临近保质期等页面已明示的特价商品以购买页说明为准",
+                    "质量问题不受无理由条件限制，需人工核验"
+                  ],
+                  "requiredEvidence": [
+                    "订单号",
+                    "商品及包装照片",
+                    "问题说明"
+                  ],
+                  "applicationPath": "订单详情 → 申请售后 → 选择退货原因"
+                }
+              }
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": [
+            {
+              "skillId": "after-sales-classification",
+              "output": {
+                "category": "other",
+                "priority": "medium",
+                "known_facts": [
+                  "客户表示客服说会发送验证码",
+                  "客户要求将收到的订单验证码发送到登记手机号",
+                  "客户提到需要登记"
+                ],
+                "missing_evidence": [
+                  "订单号",
+                  "登记手机号后四位或完整号码（用于核验身份）",
+                  "客户所指的具体订单或售后申请"
+                ],
+                "recommended_action": "先核验客户身份与订单信息，确认登记手机号；按平台流程通过官方渠道向登记手机号发送验证码，不在会话中直接回传验证码；如无法核验，引导客户通过订单详情页自助获取或联系人工客服。"
+              }
+            }
+          ]
+        },
+        "output": {
+          "reply": "您好，理解您想完成订单验证。为保护您的账户安全，验证码不会在聊天中直接发送或回传，请通过官方渠道核实身份后获取。您可以登录官方App，在订单详情页按提示向登记手机号接收验证码；也可联系官方人工客服核验后处理。切勿透露短信验证码、银行卡密码等敏感信息。为帮您确认，请提供订单号及登记手机号后四位，我这边先帮您核对订单信息。"
+        },
+        "startedAt": "2026-10-24T09:08:33.007Z",
+        "durationMs": 1394,
+        "attempts": 1
+      },
+      {
+        "id": "step_9",
+        "capability": "risk-check",
+        "type": "skill",
+        "purpose": "强制最终风控审核",
+        "status": "success",
+        "input": {
+          "userInput": "�ͷ�˵���н��ˣ����Ұ��յ��Ķ�����֤�뷢�����Ǽǣ�������",
+          "conversation_history": [],
+          "reply": "您好，理解您想完成订单验证。为保护您的账户安全，验证码不会在聊天中直接发送或回传，请通过官方渠道核实身份后获取。您可以登录官方App，在订单详情页按提示向登记手机号接收验证码；也可联系官方人工客服核验后处理。切勿透露短信验证码、银行卡密码等敏感信息。为帮您确认，请提供订单号及登记手机号后四位，我这边先帮您核对订单信息。",
+          "products": [],
+          "toolResults": [
+            {
+              "toolId": "query_products",
+              "output": {
+                "products": [
+                  {
+                    "id": "P002",
+                    "name": "低糖每日坚果",
+                    "category": "坚果",
+                    "tags": [
+                      "低糖",
+                      "健康",
+                      "独立包装"
+                    ],
+                    "price": 45.9,
+                    "stock": 83,
+                    "rating": 4.9,
+                    "description": "6种坚果果干搭配，无额外蔗糖。"
+                  },
+                  {
+                    "id": "P001",
+                    "name": "海盐芝士小饼干",
+                    "category": "饼干",
+                    "tags": [
+                      "咸口",
+                      "芝士",
+                      "独立包装"
+                    ],
+                    "price": 29.9,
+                    "stock": 126,
+                    "rating": 4.8,
+                    "description": "酥脆咸香，独立小包，适合办公室分享。"
+                  },
+                  {
+                    "id": "P004",
+                    "name": "冻干草莓脆",
+                    "category": "果干",
+                    "tags": [
+                      "酸甜",
+                      "低脂",
+                      "儿童"
+                    ],
+                    "price": 25.9,
+                    "stock": 155,
+                    "rating": 4.8,
+                    "description": "整颗草莓冻干，配料简单，酥脆酸甜。"
+                  },
+                  {
+                    "id": "P009",
+                    "name": "混合坚果大礼包",
+                    "category": "坚果",
+                    "tags": [
+                      "坚果",
+                      "礼盒",
+                      "分享"
+                    ],
+                    "price": 129.9,
+                    "stock": 55,
+                    "rating": 4.8,
+                    "description": "腰果、扁桃仁、核桃、榛子混合装。"
+                  },
+                  {
+                    "id": "P003",
+                    "name": "麻辣牛肉脯",
+                    "category": "肉类零食",
+                    "tags": [
+                      "辣味",
+                      "高蛋白",
+                      "耐嚼"
+                    ],
+                    "price": 39.9,
+                    "stock": 62,
+                    "rating": 4.7,
+                    "description": "川香麻辣，肉香浓郁，越嚼越香。"
+                  }
+                ],
+                "filterFallback": false
+              }
+            },
+            {
+              "toolId": "query_order_logistics",
+              "output": {
+                "found": false,
+                "reason": "未在客户消息中识别到订单号",
+                "requiredField": "orderId"
+              }
+            },
+            {
+              "toolId": "query_return_policy",
+              "output": {
+                "policy": {
+                  "policyName": "7 天无理由退货",
+                  "supported": true,
+                  "windowDays": 7,
+                  "conditions": [
+                    "商品自签收之日起 7 天内提交申请",
+                    "商品、内外包装及附件保持完好",
+                    "退回商品不影响二次销售"
+                  ],
+                  "exceptions": [
+                    "已拆封或已食用的食品不支持无理由退货",
+                    "临近保质期等页面已明示的特价商品以购买页说明为准",
+                    "质量问题不受无理由条件限制，需人工核验"
+                  ],
+                  "requiredEvidence": [
+                    "订单号",
+                    "商品及包装照片",
+                    "问题说明"
+                  ],
+                  "applicationPath": "订单详情 → 申请售后 → 选择退货原因"
+                }
+              }
+            }
+          ],
+          "mcpResults": [],
+          "skillResults": [
+            {
+              "skillId": "after-sales-classification",
+              "output": {
+                "category": "other",
+                "priority": "medium",
+                "known_facts": [
+                  "客户表示客服说会发送验证码",
+                  "客户要求将收到的订单验证码发送到登记手机号",
+                  "客户提到需要登记"
+                ],
+                "missing_evidence": [
+                  "订单号",
+                  "登记手机号后四位或完整号码（用于核验身份）",
+                  "客户所指的具体订单或售后申请"
+                ],
+                "recommended_action": "先核验客户身份与订单信息，确认登记手机号；按平台流程通过官方渠道向登记手机号发送验证码，不在会话中直接回传验证码；如无法核验，引导客户通过订单详情页自助获取或联系人工客服。"
+              }
+            }
+          ]
+        },
+        "output": {
+          "passed": true,
+          "risk_level": "low",
+          "issues": [],
+          "safe_reply": "您好，理解您想完成订单验证。为保护您的账户安全，验证码不会在聊天中直接发送或回传，请通过官方渠道核实身份后获取。您可以登录官方App，在订单详情页按提示向登记手机号接收验证码；也可联系官方人工客服核验后处理。切勿透露短信验证码、银行卡密码等敏感信息。为帮您确认，请提供订单号及登记手机号后四位，我这边先帮您核对订单信息。"
+        },
+        "startedAt": "2026-10-24T09:08:34.401Z",
+        "durationMs": 1001,
+        "attempts": 1
+      }
+    ],
+    "status": "pending",
+    "createdAt": "2026-10-24T09:08:35.404Z"
+  },
+  {
     "id": "4784866a-85a0-4bd7-ba65-b10639f200ce",
     "sessionId": "c733b71a-dda4-4200-868a-91b9132545a5",
     "input": "预算 80 元，想买点办公室分享的咸口零食",

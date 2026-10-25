@@ -2,7 +2,7 @@
 
 import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 
-type Message = { id: string; role: "user" | "assistant"; content: string };
+type Message = { id: string; role: "user" | "assistant"; content: string; gateStatus?: string };
 
 const initialMessages: Message[] = [
   { id: "welcome-user-1", role: "user", content: "我买的沙发到哪了?" },
@@ -15,6 +15,11 @@ const quickQuestions = ["查一下订单 86731 的物流", "零食怎么申请�
 const wait = (milliseconds: number) => new Promise(resolve => setTimeout(resolve, milliseconds));
 const flowDonePattern = /(已|已经|预计|支持|可以|帮您|为您|建议您|申请|发起|送达|退款|退货|换货|还有|如需|希望|祝您)/;
 const shouldAskRatingSoon = (reply: string) => flowDonePattern.test(reply);
+// 徽标只描述本次请求的闸门结果（欢迎语/异常消息无 gateStatus，显示中性文案）。
+const badgeText = (gateStatus?: string) =>
+  gateStatus === "released" ? "AI 客服 · 已核验"
+  : gateStatus === "risk_blocked" || gateStatus === "gate_blocked" ? "AI 客服 · 已转人工"
+  : "AI 客服";
 
 export default function DemoPage() {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
@@ -50,7 +55,7 @@ export default function DemoPage() {
       if (!response.ok) throw new Error(data.error || "Agent 暂时无法回复");
       setSessionId(data.sessionId);
       setLastRequestId(data.requestId);
-      setMessages(current => [...current, { id: crypto.randomUUID(), role: "assistant", content: data.finalReply }]);
+      setMessages(current => [...current, { id: crypto.randomUUID(), role: "assistant", content: data.finalReply, gateStatus: data.publishStatus || (data.decisionGate ? data.decisionGate.status : undefined) }]);
       scheduleRating(data.finalReply);
     } catch (error) {
       setMessages(current => [...current, { id: crypto.randomUUID(), role: "assistant", content: `抱歉，${error instanceof Error ? error.message : "服务暂时开了小差"}，请稍后再试。` }]);
@@ -86,7 +91,7 @@ export default function DemoPage() {
         <div className="demo-time">今天 14:30</div>
         {messages.map(message => <div className={`demo-message ${message.role}`} key={message.id}>
           {message.role === "assistant" && <div className="demo-avatar">食</div>}
-          <div><div className="demo-bubble">{message.content}</div>{message.role === "assistant" && <small>AI 客服 · 数据已核验</small>}</div>
+          <div><div className="demo-bubble">{message.content}</div>{message.role === "assistant" && <small>{badgeText(message.gateStatus)}</small>}</div>
         </div>)}
         {typing && <div className="demo-message assistant"><div className="demo-avatar">食</div><div className="demo-bubble demo-typing"><span/><span/><span/><em>正在输入…</em></div></div>}
         {ratingVisible && !ratingDone && <div className="demo-message assistant"><div className="demo-avatar">食</div><div><div className="demo-bubble demo-rating-card"><strong>这次服务帮到您了吗？</strong><div className="demo-stars">{[1, 2, 3, 4, 5].map(score => <button type="button" key={score} onClick={() => void submitRating(score)}>{score}</button>)}</div></div><small>评分会同步到运营中心</small></div></div>}

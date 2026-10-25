@@ -1,6 +1,9 @@
 import type { AnnotationRecord, Conversation, EvaluationCase, JsonSchema, Plan, PlannerConfig, PromptExperiment, RunResult, Skill, ToolConfig, TraceItem } from "./types";
-import { appendMetric, getConversation, getEvaluationSettings, getExperiments, getMcpServers, getPlanner, getSkills, getTools, readData, saveConversation } from "./store";
+import { appendHandoff, appendMetric, getConversation, getEvaluationSettings, getExperiments, getMcpServers, getPlanner, getSkills, getTools, readData, saveConversation } from "./store";
 import { callMcpTool } from "./mcp";
+import { isPriceIntent } from "./intent";
+import { buildVerifiedFacts, checkPriceAmounts, FRAUD_GUIDANCE_TEXT, fraudKeywordHit, gateMode, intentGateMode, runIntentGate, runReplyGate } from "./decision";
+import type { IntentGateSummary } from "./types";
 
 type Json = Record<string, any>;
 type Product = { id: string; name: string; category: string; tags: string[]; price: number; stock: number; rating: number; description: string };
@@ -74,7 +77,7 @@ function validateSchema(value: unknown, schema: JsonSchema | undefined, label: s
   }
 }
 
-function needsPrice(input: string) { return /价格|多少钱|付多少|总价|优惠|券|满减|预算|便宜|划算|别太贵|不太贵|省钱|实惠|性价比/.test(input); }
+function needsPrice(input: string) { return isPriceIntent(input); }
 const coreSkillIds = new Set(["need-extraction", "recommendation-decision", "recommendation-reason", "response-generator", "risk-check"]);
 
 function internalSkill(id: string, prompt: string): Skill {
@@ -94,20 +97,38 @@ function plannerAsSkill(planner: PlannerConfig): Skill {
   return { id: planner.id, name: planner.name, description: planner.description, prompt: planner.prompt, model: planner.model, temperature: planner.temperature, maxTokens: planner.maxTokens, enabled: planner.enabled };
 }
 
-async function buildPlan(userInput: string, skills: Skill[], tools: ToolConfig[], planner: PlannerConfig, history: Conversation["messages"] = []): Promise<Plan> {
+async function buildPlan(userInput: string, skills: Skill[], tools: ToolConfig[], planner: PlannerConfig, history: Conversation["messages"] = [], source: "run" | "test" = "run"): Promise<Plan> {
   if (!planner.enabled) throw new Error("Planner 已停用，无法生成执行计划。");
   const enabled = new Set(skills.filter(s => s.enabled).map(s => s.id));
   const enabledTools = new Set(tools.filter(tool => tool.enabled).map(tool => tool.id));
   const priceIntent = needsPrice(userInput);
+  // 二期入口分流（spec §5）：off 默认；shadow 只记录；assist 时模型 is_price_consult ≥ 0.8 并入锁定，
+  // 低置信 / skipped / scenario none_probability ≥ 0.2 一律回落正则；testPlanner(source="test") 不触发决策调用。
+  const intentMode = intentGateMode();
+  const intentGate: IntentGateSummary = { mode: intentMode, status: intentMode === "off" ? "off" : "skipped", regexPrice: priceIntent };
+  if (intentMode !== "off" && source === "run") {
+    const intent = await runIntentGate(userInput, history);
+    if (intent.status === "passed") {
+      const modelSaysPrice = (intent.isPriceConsult ?? 0) >= 0.8;
+      intentGate.status = "passed";
+      intentGate.isPriceConsult = intent.isPriceConsult;
+      intentGate.scenarioNone = intent.scenarioNone;
+      if ((intent.scenarioNone ?? 0) < 0.2) { intentGate.scenario = intent.scenario; intentGate.scenarioConfidence = intent.scenarioConfidence; }
+      intentGate.agreed = modelSaysPrice === priceIntent;
+    }
+    intentGate.latencyMs = intent.latencyMs;
+  }
+  const assistPrice = intentMode === "assist" && intentGate.status === "passed" && (intentGate.isPriceConsult ?? 0) >= 0.8;
+  const lockPrice = priceIntent || assistPrice;
   const decisionTrace: Plan["decisionTrace"] = [
-    { stage: "intent", title: "识别任务特征", detail: priceIntent ? "检测到价格、预算或优惠意图，需要启用确定性计价规则。" : "未检测到价格或优惠意图，使用基础商品查询规则。", data: { priceIntent } },
+    { stage: "intent", title: "识别任务特征", detail: lockPrice ? "检测到价格、预算或优惠意图，需要启用确定性计价规则。" : "未检测到价格或优惠意图，使用基础商品查询规则。", data: { priceIntent, intentGate } },
     { stage: "availability", title: "读取可用能力", detail: `当前有 ${enabled.size} 个启用 Skill、${enabledTools.size} 个启用 Tool。`, data: { enabledSkills: [...enabled], enabledTools: [...enabledTools] } }
   ];
   if (!enabled.has("risk-check")) throw new Error("risk-check 已停用：按平台规则，无法生成未经风控的最终回复。");
   const requiredSkills = [...new Set([...planner.requiredSkills.filter(id => id !== "risk-check"), "risk-check"])];
   const missingSkills = requiredSkills.filter(id => !enabled.has(id));
   if (missingSkills.length) throw new Error(`必经 Skill 不存在或已停用：${missingSkills.join("、")}`);
-  const requiredTools = [...new Set([...planner.baseTools, ...(priceIntent ? planner.priceTools : [])])];
+  const requiredTools = [...new Set([...planner.baseTools, ...(lockPrice ? planner.priceTools : [])])];
   const missingTools = requiredTools.filter(id => !enabledTools.has(id));
   if (missingTools.length) throw new Error(`必需 Tool 已停用：${missingTools.join("、")}。请在 Tool 管理中启用后重试。`);
   decisionTrace.push({ stage: "policy", title: "注入强制规则", detail: `锁定 ${requiredSkills.length} 个必经 Skill 和 ${requiredTools.length} 个规则 Tool；risk-check 固定为最后一步。`, data: { requiredSkills, requiredTools } });
@@ -150,7 +171,7 @@ async function buildPlan(userInput: string, skills: Skill[], tools: ToolConfig[]
   ];
   const steps = wanted.map(([capability, type, purpose], i) => ({ id: `step_${i + 1}`, capability, type, purpose }));
   decisionTrace.push({ stage: "assembly", title: "组装最终计划", detail: `形成 ${steps.length} 个可执行步骤，并将风控置于末尾。`, data: { finalCapabilities: steps.map(step => step.capability) } });
-  return { goal: typeof proposed.goal === "string" ? proposed.goal : "生成准确、安全的零食客服回复", reasoning: typeof proposed.reasoning === "string" ? proposed.reasoning : "Planner 已按启用能力和强制规则生成计划。", decisionTrace, steps };
+  return { goal: typeof proposed.goal === "string" ? proposed.goal : "生成准确、安全的零食客服回复", reasoning: typeof proposed.reasoning === "string" ? proposed.reasoning : "Planner 已按启用能力和强制规则生成计划。", decisionTrace, steps, intentGate };
 }
 
 async function executeLocalTool(id: string, ctx: Json): Promise<Json> {
@@ -185,7 +206,19 @@ async function executeLocalTool(id: string, ctx: Json): Promise<Json> {
     const eligible = ((ctx.coupons || []) as Coupon[]).filter(c => afterActivity >= c.threshold && (!c.category || products.some(p => p.category === c.category))).sort((a, b) => b.discount - a.discount);
     const coupon = eligible[0] || null;
     const finalPrice = Math.max(0, afterActivity - (coupon?.discount || 0));
-    return { subtotal, activityApplied: activityApplied ? { id: activityApplied.id, name: activityApplied.name } : null, couponApplied: coupon ? { id: coupon.id, name: coupon.name, discount: coupon.discount } : null, savings: Number((subtotal - finalPrice).toFixed(2)), finalPrice: Number(finalPrice.toFixed(2)), note: "按推荐商品各 1 件试算，不含运费" };
+    const activityDiscount = Number((subtotal - afterActivity).toFixed(2));
+    const couponDiscount = coupon?.discount || 0;
+    return {
+      subtotal, activityApplied: activityApplied ? { id: activityApplied.id, name: activityApplied.name } : null, couponApplied: coupon ? { id: coupon.id, name: coupon.name, discount: coupon.discount } : null,
+      savings: Number((subtotal - finalPrice).toFixed(2)), finalPrice: Number(finalPrice.toFixed(2)), note: "按推荐商品各 1 件试算，不含运费",
+      activityDiscount, afterActivity: Number(afterActivity.toFixed(2)), couponDiscount,
+      // 语境分类价格预检（lib/decision.ts checkPriceAmounts）的允许金额集合。
+      allowedAmounts: {
+        unitPrices: products.map(p => p.price),
+        thresholds: [...((ctx.activities || []) as Activity[]).map(a => a.threshold), ...((ctx.coupons || []) as Coupon[]).map(c => c.threshold)].filter((v): v is number => typeof v === "number"),
+        discounts: [activityDiscount, couponDiscount].filter(v => v > 0)
+      }
+    };
   }
   throw new Error(`未知 Tool: ${id}`);
 }
@@ -271,18 +304,44 @@ export async function runAgent(userInput: string, options: RunOptions = {}): Pro
     }
   }
   const risk = ctx.risk || { passed: false, risk_level: "high", issues: ["风控未执行"] };
-  const finalReply = risk.passed ? ctx.reply : risk.safe_reply || "抱歉，回复未通过风控审核。";
+  const safeReply = risk.safe_reply || "抱歉，回复未通过风控审核。";
+  // 确定性价格预检（常开安全下限，受 PRICE_CHECK_MODE 控制）：risk 放行回复与 safe_reply 都要过。
+  const priceCheck = checkPriceAmounts(risk.passed ? String(ctx.reply ?? "") : safeReply, ctx.price, ctx.need);
+  // StartLux 决策闸门（spec §3.1）：只裁决 risk.passed 的回复；!risk.passed 短路为 skipped(risk_failed)，
+  // safe_reply 是否通过确定性价格预检记录在 verdict.blockedBy；live_shadow 只记录不拦截。
+  const decisionGate = risk.passed
+    ? await runReplyGate({
+        userInput, history: ctx.history, candidateReply: String(ctx.reply ?? ""),
+        need: ctx.need, verifiedFacts: buildVerifiedFacts(ctx), priceCheck
+      })
+    : { status: "skipped" as const, skipReason: "risk_failed", latencyMs: 0, blockedBy: priceCheck.ran && !priceCheck.ok ? `price_mismatch:${priceCheck.mismatch || ""}` : undefined };
+  const gateBlocks = decisionGate.status === "blocked" && gateMode() !== "live_shadow";
+  let finalReply: string;
+  let publishStatus: RunResult["publishStatus"];
+  if (!risk.passed) { publishStatus = "risk_blocked"; finalReply = safeReply; }
+  else if (gateBlocks) { publishStatus = "gate_blocked"; finalReply = "抱歉，这条回复没有通过发布前核验，已为您转接人工客服，请稍候。"; }
+  else { publishStatus = "released"; finalReply = String(ctx.reply ?? safeReply); }
+  // 灰区加固 / 闸门不可用时的诈骗关键词兜底（spec §3.6：确定性下限在任何上游故障下仍执行）。
+  if (risk.passed && !gateBlocks && gateMode() !== "off" && (decisionGate.appendGuidance || ((decisionGate.status === "skipped" || decisionGate.status === "error") && fraudKeywordHit(`${userInput} ${ctx.history.map((m: any) => m.content).join(" ")}`)))) {
+    finalReply = `${finalReply}\n${FRAUD_GUIDANCE_TEXT}`;
+  }
   const handoffDecision = ctx.handoffDecision as Json | undefined;
+  const gateReason = decisionGate.status === "blocked" ? `闸门拦截：${decisionGate.blockedBy}` : undefined;
+  // 二期消费者（spec §5）：入口分流 scenario=fraud_suspect（置信 ≥0.8）强制转人工。
+  const intentForcedHandoff = plan.intentGate?.scenario === "fraud_suspect" && (plan.intentGate.scenarioConfidence ?? 0) >= 0.8;
+  const intentReason = intentForcedHandoff ? "入口分流判为疑似诈骗场景" : undefined;
   const handoff = {
-    required: handoffDecision?.required === true || risk.risk_level === "high" || !risk.passed,
-    reason: handoffDecision?.reasons?.join("；") || risk.issues?.join("；") || undefined
+    required: gateBlocks || intentForcedHandoff || handoffDecision?.required === true || risk.risk_level === "high" || !risk.passed,
+    reason: [intentReason, handoffDecision?.reasons?.join("；"), risk.issues?.length ? risk.issues.join("；") : undefined, gateReason].filter(Boolean).join("；") || undefined
   };
+  // 拦截即转人工（spec §3.5）：闸门拦截时服务端自动入队，C 端"已转人工"为真实陈述。
+  if (gateBlocks) await appendHandoff({ id: crypto.randomUUID(), sessionId, input: userInput, reason: handoff.reason, gateVerdict: decisionGate, trace, status: "pending", createdAt: new Date().toISOString() });
   if (persistConversation) {
     conversation.updatedAt = new Date().toISOString(); conversation.messages.push({ role: "user", content: userInput, at: new Date().toISOString() }, { role: "assistant", content: finalReply, at: new Date().toISOString() });
     await saveConversation(conversation);
   }
-  if (recordMetric) await appendMetric({ id: crypto.randomUUID(), requestId, createdAt: new Date().toISOString(), success: true, latencyMs: Date.now() - runStarted, stepCount: trace.length, riskLevel: risk.risk_level, sessionId, experiments: ctx.experiments });
-  return { requestId, mode: "ai", userInput, plan, executionTrace: trace, finalReply, risk, sessionId, handoff, experiments: ctx.experiments };
+  if (recordMetric) await appendMetric({ id: crypto.randomUUID(), requestId, createdAt: new Date().toISOString(), success: true, latencyMs: Date.now() - runStarted, stepCount: trace.length, riskLevel: risk.risk_level, sessionId, experiments: ctx.experiments, gateStatus: decisionGate.status, gateLatencyMs: decisionGate.latencyMs });
+  return { requestId, mode: "ai", userInput, plan, executionTrace: trace, finalReply, risk, sessionId, handoff, experiments: ctx.experiments, decisionGate, publishStatus };
 }
 
 export async function testSkill(skill: Skill, input: string) {
@@ -366,7 +425,7 @@ export async function judgeEvaluation(item: EvaluationCase, run: RunResult) {
 
 export async function testPlanner(planner: PlannerConfig, userInput: string) {
   const [skills, tools] = await Promise.all([getSkills(), getTools()]);
-  return buildPlan(userInput, skills, tools, planner);
+  return buildPlan(userInput, skills, tools, planner, [], "test");
 }
 
 export function getAiStatus() { const cfg = apiConfig(); return { configured: Boolean(cfg.key), mode: cfg.key ? "ai" : "unconfigured", model: cfg.model, baseUrl: cfg.base }; }

@@ -1,0 +1,73 @@
+{
+  "capturedAt": "2026-10-25T13:26:24.197Z",
+  "model": "startlux-decision-27b-autothink",
+  "latencyMs": 3144,
+  "request": {
+    "questions": {
+      "team": {
+        "type": "choice",
+        "instructions": "Which team should handle this ticket?",
+        "criteria": {
+          "billing": "Payments and refunds",
+          "shipping": "Delivery",
+          "technical": "App and login"
+        }
+      },
+      "urgent": {
+        "type": "noul",
+        "instructions": "Should this ticket be answered today?"
+      },
+      "severity": {
+        "type": "score",
+        "instructions": "How severe is the impact?",
+        "criteria": [
+          "cosmetic",
+          "annoying",
+          "blocks the customer"
+        ]
+      }
+    },
+    "think_mode": "auto",
+    "gate": 0.9
+  },
+  "response": {
+    "answers": {
+      "severity": {
+        "confidence": 0.7245464743099101,
+        "legend": {
+          "0": "cosmetic",
+          "1": "annoying",
+          "2": "blocks the customer"
+        },
+        "probabilities": {
+          "0": 0.00815939615496465,
+          "1": 0.1673168914834639,
+          "2": 0.8245237123615714
+        },
+        "score": 1.8163643162066068,
+        "type": "score"
+      },
+      "team": {
+        "choice": "billing",
+        "confidence": 0.9932831270461311,
+        "none_probability": 0.0021257799723093953,
+        "probabilities": {
+          "billing": 0.9955220846974208,
+          "shipping": 0.00019776330950596044,
+          "technical": 0.004280151993073352
+        },
+        "type": "choice"
+      },
+      "urgent": {
+        "noul": 0.8552000525954111,
+        "type": "noul"
+      }
+    },
+    "model": "startlux-decision-27b-autothink",
+    "usage": {
+      "input_tokens": 290,
+      "output_tokens": 43
+    }
+  },
+  "notes": "已脱敏（无 PII），用于 lib/decision.ts 类型守卫比对"
+}

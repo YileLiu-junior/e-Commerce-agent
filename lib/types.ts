@@ -57,12 +57,34 @@ export type PlannerDecisionEvent = {
   detail: string;
   data?: Record<string, unknown>;
 };
-export type Plan = { goal: string; reasoning: string; decisionTrace: PlannerDecisionEvent[]; steps: PlanStep[] };
+export type IntentGateSummary = {
+  mode: string;
+  status: "passed" | "skipped" | "off";
+  isPriceConsult?: number;
+  scenario?: string;
+  scenarioConfidence?: number;
+  scenarioNone?: number;
+  regexPrice: boolean;
+  agreed?: boolean;
+  latencyMs?: number;
+};
+export type Plan = { goal: string; reasoning: string; decisionTrace: PlannerDecisionEvent[]; steps: PlanStep[]; intentGate?: IntentGateSummary };
 
 export type TraceItem = PlanStep & {
   status: "running" | "success" | "failed" | "waiting_human";
   input: unknown; output: unknown; startedAt: string; durationMs: number; attempts?: number;
 };
+
+export type GateStatus = "passed" | "blocked" | "skipped" | "off" | "error";
+export type GateThresholds = { release: number; forbidden: number; actionConfidence: number; fraudSuspect: number; fraudGuidance: number; noneProbability: number };
+export type GateVerdict = {
+  status: GateStatus;
+  action?: string; confidence?: number; noneProbability?: number;
+  answers?: Record<string, unknown>;
+  blockedBy?: string; skipReason?: string; appendGuidance?: boolean;
+  thresholds?: GateThresholds; usage?: Record<string, unknown>; latencyMs?: number;
+};
+export type PublishStatus = "released" | "risk_blocked" | "gate_blocked";
 
 export type RunResult = {
   requestId: string; mode: "ai"; userInput: string; plan: Plan;
@@ -71,6 +93,8 @@ export type RunResult = {
   sessionId?: string;
   handoff?: { required: boolean; reason?: string };
   experiments?: Array<{ skillId: string; variant: "control" | "variant" }>;
+  decisionGate?: GateVerdict;
+  publishStatus?: PublishStatus;
 };
 
 export type Conversation = { id: string; createdAt: string; updatedAt: string; messages: Array<{ role: "user" | "assistant"; content: string; at: string }>; };
@@ -88,6 +112,7 @@ export type EvaluationAssertions = {
   forbiddenPhrases: string[];
   riskMustPass: boolean;
   maxLatencyMs: number;
+  expectGate?: "passed" | "blocked" | "skipped" | "any";
 };
 export type EvaluationCase = {
   id: string; name: string; input: string; expectedKeywords: string[]; enabled: boolean;
@@ -115,8 +140,9 @@ export type EvaluationResult = {
   scoringMethods?: EvaluationScoringMethod[];
   finalReply?: string; plannerReasoning?: string; trace?: TraceItem[];
   risk?: { passed: boolean; risk_level: string; issues: string[]; safe_reply?: string };
+  gateMode?: string; gateStatus?: GateStatus; gateAction?: string; gateLatencyMs?: number; gateSkipReason?: string; gateBlockedBy?: string;
 };
-export type RunMetric = { id: string; requestId: string; createdAt: string; success: boolean; latencyMs: number; stepCount: number; failedStep?: string; riskLevel?: string; sessionId?: string; experiments?: Array<{ skillId: string; variant: string }> };
+export type RunMetric = { id: string; requestId: string; createdAt: string; success: boolean; latencyMs: number; stepCount: number; failedStep?: string; riskLevel?: string; sessionId?: string; experiments?: Array<{ skillId: string; variant: string }>; gateStatus?: GateStatus; gateLatencyMs?: number };
 export type PromptExperiment = { id: string; name: string; skillId: string; variantPrompt: string; trafficPercent: number; enabled: boolean; createdAt: string };
 export type QualityDimensionKey = "correctness" | "relevance" | "completeness" | "safety" | "tone" | "overall";
 export type QualityDimensions = Record<QualityDimensionKey, { score: number; note: string }>;

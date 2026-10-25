@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "dev:3199": "next dev -p 3199",
+    "eval:all": "node scripts/run-eval-all.mjs",
+    "eval:gate": "node scripts/run-gate-fixtures.mjs",
+    "contract:check": "node --env-file=.env.local scripts/contract-check.mjs"
   },
   "dependencies": {
     "@types/node": "^22.10.0",
